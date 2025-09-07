@@ -9,5 +9,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro # docker-containers widget
 
     ports:
-      - 8080:8080
-    env_file: .env
+      - 8081:8080
+    # env_file: .env
+
+  

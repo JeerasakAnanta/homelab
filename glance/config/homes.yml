@@ -1,76 +1,26 @@
-- name: Homes
+# Main Glance configuration with all pages merged
+# Pages are organized as follows:
+# - Home: Calendar, weather, markets, server stats, Docker containers
+# - RSS: RSS feeds, Hacker News, Lobsters, Reddit
+# - YouTube: Videos widget and Twitch channels
+# - System: System monitoring, logs, processes, Docker containers
+# - Development: GitHub releases, programming news, dev communities
+# - Security: Security news, logs, cybersecurity feeds
+# - Entertainment: Gaming, movies, entertainment content
+# - Network: Network monitoring, security, sysadmin feeds
+# - Storage: Storage monitoring, data hoarder communities
+# - Monitoring: System monitoring, processes, logs
+# - DevOps: Kubernetes, Docker, infrastructure tools
+# - Gaming: Gaming content, streams, gaming communities
+# - News: Comprehensive news aggregation
+
+- name: Home
   columns:
     - size: small
       widgets:
         - type: calendar
           first-day-of-week: sunday
 
-        - type: rss
-          limit: 10
-          collapse-after: 3
-          cache: 12h
-          feeds:
-            - url: https://selfh.st/rss/
-              title: selfh.st
-            - url: https://ciechanow.ski/atom.xml
-            - url: https://www.joshwcomeau.com/rss.xml
-              title: Josh Comeau
-            - url: https://samwho.dev/rss.xml
-            - url: https://ishadeed.com/feed.xml
-              title: Ahmad Shadeed
-            - url: https://feeds.feedburner.com/TheHackersNews
-              title: The Hacker News
-
-        - type: twitch-channels
-          channels:
-            - theprimeagen
-            - j_blow
-            - piratesoftware
-            - cohhcarnage
-            - christitustech
-            - EJ_SA
-
-    - size: full
-      widgets:
-        - type: group
-          widgets:
-            - type: hacker-news
-            - type: lobsters
-
-        - type: videos
-          channels:
-            - UCXuqSBlHAE6Xw-yeJA0Tunw # Linus Tech Tips
-            - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
-            - UCsBjURrPoezykLs9EqgamOA # Fireship
-            - UCBJycsmduvYEL83R_U4JriQ # Marques Brownlee
-            - UCHnyfMqiRRG1u-2MsSQLbXA # Veritasium
-            - UC3YgTINPYQmUcRt5ZcNFIZQ # mikelopster
-            - UCEEVcDuBRDiwxfXAgQjLGug # Dreams of Autonomy
-
-        - type: group
-          widgets:
-            - type: reddit
-              subreddit: technology
-              show-thumbnails: true
-            - type: reddit
-              subreddit: selfhosted
-              show-thumbnails: true
-        # Docker
-        - type: docker-containers
-          hide-by-default: false
-
-        - type: server-stats
-          servers:
-            - type: local
-              hide-mountpoints-by-default: true
-              mountpoints:
-                "/":
-                  hide: false
-                "/mnt/data":
-                  hide: false
-
-    - size: small
-      widgets:
         - type: weather
           location: NAN,Thailand
           units: metric # alternatively "imperial"
@@ -102,3 +52,324 @@
             - immich-app/immich
             - syncthing/syncthing
             - nextcloud/server
+
+    - size: full
+      widgets:
+        # Docker
+        - type: docker-containers
+          hide-by-default: false
+
+        - type: server-stats
+          servers:
+            - type: local
+              hide-mountpoints-by-default: true
+              mountpoints:
+                "/":
+                  hide: false
+                "/mnt/data":
+                  hide: false
+
+- name: RSS
+  columns:
+    - size: small
+      widgets:
+        - type: rss
+          limit: 10
+          collapse-after: 3
+          cache: 12h
+          feeds:
+            - url: https://selfh.st/rss/
+              title: selfh.st
+            - url: https://ciechanow.ski/atom.xml
+            - url: https://www.joshwcomeau.com/rss.xml
+              title: Josh Comeau
+            - url: https://samwho.dev/rss.xml
+            - url: https://ishadeed.com/feed.xml
+              title: Ahmad Shadeed
+            - url: https://feeds.feedburner.com/TheHackersNews
+              title: The Hacker News
+
+    - size: full
+      widgets:
+        - type: group
+          widgets:
+            - type: hacker-news
+            - type: lobsters
+
+        - type: group
+          widgets:
+            - type: reddit
+              subreddit: technology
+              show-thumbnails: true
+            - type: reddit
+              subreddit: selfhosted
+              show-thumbnails: true
+
+- name: YouTube
+  columns:
+    - size: small
+      widgets:
+        - type: twitch-channels
+          channels:
+            - theprimeagen
+            - j_blow
+            - cohhcarnage
+            - christitustech
+            - EJ_SA
+
+    - size: full
+      widgets:
+        - type: videos
+          channels:
+            - UCXuqSBlHAE6Xw-yeJA0Tunw # Linus Tech Tips
+            - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
+            - UCsBjURrPoezykLs9EqgamOA # Fireship
+            - UCBJycsmduvYEL83R_U4JriQ # Marques Brownlee
+            - UCHnyfMqiRRG1u-2MsSQLbXA # Veritasium
+            - UC3YgTINPYQmUcRt5ZcNFIZQ # mikelopster
+            - UCEEVcDuBRDiwxfXAgQjLGug # Dreams of Autonomy
+
+- name: System
+  columns:
+    - size: small
+      widgets:
+        - type: server-stats
+          servers:
+            - type: local
+              hide-mountpoints-by-default: true
+              mountpoints:
+                "/":
+                  hide: false
+                "/mnt/data":
+                  hide: false
+                "/var":
+                  hide: false
+                "/tmp":
+                  hide: false
+
+        - type: docker-containers
+          hide-by-default: false
+
+    - size: full
+      widgets:
+        - type: server-stats
+          servers:
+            - type: local
+              hide-mountpoints-by-default: true
+              mountpoints:
+                "/":
+                  hide: false
+                "/mnt/data":
+                  hide: false
+                "/var":
+                  hide: false
+                "/tmp":
+                  hide: false
+
+- name: Development
+  columns:
+    - size: small
+      widgets:
+        - type: releases
+          cache: 1d
+          repositories:
+            - glanceapp/glance
+            - go-gitea/gitea
+            - immich-app/immich
+            - syncthing/syncthing
+            - nextcloud/server
+            - microsoft/vscode
+            - docker/compose
+            - kubernetes/kubernetes
+
+        - type: releases
+          cache: 1d
+          repositories:
+            - glanceapp/glance
+            - go-gitea/gitea
+            - immich-app/immich
+
+    - size: full
+      widgets:
+        - type: group
+          widgets:
+            - type: reddit
+              subreddit: programming
+              show-thumbnails: true
+            - type: reddit
+              subreddit: webdev
+              show-thumbnails: true
+
+        - type: rss
+          limit: 15
+          cache: 6h
+          feeds:
+            - url: https://github.blog/feed/
+              title: GitHub Blog
+            - url: https://stackoverflow.blog/feed/
+              title: Stack Overflow Blog
+            - url: https://dev.to/feed
+              title: DEV Community
+            - url: https://blog.codinghorror.com/rss/
+              title: Coding Horror
+
+- name: Security
+  columns:
+    - size: small
+      widgets:
+        - type: rss
+          limit: 10
+          cache: 4h
+          feeds:
+            - url: https://feeds.feedburner.com/TheHackersNews
+              title: The Hacker News
+            - url: https://krebsonsecurity.com/feed/
+              title: Krebs on Security
+            - url: https://www.schneier.com/feed/
+              title: Schneier on Security
+            - url: https://feeds.feedburner.com/securityweek
+              title: SecurityWeek
+
+        - type: server-stats
+          servers:
+            - type: local
+              hide-mountpoints-by-default: true
+              mountpoints:
+                "/":
+                  hide: false
+
+    - size: full
+      widgets:
+        - type: group
+          widgets:
+            - type: reddit
+              subreddit: netsec
+              show-thumbnails: true
+            - type: reddit
+              subreddit: cybersecurity
+              show-thumbnails: true
+              
+- name: Gaming
+  columns:
+    - size: small
+      widgets:
+        - type: twitch-channels
+          channels:
+            - theprimeagen
+            - j_blow
+            - cohhcarnage
+            - christitustech
+            - EJ_SA
+            - summit1g
+            - ninja
+            - shroud
+            - pokimane
+
+        - type: weather
+          location: NAN,Thailand
+          units: metric
+          hour-format: 24h
+
+    - size: full
+      widgets:
+        - type: videos
+          channels:
+            - UCXuqSBlHAE6Xw-yeJA0Tunw # Linus Tech Tips
+            - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
+            - UCsBjURrPoezykLs9EqgamOA # Fireship
+            - UCBJycsmduvYEL83R_U4JriQ # Marques Brownlee
+            - UCHnyfMqiRRG1u-2MsSQLbXA # Veritasium
+            - UC3YgTINPYQmUcRt5ZcNFIZQ # mikelopster
+            - UCEEVcDuBRDiwxfXAgQjLGug # Dreams of Autonomy
+            - UC-lHJZR3Gqxm24VdSJro3Mw # PewDiePie
+            - UCq-Fj5jknLsUf-MWSy4_brA # Mark Rober
+            - UCJ24N4O0bP7L-OWTdxSRvbw # Game Grumps
+
+        - type: group
+          widgets:
+            - type: reddit
+              subreddit: gaming
+              show-thumbnails: true
+            - type: reddit
+              subreddit: pcgaming
+              show-thumbnails: true
+            - type: reddit
+              subreddit: linux_gaming
+              show-thumbnails: true
+
+        - type: rss
+          limit: 8
+          cache: 8h
+          feeds:
+            - url: https://www.pcgamer.com/rss/
+              title: PC Gamer
+            - url: https://kotaku.com/rss
+              title: Kotaku
+            - url: https://www.rockpapershotgun.com/feed/
+              title: Rock Paper Shotgun
+
+- name: News
+  columns:
+    - size: small
+      widgets:
+        - type: weather
+          location: NAN,Thailand
+          units: metric
+          hour-format: 24h
+
+        - type: markets
+          markets:
+            - symbol: SPY
+              name: S&P 500
+            - symbol: BTC-USD
+              name: Bitcoin
+            - symbol: NVDA
+              name: NVIDIA
+            - symbol: AAPL
+              name: Apple
+            - symbol: MSFT
+              name: Microsoft
+            - symbol: GOOGL
+              name: Google
+            - symbol: AMZN
+              name: Amazon
+
+    - size: full
+      widgets:
+        - type: group
+          widgets:
+            - type: hacker-news
+            - type: lobsters
+
+        - type: rss
+          limit: 15
+          cache: 4h
+          feeds:
+            - url: https://feeds.feedburner.com/TheHackersNews
+              title: The Hacker News
+            - url: https://krebsonsecurity.com/feed/
+              title: Krebs on Security
+            - url: https://www.schneier.com/feed/
+              title: Schneier on Security
+            - url: https://selfh.st/rss/
+              title: Self-Hosted
+            - url: https://ciechanow.ski/atom.xml
+              title: Ciechanow
+            - url: https://www.joshwcomeau.com/rss.xml
+              title: Josh Comeau
+            - url: https://samwho.dev/rss.xml
+              title: Sam Who
+            - url: https://ishadeed.com/feed.xml
+              title: Ahmad Shadeed
+
+        - type: group
+          widgets:
+            - type: reddit
+              subreddit: technology
+              show-thumbnails: true
+            - type: reddit
+              subreddit: programming
+              show-thumbnails: true
+            - type: reddit
+              subreddit: sysadmin
+              show-thumbnails: true
