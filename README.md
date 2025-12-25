@@ -8,7 +8,7 @@ This repository contains the configuration and documentation for my home lab set
 
 A web-based dashboard providing an overview of your home lab environment.
 
-- **Port**: 8081
+- **Port**: 8000 (Standalone) / `https://api-homelab.jeerasakananta.dev/` (Unified)
 - **Features**: Service status monitoring, Docker container widget
 - **Location**: [glance/](glance/)
 
@@ -24,7 +24,7 @@ Open-source analytics and interactive visualization platform.
 
 Real-time performance and health monitoring.
 
-- **Port**: Uses host network mode
+- **Port**: Uses host network mode (19999)
 - **Features**: System metrics, container monitoring, performance insights
 - **Location**: [netdata/](netdata/)
 
@@ -36,16 +36,38 @@ Monitoring system and time-series database.
 - **Features**: Metrics collection, alerting, powerful query language
 - **Location**: [prometheus/](prometheus/)
 
-## � Ports Overview
+### 5. Uptime Kuma
 
-| Service | Port | Access URL |
-|---------|------|------------|
-| Glance Dashboard | 8081 | <http://localhost:8081> |
-| Grafana | 3080 | <http://localhost:3080> |
-| Netdata | 19999 | <http://localhost:19999> |
-| Prometheus | 9090 | <http://localhost:9090> |
+A self-hosted monitoring tool like "Uptime Robot".
 
-## �🔧 Requirements
+- **URL**: `https://api-homelab.jeerasakananta.dev/kuma`
+- **Location**: [kuma/](kuma/)
+
+### 6. Dozzle
+
+Real-time log viewer for Docker containers.
+
+- **URL**: `https://api-homelab.jeerasakananta.dev/logs`
+
+### 7. Coolify
+
+An open-source & self-hostable Heroku / Netlify / Vercel alternative.
+
+- **URL**: `https://api-homelab.jeerasakananta.dev/coolify`
+
+## 🔌 Ports Overview
+
+| Service | Port (Standalone) | Traefik Route |
+|---------|-------------------|---------------|
+| Glance Dashboard | 8000 | `/` |
+| Grafana | 3080 | - |
+| Netdata | 19999 | - |
+| Prometheus | 9090 | - |
+| Uptime Kuma | - | `/kuma` |
+| Dozzle | - | `/logs` |
+| Coolify | - | `/coolify` |
+
+## 🔧 Requirements
 
 - Docker
 - Docker Compose
@@ -59,7 +81,17 @@ Monitoring system and time-series database.
    cd homelab
    ```
 
-2. Start individual services:
+2. **Unified Setup (Recommended)**:
+   
+   Ensure the `homelab` external network and Traefik are running.
+   
+   ```bash
+   docker-compose -f docker-compose.homelab.yml up -d
+   ```
+
+3. **Standalone Services**:
+   
+   Start individual services using their respective directories:
 
    ```bash
    # Glance Dashboard
@@ -72,14 +104,8 @@ Monitoring system and time-series database.
    cd netdata && docker-compose up -d
    
    # Prometheus
-   cd prometheus && docker-compose up -d
+   cd prometheus && docker-compose -f docker-compose.yaml up -d
    ```
-
-3. Access the services:
-   - Glance: <http://localhost:8081>
-   - Grafana: <http://localhost:3080>
-   - Netdata: <http://localhost:19999>
-   - Prometheus: <http://localhost:9090>
 
 ## ⚙️ Configuration
 
