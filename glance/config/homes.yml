@@ -7,41 +7,52 @@
         - type: clock
           format: "15:04"
           time-zone: Asia/Bangkok
-          
         - type: search
-          background-color: 255, 255, 255, 0.1 # transparent-ish
+          background-color: 255, 255, 255, 0.1 
           provider: google
+          search-engine: google
+          new-tab: true
           autofocus: true
 
     - size: full
-      widgets:
+      widgets:          
         - type: bookmarks
           groups:
-            - title: Social
+            - title: Work 
               links:
-                - title: YouTube
-                  url: https://youtube.com
-                - title: Reddit
-                  url: https://reddit.com
-                - title: Facebook
-                  url: https://facebook.com
+                - title: Outlook
+                  url: https://outlook.office.com
+                - title: Teams
+                  url: https://teams.microsoft.com
 
-            - title: Development
+            - title: Development 
               links:
                 - title: GitHub
-                  url: https://github.com
-                - title: ChatGPT
-                  url: https://chat.openai.com
+                  url: https://github.com/JeerasakAnanta
                 - title: StackOverflow
                   url: https://stackoverflow.com
 
-            - title: Local
+            - title: AI
+              links:
+                - title: ChatGPT
+                  url: https://chat.openai.com
+
+            - title: Monitoring
               links:
                 - title: Portainer
                   url: http://localhost:9000
                 - title: Grafana
                   url: http://localhost:3000
+                - title: Netdata
+                  url: http://localhost:19999
 
+
+            - title: Automation
+              links:
+                - title: N8N
+                  url: http://localhost:8080
+                  
+      
 - name: Home
   columns:
     - size: small

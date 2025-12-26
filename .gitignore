@@ -1,1 +1,10 @@
+# =============
+# gitignore 
+# =============
+
+# Glance 
 glance/.env
+
+# Uptime Kuma 
+kuma/*.db*
+kuma/upload/
