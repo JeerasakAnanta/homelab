@@ -8,3 +8,6 @@ glance/.env
 # Uptime Kuma 
 kuma/*.db*
 kuma/upload/
+
+# Traefik
+traefik/acme.json
