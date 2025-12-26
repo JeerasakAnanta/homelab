@@ -18,12 +18,19 @@
       widgets:          
         - type: bookmarks
           groups:
-            - title: Work 
+            - title: Development 
               links:
-                - title: Outlook
-                  url: https://outlook.office.com
-                - title: Teams
-                  url: https://teams.microsoft.com
+                - title: Coolify
+                  url: https://coolify.jeerasakananta.dev
+                - title: Cockpit
+                  url: https://cockpit.jeerasakananta.dev
+
+                - title: Portainer
+                  url: http://localhost:9000
+
+          
+                - title: Dozzle
+                  url: https://dozzle.jeerasakananta.dev
 
             - title: Development 
               links:
@@ -36,21 +43,27 @@
               links:
                 - title: ChatGPT
                   url: https://chat.openai.com
+                - title: Gemini
+                  url: https://gemini.ai
+                - title: Claude
+                  url: https://claude.ai
 
             - title: Monitoring
               links:
-                - title: Portainer
-                  url: http://localhost:9000
+                - title: Uptime Kuma
+                  url: https://kuma.jeerasakananta.dev
+
+                
+
                 - title: Grafana
                   url: http://localhost:3000
                 - title: Netdata
                   url: http://localhost:19999
 
-
             - title: Automation
               links:
                 - title: N8N
-                  url: http://localhost:8080
+                  url: http://n8n.jeerasakananta.dev
                   
       
 - name: Home
