@@ -2,6 +2,43 @@
 
 This repository contains the configuration and documentation for my home lab setup, featuring various monitoring and visualization services running on Docker containers.
 
+## 🏗️ Architecture
+
+```mermaid
+graph TD
+    User([User / Internet])
+    
+    subgraph Host [Docker Host]
+        Traefik[Traefik Proxy]
+        
+        subgraph Proxied [Proxied Services]
+            Glance
+            Kuma[Uptime Kuma]
+            Dozzle
+            Coolify
+        end
+        
+        subgraph Standalone [Standalone / Direct Port Access]
+            Grafana
+            Netdata
+            Prometheus
+            GlanceDirect[Glance (Port 8000)]
+        end
+    end
+    
+    User -->|80/443| Traefik
+    User -->|3080| Grafana
+    User -->|19999| Netdata
+    User -->|9090| Prometheus
+    User -->|8000| GlanceDirect
+    
+    Traefik -->|/| Glance
+    Traefik -->|/kuma| Kuma
+    Traefik -->|/logs| Dozzle
+    Traefik -->|/coolify| Coolify
+```
+
+
 ## 📦 Services
 
 ### 1. Glance Dashboard
