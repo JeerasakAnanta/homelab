@@ -1,0 +1,17 @@
+coolify:
+  image: coollabsio/coolify:latest
+  container_name: coolify
+  restart: unless-stopped
+  volumes:
+    - /data/coolify:/data
+
+  labels:
+    - "traefik.enable=true"
+    - "traefik.http.routers.coolify.rule=Host(`api-homelab.jeerasakananta.dev`) && PathPrefix(`/coolify`)"
+    - "traefik.http.routers.coolify.entrypoints=websecure"
+    - "traefik.http.routers.coolify.tls.certresolver=cloudflare"
+    - "traefik.http.middlewares.coolify-strip.stripprefix.prefixes=/coolify"
+    - "traefik.http.routers.coolify.middlewares=coolify-strip"
+
+  networks:
+    - homelab
