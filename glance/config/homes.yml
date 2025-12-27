@@ -1,5 +1,3 @@
-
-
 - name: Start
   columns:
     - size: small
@@ -22,12 +20,12 @@
               links:
                 - title: Coolify
                   url: https://coolify.jeerasakananta.dev
+
                 - title: Cockpit
                   url: https://cockpit.jeerasakananta.dev
 
                 - title: Portainer
                   url: http://localhost:9000
-
           
                 - title: Dozzle
                   url: https://dozzle.jeerasakananta.dev
@@ -36,6 +34,7 @@
               links:
                 - title: GitHub
                   url: https://github.com/JeerasakAnanta
+
                 - title: StackOverflow
                   url: https://stackoverflow.com
 
@@ -43,8 +42,10 @@
               links:
                 - title: ChatGPT
                   url: https://chat.openai.com
+                
                 - title: Gemini
                   url: https://gemini.ai
+                
                 - title: Claude
                   url: https://claude.ai
 
@@ -53,10 +54,9 @@
                 - title: Uptime Kuma
                   url: https://kuma.jeerasakananta.dev
 
-                
-
                 - title: Grafana
                   url: http://localhost:3000
+
                 - title: Netdata
                   url: http://localhost:19999
 
