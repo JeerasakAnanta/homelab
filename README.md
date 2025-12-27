@@ -1,6 +1,7 @@
 # 🧪 Homelab
 
-This repository contains the configuration and documentation for my home lab setup, featuring various monitoring and visualization services running on Docker containers.
+- This repository contains the configuration and documentation for my home lab setup, 
+featuring various monitoring and visualization services running on Docker containers.
 
 ## 🏗️ Architecture
 
@@ -9,35 +10,32 @@ graph TD
     User([User / Internet])
     
     subgraph Host [Docker Host]
-        Traefik[Traefik Proxy]
+        Traefik[Traefik Proxy<br/>80/443/8080]
         
-        subgraph Proxied [Proxied Services]
-            Glance
-            Kuma[Uptime Kuma]
-            Dozzle
-            Coolify
+        subgraph Proxied [Proxied Services via Traefik]
+            Dozzle[Dozzle<br/>Log Viewer]
+            Coolify[Coolify<br/>PaaS]
         end
         
         subgraph Standalone [Standalone / Direct Port Access]
-            Grafana
-            Netdata
-            Prometheus
-            GlanceDirect[Glance (Port 8000)]
+            Glance[Glance<br/>Port 8000]
+            Kuma[Uptime Kuma<br/>Port 3001]
+            Grafana[Grafana<br/>Port 3080]
+            Netdata[Netdata<br/>Port 19999]
+            Prometheus[Prometheus<br/>Port 9090]
         end
     end
     
     User -->|80/443| Traefik
+    User -->|8000| Glance
+    User -->|3001| Kuma
     User -->|3080| Grafana
     User -->|19999| Netdata
     User -->|9090| Prometheus
-    User -->|8000| GlanceDirect
     
-    Traefik -->|/| Glance
-    Traefik -->|/kuma| Kuma
     Traefik -->|/logs| Dozzle
     Traefik -->|/coolify| Coolify
 ```
-
 
 ## 📦 Services
 
@@ -94,20 +92,22 @@ An open-source & self-hostable Heroku / Netlify / Vercel alternative.
 
 ## 🔌 Ports Overview
 
-| Service | Port (Standalone) | Traefik Route |
-|---------|-------------------|---------------|
-| Glance Dashboard | 8000 | `/` |
-| Grafana | 3080 | - |
-| Netdata | 19999 | - |
-| Prometheus | 9090 | - |
-| Uptime Kuma | - | `/kuma` |
-| Dozzle | - | `/logs` |
-| Coolify | - | `/coolify` |
+| Service           | Port (Standalone)     | Traefik Route |
+|-------------------|--------------------   |---------------|
+| Glance Dashboard  | 8000                  | `/`           |
+| Grafana           | 3080                  | -             |
+| Netdata           | 19999                 | -             |
+| Prometheus        | 9090                  | -             |
+| Uptime Kuma       | -                     | `/kuma`       |
+| Dozzle            | -                     | `/logs`       |
+| Coolify           | -                     | `/coolify`    |
+
 
 ## 🔧 Requirements
 
 - Docker
 - Docker Compose
+- cloudflared Tunnel
 
 ## 🚀 Setup
 
