@@ -1,0 +1,18 @@
+---
+# For configuration options and examples, please see:
+# http://gethomepage.dev/widgets/
+
+
+- datetime:
+    text_size: small
+    format:
+      timeStyle: short
+      dateStyle: short
+      hourCycle: h23
+
+- resources:
+    cpu: true
+    memory: true
+    disk: /
+    uptime: true
+

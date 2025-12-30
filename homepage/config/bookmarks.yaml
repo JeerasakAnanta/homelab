@@ -1,0 +1,31 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/bookmarks
+
+- Profile:
+  - website:
+      - icon: si-aboutdotme
+        href: https://jeerasakananta.dev
+        description: Jeerasak Ananta personal website
+
+  - LinkedIn:
+      - icon: si-linkedin
+        href: https://www.linkedin.com/in/jeerasakananta
+        description: LinkedIn profile
+        
+- Developer:
+    - GitHub:
+        - icon: github-light.png
+          href: https://github.com/jeerasakananta
+          description: Code hosting platform
+    
+- Documentation:
+    - Homepage Docs:
+        - icon: homepage.png
+          href: https://gethomepage.dev/
+          description: Homepage documentation
+          
+    - Docker Hub:
+        - icon: docker.png
+          href: https://hub.docker.com/
+          description: Container images

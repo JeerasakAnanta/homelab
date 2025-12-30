@@ -1,0 +1,71 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/services
+
+- Infrastructure:
+    - Cockpit:
+        icon: si-cockpit
+        href: https://cockpit.jeerasakananta.dev
+        description: Server administration interface
+    
+    - Coolify:
+        icon: coolify.png
+        href: https://coolify.jeerasakananta.dev
+        description: Self-hosted PaaS platform
+        server: my-docker
+        container: coolify
+
+    - Portainer:
+        icon: portainer.png
+        href: https://portainer.jeerasakananta.dev
+        description: Container management platform
+        server: my-docker
+        container: portainer
+        
+    - Lab:
+        icon: si-homeassistantcommunitystore
+        href: https://lab.jeerasakananta.dev
+        description: Lab environment
+
+- Monitoring:
+    - Uptime Kuma:
+        icon: uptime-kuma.png
+        href: https://kuma.jeerasakananta.dev
+        description: Service uptime monitoring
+        server: my-docker
+        container: uptime-kuma
+        
+    - Grafana:
+        icon: grafana.png
+        href: http://10.50.5.51:3080
+        description: Analytics and visualization
+        
+    - Netdata:
+        icon: netdata.png
+        href: http://10.50.5.51:19999
+        description: Real-time performance monitoring
+        
+- Services:     
+    - Glance:
+        icon: si-glance
+        href: https://glance.jeerasakananta.dev
+        description: rss feed reader
+    
+    - N8N:
+        icon: n8n.png
+        href: http://n8n.jeerasakananta.dev
+        description: Workflow automation tools
+    
+    - pgadmin:
+        icon: pgadmin.png
+        href: https://pgadmin.jeerasakananta.dev
+        description: PostgreSQL database management
+        server: my-docker
+        container: pgadmin4
+     
+    - Dozzle:
+        icon: dozzle.png
+        href: https://api-homelab.jeerasakananta.dev/logs
+        description: Docker logs viewer
+
+  

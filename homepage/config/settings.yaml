@@ -1,0 +1,27 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/settings
+
+title: Homelab Dashboard
+favicon: homepage.png
+
+theme: dark
+color: slate
+
+layout:
+  Monitoring:
+    style: row
+    columns: 4
+
+  Services:
+    style: row
+    columns: 4
+  
+  Infrastructure:
+    style: row
+    columns: 4
+
+headerStyle: boxed
+statusStyle: dot
+
+
