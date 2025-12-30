@@ -1,0 +1,31 @@
+services:
+  homepage:
+    container_name: homepage
+    image: ghcr.io/gethomepage/homepage:latest
+    restart: unless-stopped
+
+    ports:
+      - "3030:3000"
+
+    environment:
+      - TZ=Asia/Bangkok
+      - PUID=1000
+      - PGID=1000
+      - HOMEPAGE_ALLOWED_HOSTS=localhost:3030,10.50.5.51:3030
+
+    volumes:
+      - ./config:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+    networks:
+      - homelab
+
+networks:
+  homelab:
+    driver: bridge
