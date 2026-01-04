@@ -21,11 +21,11 @@
         description: Container management platform
         server: my-docker
         container: portainer
-        
-    - Lab:
-        icon: si-homeassistantcommunitystore
-        href: https://lab.jeerasakananta.dev
-        description: Lab environment
+    
+    - Proxmox VE:
+        icon: proxmox.png
+        href: https://proxmox.jeerasakananta.dev
+        description: Virtualization management platform
 
 - Monitoring:
     - Uptime Kuma:
@@ -37,14 +37,30 @@
         
     - Grafana:
         icon: grafana.png
-        href: http://10.50.5.51:3080
+        href: https://grafana.jeerasakananta.dev
         description: Analytics and visualization
+        server: my-docker
+        container: grafana
+    - Prometheus:
+        icon: prometheus.png
+        href: https://prometheus.jeerasakananta.dev
+        description: Monitoring and alerting toolkit
+        server: my-docker
+        container: prometheus
+    - Loki:
+        icon: loki.png
+        href: https://loki.jeerasakananta.dev
+        description: Log aggregation system
+        server: my-docker
+        container: loki
         
     - Netdata:
         icon: netdata.png
         href: http://10.50.5.51:19999
         description: Real-time performance monitoring
-        
+        server: my-docker
+        container: netdata
+
 - Services:     
     - Glance:
         icon: si-glance
@@ -68,4 +84,52 @@
         href: https://api-homelab.jeerasakananta.dev/logs
         description: Docker logs viewer
 
-  
+- Storage & Backup:
+    - Nextcloud:
+        icon: nextcloud.png
+        href: https://cloud.jeerasakananta.dev
+        description: File sync and sharing platform
+        server: my-docker
+        container: nextcloud
+
+    - Duplicati:
+        icon: duplicati.png
+        href: https://backup.jeerasakananta.dev
+        description: Backup solution
+        server: my-docker
+        container: duplicati
+
+- Dev / Data:
+    - jupyterlab:
+        icon: si-jupyter
+        href: http://jupyterlab.jeerasakananta.dev
+        description: Data science and machine learning environment
+        server: my-docker
+        container: jupyterlab
+    - dbber
+
+- Docs & Wiki:
+    - BookStack:
+        icon: bookstack.png
+        href: https://wiki.jeerasakananta.dev
+        description: Documentation and wiki platform
+        server: my-docker
+        container: bookstack
+
+
+
+- Auth & Security:
+    - Keycloak:
+        icon: keycloak.png
+        href: https://keycloak.jeerasakananta.dev
+        description: Identity and access management
+        server: my-docker
+        container: keycloak
+
+    - Authelia:
+        icon: authelia.png
+        href: https://auth.jeerasakananta.dev
+        description: Authentication and authorization server
+        server: my-docker
+        container: authelia
+    
