@@ -1,78 +1,10 @@
-- name: Start
-  columns:
-    - size: small
-      widgets:
-        - type: clock
-          format: "15:04"
-          time-zone: Asia/Bangkok
-        - type: search
-          background-color: 255, 255, 255, 0.1 
-          provider: google
-          search-engine: google
-          new-tab: true
-          autofocus: true
-
-    - size: full
-      widgets:          
-        - type: bookmarks
-          groups:
-            - title: Development 
-              links:
-                - title: Coolify
-                  url: https://coolify.jeerasakananta.dev
-
-                - title: Cockpit
-                  url: https://cockpit.jeerasakananta.dev
-
-                - title: Portainer
-                  url: http://localhost:9000
-          
-                - title: Dozzle
-                  url: https://dozzle.jeerasakananta.dev
-
-            - title: Development 
-              links:
-                - title: GitHub
-                  url: https://github.com/JeerasakAnanta
-
-                - title: StackOverflow
-                  url: https://stackoverflow.com
-
-            - title: AI
-              links:
-                - title: ChatGPT
-                  url: https://chat.openai.com
-                
-                - title: Gemini
-                  url: https://gemini.ai
-                
-                - title: Claude
-                  url: https://claude.ai
-
-            - title: Monitoring
-              links:
-                - title: Uptime Kuma
-                  url: https://kuma.jeerasakananta.dev
-
-                - title: Grafana
-                  url: http://localhost:3000
-
-                - title: Netdata
-                  url: http://localhost:19999
-
-            - title: Automation
-              links:
-                - title: N8N
-                  url: http://n8n.jeerasakananta.dev
-                  
-      
 - name: Home
   columns:
     - size: small
       widgets:
         - type: calendar
           first-day-of-week: monday
-        
+        - type: clock
         - type: weather
           location: Bangkok, Thailand
           units: metric
@@ -94,52 +26,52 @@
             - symbol: GOOGL
               name: Google
 
-- name: Homelab
-  columns:
-    - size: small
-      widgets:
-        - type: server-stats
-          servers:
-            - type: local
-              hide-mountpoints-by-default: true
-              mountpoints:
-                "/":
-                  hide: false
-                "/mnt/data":
-                  hide: false
-
-    - size: full
-      widgets:
-        - type: docker-containers
-          hide-by-default: false
-          # You can exclude specific containers if needed
-          # exclude:
-          #   - glance
-
 - name: Feeds
   columns:
     - size: small
       widgets:
         - type: rss
+          title: Security & Hacking
           limit: 10
           cache: 1h
           feeds:
             - url: https://feeds.feedburner.com/TheHackersNews
               title: The Hacker News
-              
-            - url: https://www.theverge.com/rss/index.xml
-              title: The Verge
-
-            - url: https://www.cnet.com/rss/
-              title:  
+        
+        - type: rss
+          title: Homelab & Self-Hosted
+          limit: 10
+          cache: 1h
+          feeds:
+            - url: https://selfh.st/rss/
+              title: Self Hosted
+            
+            - url: https://www.reddit.com/r/homelab/.rss
+              title: Reddit r/homelab
 
     - size: full
       widgets:
-        - type: group
-          widgets:
-            - type: hacker-news
-              limit: 15
-            - type: reddit
-              subreddit: selfhosted
-              show-thumbnails: true
-              limit: 10
+        - type: rss
+          title: Development & Learning
+          limit: 10
+          cache: 1h
+          feeds:
+            - url: https://www.freecodecamp.org/news/rss
+              title: freeCodeCamp.org
+            
+            - url: https://dev.to/feed/tag/automation
+              title: Dev.to Automation
+        
+        - type: rss
+          title: Tech News
+          limit: 10
+          cache: 1h
+          feeds:
+            - url: https://techcrunch.com/feed/
+              title: TechCrunch
+
+                    
+
+
+
+            
