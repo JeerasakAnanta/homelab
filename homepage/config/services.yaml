@@ -35,42 +35,49 @@
         server: my-docker
         container: uptime-kuma
         
-    - Grafana:
-        icon: grafana.png
-        href: https://grafana.jeerasakananta.dev
-        description: Analytics and visualization
-        server: my-docker
-        container: grafana
-    - Prometheus:
-        icon: prometheus.png
-        href: https://prometheus.jeerasakananta.dev
-        description: Monitoring and alerting toolkit
-        server: my-docker
-        container: prometheus
-    - Loki:
-        icon: loki.png
-        href: https://loki.jeerasakananta.dev
-        description: Log aggregation system
-        server: my-docker
-        container: loki
+    # - Grafana:
+    #     icon: grafana.png
+    #     href: https://grafana.jeerasakananta.dev
+    #     description: Analytics and visualization
+    #     server: my-docker
+    #     container: grafana
+
+    # - Prometheus:
+    #     icon: prometheus.png
+    #     href: https://prometheus.jeerasakananta.dev
+    #     description: Monitoring and alerting toolkit
+    #     server: my-docker
+    #     container: prometheus
+
+    # - Loki:
+    #     icon: loki.png
+    #     href: https://loki.jeerasakananta.dev
+    #     description: Log aggregation system
+    #     server: my-docker
+    #     container: loki
         
     - Netdata:
         icon: netdata.png
-        href: http://10.50.5.51:19999
+        href: https://netdata.jeerasakananta.dev
         description: Real-time performance monitoring
         server: my-docker
         container: netdata
 
-- Services:     
-    - Glance:
-        icon: si-glance
-        href: https://glance.jeerasakananta.dev
-        description: rss feed reader
-    
+    - Dozzle:
+        icon: dozzle.png
+        href: https://dozzle.jeerasakananta.dev/logs
+        description: Docker logs viewer
+
+- Services:  
     - N8N:
         icon: n8n.png
         href: http://n8n.jeerasakananta.dev
         description: Workflow automation tools
+
+    - Glance:
+        icon: si-glance
+        href: https://rss.jeerasakananta.dev
+        description: rss feed reader
     
     - pgadmin:
         icon: pgadmin.png
@@ -79,10 +86,7 @@
         server: my-docker
         container: pgadmin4
      
-    - Dozzle:
-        icon: dozzle.png
-        href: https://api-homelab.jeerasakananta.dev/logs
-        description: Docker logs viewer
+
 
 - Storage & Backup:
     - Nextcloud:
