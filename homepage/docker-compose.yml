@@ -11,7 +11,7 @@ services:
       - TZ=Asia/Bangkok
       - PUID=1000
       - PGID=1000
-      - HOMEPAGE_ALLOWED_HOSTS=localhost:3030,10.50.5.51:3030
+      - HOMEPAGE_ALLOWED_HOSTS=localhost:3030,10.50.5.51:3030,home.jeerasakananta.dev
 
     volumes:
       - ./config:/app/config
