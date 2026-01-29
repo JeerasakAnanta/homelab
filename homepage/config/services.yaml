@@ -2,26 +2,24 @@
 # For configuration options and examples, please see:
 # https://gethomepage.dev/latest/configs/services
 
+- New:
+    - Glance:
+            icon: si-glance
+            href: https://rss.jeerasakananta.dev
+            description: rss feed reader
+    
+
 - Infrastructure:
     - Cockpit:
         icon: si-cockpit
         href: https://cockpit.jeerasakananta.dev
         description: Server administration interface
-    
-    - Coolify:
-        icon: coolify.png
-        href: https://coolify.jeerasakananta.dev
-        description: Self-hosted PaaS platform
-        server: my-docker
-        container: coolify
 
-    - Portainer:
-        icon: portainer.png
-        href: https://portainer.jeerasakananta.dev
-        description: Container management platform
-        server: my-docker
-        container: portainer
-    
+    - Dockge:
+        icon: dockge
+        href: https://dockge.jeerasakananta.dev/
+        description: dockge
+
     - Proxmox VE:
         icon: proxmox.png
         href: https://proxmox.jeerasakananta.dev
@@ -34,28 +32,7 @@
         description: Service uptime monitoring
         server: my-docker
         container: uptime-kuma
-        
-    # - Grafana:
-    #     icon: grafana.png
-    #     href: https://grafana.jeerasakananta.dev
-    #     description: Analytics and visualization
-    #     server: my-docker
-    #     container: grafana
-
-    # - Prometheus:
-    #     icon: prometheus.png
-    #     href: https://prometheus.jeerasakananta.dev
-    #     description: Monitoring and alerting toolkit
-    #     server: my-docker
-    #     container: prometheus
-
-    # - Loki:
-    #     icon: loki.png
-    #     href: https://loki.jeerasakananta.dev
-    #     description: Log aggregation system
-    #     server: my-docker
-    #     container: loki
-        
+           
     - Netdata:
         icon: netdata.png
         href: https://netdata.jeerasakananta.dev
@@ -68,16 +45,24 @@
         href: https://dozzle.jeerasakananta.dev/logs
         description: Docker logs viewer
 
-- Services:  
+- Services:
     - N8N:
         icon: n8n.png
         href: http://n8n.jeerasakananta.dev
         description: Workflow automation tools
 
-    - Glance:
-        icon: si-glance
-        href: https://rss.jeerasakananta.dev
-        description: rss feed reader
+    - OpenWebUI:
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/open-webui.webp
+        href: https://webui.jeerasakananta.dev
+        description: Open WebUI for LLMs
+
+- Storage & Backup:
+    - MinIO:
+        icon: minio
+        href: https://minio.jeerasakananta.dev
+        description: Object Storage (S3 Compatible)
+        server: my-docker
+        container: minio
     
     - pgadmin:
         icon: pgadmin.png
@@ -85,32 +70,21 @@
         description: PostgreSQL database management
         server: my-docker
         container: pgadmin4
-     
-
-
-- Storage & Backup:
-    - Nextcloud:
-        icon: nextcloud.png
-        href: https://cloud.jeerasakananta.dev
-        description: File sync and sharing platform
-        server: my-docker
-        container: nextcloud
-
-    - Duplicati:
-        icon: duplicati.png
-        href: https://backup.jeerasakananta.dev
-        description: Backup solution
-        server: my-docker
-        container: duplicati
-
+    
 - Dev / Data:
-    - jupyterlab:
+    - VS Code:
+        icon: si-visualstudiocode
+        href: https://code.jeerasakananta.dev
+        description: Browser-based IDE
+        server: my-docker
+        container: vscode-server
+
+    - JupyterLab:
         icon: si-jupyter
         href: http://jupyterlab.jeerasakananta.dev
         description: Data science and machine learning environment
         server: my-docker
         container: jupyterlab
-    - dbber
 
 - Docs & Wiki:
     - BookStack:
@@ -119,8 +93,6 @@
         description: Documentation and wiki platform
         server: my-docker
         container: bookstack
-
-
 
 - Auth & Security:
     - Keycloak:
@@ -136,4 +108,3 @@
         description: Authentication and authorization server
         server: my-docker
         container: authelia
-    

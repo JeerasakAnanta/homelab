@@ -81,3 +81,4 @@ homepage/config/logs/homepage.log
 
 vscodeserver/config/*
 vscodeserver/config
+minio/data/.minio.sys
