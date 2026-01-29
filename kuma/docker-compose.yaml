@@ -14,3 +14,6 @@ networks:
   homelab:
     name: homelab
     driver: bridge
+x-dockge:
+  urls:
+    - https://kuma.jeerasakananta.dev
