@@ -76,3 +76,7 @@ Thumbs.db:encryptable
 
 # --- Logs ---
 *.log
+
+
+homepage/config/logs/*
+homepage/config/logs/homepage.log
