@@ -2,17 +2,6 @@
 # gitignore 
 # =============
 
-# Glance 
-glgitignoreance/.env
-
-# Uptime Kuma 
-kuma/*.db*
-kuma/upload/
-
-# Traefik
-traefik/acme.json
-
-
 # --- Security & Environment (CRITICAL) ---
 .env
 .env.*
@@ -22,22 +11,36 @@ traefik/acme.json
 id_rsa
 id_rsa.pub
 
-# --- Docker & Container Data ---
-# Ignore mapped volume data to avoid committing databases
+# --- Docker & Service-Specific Data ---
+# Beszel
+beszel/beszel_data/auxiliary.db*
+beszel/beszel_data/data.db*
+
+# Glance
+glance/.env
+
+# Uptime Kuma
+kuma/*.db*
+kuma/upload/
+
+# Traefik
+traefik/acme.json
+
+# n8n
+n8n/.env
+.n8n/
+*.sqlite
+
+# Homepage
+homepage/config/logs/
+
+# Mapped volume data
 n8n-data/
 postgres-data/
 mongo-data/
 minio-data/
 redis-data/
 workspace/
-project-files/ # Unless you want to track the code inside the vscode-server volume here
-
-# --- n8n Specifics ---
-# Do not commit the live SQLite DB or binary config
-.n8n/
-*.sqlite
-# Keep your backup JSONs, ignore the rest
-!workflows_backup.json
 
 # --- Node.js ---
 node_modules/
@@ -69,10 +72,7 @@ env/
 # --- OS Files ---
 .DS_Store
 Thumbs.db
+Thumbs.db:encryptable
 
-
-# --- ever .logs ---
+# --- Logs ---
 *.log
-
-
-
