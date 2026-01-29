@@ -3,41 +3,22 @@ services:
     image: n8nio/n8n:latest
     restart: always
     ports:
-      - "5678:5678"
+      - 5678:5678
     environment:
-      - N8N_HOST=${N8N_HOST}
-      - N8N_PORT=${N8N_PORT}
-      - N8N_PROTOCOL=${N8N_PROTOCOL}
+      - N8N_HOST=n8n.jeerasakananta.dev
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - NODE_ENV=production
+      - WEBHOOK_URL=https://n8n.jeerasakananta.dev
+      # Sets n8n internal logic (Schedules, Cron, etc.) to Thailand time
+      - GENERIC_TIMEZONE=Asia/Bangkok
+      # Sets the container system time
+      - TZ=Asia/Bangkok
     volumes:
       - n8n_data:/home/node/.n8n
-    # Label นี้สำคัญ! บอกให้หยุด n8n ชั่วคราวตอน backup เพื่อกัน Database พัง
-    labels:
-      - docker-volume-backup.stop-during-backup=n8n-backup
-
-  backup-to-r2:
-    image: offen/docker-volume-backup:v2
-    restart: always
-    environment:
-      # --- ตั้งเวลา ---
-      BACKUP_CRON_EXPRESSION: ${BACKUP_CRON_EXPRESSION} # ทำทุกวัน ตี 3
-
-      # --- ตั้งค่าการลบไฟล์เก่า (Retention) ---
-      BACKUP_RETENTION_DAYS: ${BACKUP_RETENTION_DAYS} # เก็บไว้แค่ 7 วัน (ไฟล์เก่ากว่านี้จะถูกสั่งลบจาก R2 อัตโนมัติ)
-
-      # --- ตั้งชื่อไฟล์ ---
-      BACKUP_FILENAME: ${BACKUP_FILENAME}
-
-      # --- เชื่อมต่อ R2 (ใช้ Config แบบ AWS S3) ---
-      AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME} # ใส่ชื่อ Bucket ของคุณ
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID} # ใส่ R2 Access Key ID
-      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY} # ใส่ R2 Secret Access Key
-      AWS_ENDPOINT: ${AWS_ENDPOINT} # ใส่ R2 Endpoint
-
-    volumes:
-      # Mount Volume ที่จะ Backup (ตั้งชื่อใน container เป็นอะไรก็ได้ เช่น /backup/n8n)
-      - n8n_data:/backup/n8n:ro
-      # จำเป็นต้อง Mount Docker Socket เพื่อให้มันสั่ง Stop/Start n8n ได้
-      - /var/run/docker.sock:/var/run/docker.sock
-
+      # Optional: Syncs container time with your host machine
+      - /etc/localtime:/etc/localtime:ro
 volumes:
   n8n_data:
+    external: false
+networks: {}
