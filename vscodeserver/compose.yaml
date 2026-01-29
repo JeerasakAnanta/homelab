@@ -1,0 +1,22 @@
+services:
+  vscode-server:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: vscode-server
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - PASSWORD=${CODE_SERVER_PASSWORD}
+      - DEFAULT_WORKSPACE=/config/workspace
+      - SUDO_PASSWORD=${CODE_SERVER_PASSWORD} # Allows 'sudo' in the web terminal
+    volumes:
+      - ./config:/config
+      - ./project-files:/config/workspace
+    ports:
+      - 8443:8443
+    restart: unless-stopped
+    # Optional: Limits resources so a heavy build doesn't freeze your host
+    deploy:
+      resources:
+        limits:
+          memory: 4G

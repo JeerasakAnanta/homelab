@@ -1,0 +1,115 @@
+[2026-01-29T13:36:32.634Z] info  code-server 4.108.2 3c0b449c6e6e37b44a8a7938c0d8a3049926a64c
+[2026-01-29T13:36:32.635Z] info  Using user-data-dir /config/data
+[2026-01-29T13:36:32.648Z] info  Using config file /config/.config/code-server/config.yaml
+[2026-01-29T13:36:32.649Z] info  HTTP server listening on http://0.0.0.0:8443/
+[2026-01-29T13:36:32.649Z] info    - Authentication is enabled
+[2026-01-29T13:36:32.649Z] info      - Using password from $PASSWORD
+[2026-01-29T13:36:32.649Z] info    - Not serving HTTPS
+[2026-01-29T13:36:32.649Z] info  Session server listening on /config/data/code-server-ipc.sock
+[13:37:10] 
+
+
+
+
+[reconnection-grace-time] No CLI argument provided, using default: 10800000ms (10800s)
+[13:37:10] Extension host agent started.
+[13:37:10] Started initializing default profile extensions in extensions installation folder. file:///config/extensions
+[13:37:10] Completed initializing default profile extensions in extensions installation folder. file:///config/extensions
+[2026-01-29T13:38:37.534Z] info  code-server 4.108.2 3c0b449c6e6e37b44a8a7938c0d8a3049926a64c
+[2026-01-29T13:38:37.538Z] info  Using user-data-dir /config/data
+[2026-01-29T13:38:37.566Z] info  Using config file /config/.config/code-server/config.yaml
+[2026-01-29T13:38:37.569Z] info  HTTP server listening on http://0.0.0.0:8443/
+[2026-01-29T13:38:37.569Z] info    - Authentication is enabled
+[2026-01-29T13:38:37.569Z] info      - Using password from $PASSWORD
+[2026-01-29T13:38:37.569Z] info    - Not serving HTTPS
+[2026-01-29T13:38:37.569Z] info  Session server listening on /config/data/code-server-ipc.sock
+[2026-01-29T13:38:55.070Z] info  code-server 4.108.2 3c0b449c6e6e37b44a8a7938c0d8a3049926a64c
+[2026-01-29T13:38:55.071Z] info  Using user-data-dir /config/data
+[2026-01-29T13:38:55.085Z] info  Using config file /config/.config/code-server/config.yaml
+[2026-01-29T13:38:55.085Z] info  HTTP server listening on http://0.0.0.0:8443/
+[2026-01-29T13:38:55.085Z] info    - Authentication is enabled
+[2026-01-29T13:38:55.085Z] info      - Using password from $PASSWORD
+[2026-01-29T13:38:55.085Z] info    - Not serving HTTPS
+[2026-01-29T13:38:55.085Z] info  Session server listening on /config/data/code-server-ipc.sock
+[13:39:22] 
+
+
+
+
+[reconnection-grace-time] No CLI argument provided, using default: 10800000ms (10800s)
+[13:39:22] Extension host agent started.
+[13:39:31] [10.50.5.51][ee4b62f3][ManagementConnection] New connection established.
+[13:39:37] [10.50.5.51][a76c9f8b][ExtensionHostConnection] New connection established.
+[13:39:37] [10.50.5.51][a76c9f8b][ExtensionHostConnection] <1484> Launched Extension Host Process.
+[13:39:40] [10.50.5.51][a76c9f8b][ExtensionHostConnection] <1484> [reconnection-grace-time] Extension host: read VSCODE_RECONNECTION_GRACE_TIME=10800000ms (10800s)
+
+[13:41:08] [10.50.5.51][ee4b62f3][ManagementConnection] The client has disconnected, will wait for reconnection 3h before disposing...
+[13:44:34] [10.50.5.51][ee4b62f3][ManagementConnection] Another client has connected, will shorten the wait for reconnection 5m before disposing...
+[13:44:34] [10.50.5.51][480c13d2][ManagementConnection] New connection established.
+[13:44:37] [10.50.5.51][7cb82670][ExtensionHostConnection] New connection established.
+[13:44:37] [10.50.5.51][7cb82670][ExtensionHostConnection] <3349> Launched Extension Host Process.
+[13:44:37] [10.50.5.51][7cb82670][ExtensionHostConnection] <3349> [reconnection-grace-time] Extension host: read VSCODE_RECONNECTION_GRACE_TIME=10800000ms (10800s)
+
+[13:49:34] [10.50.5.51][ee4b62f3][ManagementConnection] The reconnection short grace time of 5m has expired, so the connection will be disposed.
+[13:49:34] [10.50.5.51][a76c9f8b][ExtensionHostConnection] <1484> Extension Host Process exited with code: 0, signal: null.
+[13:57:21] [10.50.5.51][480c13d2][ManagementConnection] The client has disconnected gracefully, so the connection will be disposed.
+[13:57:21] [10.50.5.51][7cb82670][ExtensionHostConnection] <3349> Extension Host Process exited with code: 0, signal: null.
+[13:57:23] [10.50.5.51][87983165][ManagementConnection] New connection established.
+[13:57:25] [10.50.5.51][fa56cca4][ExtensionHostConnection] New connection established.
+[13:57:25] [10.50.5.51][fa56cca4][ExtensionHostConnection] <6821> Launched Extension Host Process.
+[13:57:26] [10.50.5.51][fa56cca4][ExtensionHostConnection] <6821> [reconnection-grace-time] Extension host: read VSCODE_RECONNECTION_GRACE_TIME=10800000ms (10800s)
+
+[14:09:13] [10.50.5.51][87983165][ManagementConnection] The client has disconnected gracefully, so the connection will be disposed.
+[14:09:13] [10.50.5.51][fa56cca4][ExtensionHostConnection] <6821> Extension Host Process exited with code: 0, signal: null.
+[2026-01-29T15:03:53.213Z] info  code-server 4.108.2 3c0b449c6e6e37b44a8a7938c0d8a3049926a64c
+[2026-01-29T15:03:53.214Z] info  Using user-data-dir /config/data
+[2026-01-29T15:03:53.228Z] info  Using config file /config/.config/code-server/config.yaml
+[2026-01-29T15:03:53.229Z] info  HTTP server listening on http://0.0.0.0:8443/
+[2026-01-29T15:03:53.230Z] info    - Authentication is enabled
+[2026-01-29T15:03:53.230Z] info      - Using password from $PASSWORD
+[2026-01-29T15:03:53.230Z] info    - Not serving HTTPS
+[2026-01-29T15:03:53.230Z] info  Session server listening on /config/data/code-server-ipc.sock
+[2026-01-29T15:04:31.019Z] info  code-server 4.108.2 3c0b449c6e6e37b44a8a7938c0d8a3049926a64c
+[2026-01-29T15:04:31.023Z] info  Using user-data-dir /config/data
+[2026-01-29T15:04:31.041Z] info  Using config file /config/.config/code-server/config.yaml
+[2026-01-29T15:04:31.042Z] info  HTTP server listening on http://0.0.0.0:8443/
+[2026-01-29T15:04:31.043Z] info    - Authentication is enabled
+[2026-01-29T15:04:31.044Z] info      - Using password from $PASSWORD
+[2026-01-29T15:04:31.044Z] info    - Not serving HTTPS
+[2026-01-29T15:04:31.044Z] info  Session server listening on /config/data/code-server-ipc.sock
+[15:06:39] 
+
+
+
+
+[reconnection-grace-time] No CLI argument provided, using default: 10800000ms (10800s)
+[15:06:39] Extension host agent started.
+[2026-01-29T15:08:09.546Z] info  code-server 4.108.2 3c0b449c6e6e37b44a8a7938c0d8a3049926a64c
+[2026-01-29T15:08:09.547Z] info  Using user-data-dir /config/data
+[2026-01-29T15:08:09.560Z] info  Using config file /config/.config/code-server/config.yaml
+[2026-01-29T15:08:09.560Z] info  HTTP server listening on http://0.0.0.0:8443/
+[2026-01-29T15:08:09.560Z] info    - Authentication is enabled
+[2026-01-29T15:08:09.560Z] info      - Using password from $PASSWORD
+[2026-01-29T15:08:09.560Z] info    - Not serving HTTPS
+[2026-01-29T15:08:09.560Z] info  Session server listening on /config/data/code-server-ipc.sock
+[2026-01-29T15:10:43.311Z] info  code-server 4.108.2 3c0b449c6e6e37b44a8a7938c0d8a3049926a64c
+[2026-01-29T15:10:43.312Z] info  Using user-data-dir /config/data
+[2026-01-29T15:10:43.325Z] info  Using config file /config/.config/code-server/config.yaml
+[2026-01-29T15:10:43.325Z] info  HTTP server listening on http://0.0.0.0:8443/
+[2026-01-29T15:10:43.325Z] info    - Authentication is enabled
+[2026-01-29T15:10:43.325Z] info      - Using password from $PASSWORD
+[2026-01-29T15:10:43.325Z] info    - Not serving HTTPS
+[2026-01-29T15:10:43.325Z] info  Session server listening on /config/data/code-server-ipc.sock
+[22:10:58] 
+
+
+
+
+[reconnection-grace-time] No CLI argument provided, using default: 10800000ms (10800s)
+[22:10:58] Extension host agent started.
+[22:11:00] [10.50.5.51][e3d13b96][ManagementConnection] New connection established.
+[22:11:03] [10.50.5.51][e9a2ab18][ExtensionHostConnection] New connection established.
+[22:11:03] [10.50.5.51][e9a2ab18][ExtensionHostConnection] <742> Launched Extension Host Process.
+[22:11:03] [10.50.5.51][e9a2ab18][ExtensionHostConnection] <742> [reconnection-grace-time] Extension host: read VSCODE_RECONNECTION_GRACE_TIME=10800000ms (10800s)
+
+[22:28:14] [10.50.5.51][e3d13b96][ManagementConnection] The client has disconnected, will wait for reconnection 3h before disposing...
