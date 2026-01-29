@@ -16,3 +16,5 @@
 2026-01-29 22:44:56.369 [info] [10.50.5.51][e0e1a69f][ExtensionHostConnection] <7158> Launched Extension Host Process.
 2026-01-29 22:44:56.948 [info] [10.50.5.51][e0e1a69f][ExtensionHostConnection] <7158> [reconnection-grace-time] Extension host: read VSCODE_RECONNECTION_GRACE_TIME=10800000ms (10800s)
 
+2026-01-29 22:49:53.524 [info] [10.50.5.51][e3d13b96][ManagementConnection] The reconnection short grace time of 5m has expired, so the connection will be disposed.
+2026-01-29 22:49:53.649 [info] [10.50.5.51][e9a2ab18][ExtensionHostConnection] <742> Extension Host Process exited with code: 0, signal: null.
