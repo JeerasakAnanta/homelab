@@ -15,3 +15,4 @@ Failed login attempt {"xForwardedFor":"49.237.174.147","remoteAddress":"10.50.5.
 Failed login attempt {"xForwardedFor":"49.237.174.147","remoteAddress":"10.50.5.51","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36","timestamp":1769699323}
 Failed login attempt {"xForwardedFor":"49.237.174.147","remoteAddress":"10.50.5.51","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36","timestamp":1769699345}
 File not found: /app/code-server/lib/vscode/node_modules/vsda/rust/web/vsda_bg.wasm
+File not found: /app/code-server/lib/vscode/node_modules/vsda/rust/web/vsda_bg.wasm

@@ -3,7 +3,7 @@
 # =============
 
 # Glance 
-glance/.env
+glgitignoreance/.env
 
 # Uptime Kuma 
 kuma/*.db*
@@ -11,3 +11,64 @@ kuma/upload/
 
 # Traefik
 traefik/acme.json
+
+
+# --- Security & Environment (CRITICAL) ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa
+id_rsa.pub
+
+# --- Docker & Container Data ---
+# Ignore mapped volume data to avoid committing databases
+n8n-data/
+postgres-data/
+mongo-data/
+minio-data/
+redis-data/
+workspace/
+project-files/ # Unless you want to track the code inside the vscode-server volume here
+
+# --- n8n Specifics ---
+# Do not commit the live SQLite DB or binary config
+.n8n/
+*.sqlite
+# Keep your backup JSONs, ignore the rest
+!workflows_backup.json
+
+# --- Node.js ---
+node_modules/
+npm-debug.log
+yarn-error.log
+dist/
+build/
+.npm/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.pytest_cache/
+.coverage
+
+# --- VS Code & IDE ---
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+*.code-workspace
+.idea/
+*.swp
+
+# --- OS Files ---
+.DS_Store
+Thumbs.db
+
+
+

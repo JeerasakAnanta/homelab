@@ -113,3 +113,9 @@
 [22:11:03] [10.50.5.51][e9a2ab18][ExtensionHostConnection] <742> [reconnection-grace-time] Extension host: read VSCODE_RECONNECTION_GRACE_TIME=10800000ms (10800s)
 
 [22:28:14] [10.50.5.51][e3d13b96][ManagementConnection] The client has disconnected, will wait for reconnection 3h before disposing...
+[22:44:53] [10.50.5.51][e3d13b96][ManagementConnection] Another client has connected, will shorten the wait for reconnection 5m before disposing...
+[22:44:53] [10.50.5.51][4596261d][ManagementConnection] New connection established.
+[22:44:56] [10.50.5.51][e0e1a69f][ExtensionHostConnection] New connection established.
+[22:44:56] [10.50.5.51][e0e1a69f][ExtensionHostConnection] <7158> Launched Extension Host Process.
+[22:44:56] [10.50.5.51][e0e1a69f][ExtensionHostConnection] <7158> [reconnection-grace-time] Extension host: read VSCODE_RECONNECTION_GRACE_TIME=10800000ms (10800s)
+
