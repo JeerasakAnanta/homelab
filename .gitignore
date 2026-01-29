@@ -71,4 +71,8 @@ env/
 Thumbs.db
 
 
+# --- ever .logs ---
+*.log‎
+
+
 
