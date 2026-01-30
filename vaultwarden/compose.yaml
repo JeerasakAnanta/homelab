@@ -1,0 +1,19 @@
+version: "3"
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: unless-stopped
+    environment:
+      - DOMAIN=${DOMAIN}
+      - SIGNUPS_ALLOWED=${SIGNUPS_ALLOWED}
+      # ป้องกันการเปิดหน้า Admin ถ้าไม่มี Token
+      - ADMIN_TOKEN=${ADMIN_TOKEN}
+      # เปิดใช้งาน WebSocket เพื่อให้การ Sync ข้อมูลเร็วขึ้น (Real-time)
+      - WEBSOCKET_ENABLED=true
+    volumes:
+      - ./vw-data:/data
+    ports:
+      - ${APP_PORT}:80
+      - ${WEBSOCKET_PORT}:3012
+networks: {}

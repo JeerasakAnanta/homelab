@@ -2,12 +2,6 @@
 # For configuration options and examples, please see:
 # https://gethomepage.dev/latest/configs/services
 
-- New:
-    - Glance:
-            icon: si-glance
-            href: https://rss.jeerasakananta.dev
-            description: rss feed reader
-    
 
 - Infrastructure:
     - Cockpit:
@@ -20,10 +14,10 @@
         href: https://dockge.jeerasakananta.dev/
         description: dockge
 
-    - Proxmox VE:
-        icon: proxmox.png
-        href: https://proxmox.jeerasakananta.dev
-        description: Virtualization management platform
+    # - Proxmox VE:
+    #     icon: proxmox.png
+    #     href: https://proxmox.jeerasakananta.dev
+    #     description: Virtualization management platform
 
 - Monitoring:
     - Uptime Kuma:
@@ -32,6 +26,14 @@
         description: Service uptime monitoring
         server: my-docker
         container: uptime-kuma
+
+
+    - Grafana:
+        icon: grafana.png
+        href: https://grafana.jeerasakananta.dev/
+        description: Data visualization and dashboards
+        server: my-docker
+        container: grafana
            
     - Netdata:
         icon: netdata.png
@@ -55,6 +57,11 @@
         icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/open-webui.webp
         href: https://webui.jeerasakananta.dev
         description: Open WebUI for LLMs
+
+    - Glance:
+            icon: si-glance
+            href: https://rss.jeerasakananta.dev
+            description: rss feed reader
 
 - Storage & Backup:
     - MinIO:
@@ -85,6 +92,22 @@
         description: Data science and machine learning environment
         server: my-docker
         container: jupyterlab
+
+    - Gitea:
+        icon: gitea.png
+        href: http://<YOUR-SERVER-IP>:3000
+        description: Self-hosted Git Service
+        # "server" refers to the entry in docker.yaml
+        server: my-docker 
+        # "container" refers to container_name in docker-compose
+        container: gitea
+
+    - SonarQube:
+        icon: sonarqube.png
+        href: http://<YOUR-SERVER-IP>:9000
+        description: Code Quality & Security
+        server: my-docker
+        container: sonarqube
 
 - Docs & Wiki:
     - BookStack:
