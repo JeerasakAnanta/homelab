@@ -84,3 +84,5 @@ vscodeserver/config
 minio/data/.minio.sys
 vaultwarden/vw-data
 homeassistant/config
+sonarr
+jellyfin
