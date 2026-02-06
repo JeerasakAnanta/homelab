@@ -9,10 +9,12 @@
         href: https://cockpit.jeerasakananta.dev
         description: Server administration interface
 
-    - Dockge:
-        icon: dockge
+    - DockHand:
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/dockhand.webp
         href: https://dockge.jeerasakananta.dev/
-        description: dockge
+        description: Dockhand - Modern Docker Management
+
+    
 
     # - Proxmox VE:
     #     icon: proxmox.png
@@ -26,7 +28,6 @@
         description: Service uptime monitoring
         server: my-docker
         container: uptime-kuma
-
 
     - Grafana:
         icon: grafana.png
