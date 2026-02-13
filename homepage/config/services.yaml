@@ -11,7 +11,7 @@
 
     - DockHand:
         icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/dockhand.webp
-        href: https://dockge.jeerasakananta.dev/
+        href: https://dockhand.jeerasakananta.dev/
         description: Dockhand - Modern Docker Management
 
     
