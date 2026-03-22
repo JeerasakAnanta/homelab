@@ -4,24 +4,19 @@
 
 
 - Infrastructure:
-    - Cockpit:
-        icon: si-cockpit
-        href: https://cockpit.jeerasakananta.dev
-        description: Server administration interface
-
     - DockHand:
         icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/dockhand.webp
         href: https://dockhand.jeerasakananta.dev/
         description: Dockhand - Modern Docker Management
 
-    
 
-    # - Proxmox VE:
-    #     icon: proxmox.png
-    #     href: https://proxmox.jeerasakananta.dev
-    #     description: Virtualization management platform
+    - Cockpit:
+        icon: si-cockpit
+        href: https://cockpit.jeerasakananta.dev
+        description: Server administration interface
 
 - Monitoring:
+
     - Uptime Kuma:
         icon: uptime-kuma.png
         href: https://kuma.jeerasakananta.dev
