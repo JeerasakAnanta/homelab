@@ -76,7 +76,13 @@ Thumbs.db:encryptable
 
 # --- Logs ---
 *.log
-
-
 homepage/config/logs/*
 homepage/config/logs/homepage.log
+
+vscodeserver/config/*
+vscodeserver/config
+minio/data/.minio.sys
+vaultwarden/vw-data
+homeassistant/config
+sonarr
+jellyfin

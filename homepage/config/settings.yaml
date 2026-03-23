@@ -9,9 +9,6 @@ theme: dark
 color: slate
 
 layout:
-  Monitoring:
-    style: row
-    columns: 4
 
   Services:
     style: row
@@ -21,7 +18,25 @@ layout:
     style: row
     columns: 4
 
+  Monitoring:
+    style: row
+    columns: 4
+
+  Storage & Backup:   
+    style: row
+    columns: 4
+
+  Dev / Data:         
+    style: row
+    columns: 4
+
+  Docs & Wiki:        
+    style: row
+    columns: 4
+
+  Auth & Security:    
+    style: row
+    columns: 4
+
 headerStyle: boxed
 statusStyle: dot
-
-
