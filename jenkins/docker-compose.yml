@@ -9,7 +9,7 @@ services:
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
       - DOCKER_HOST=unix:///var/run/docker.sock
     ports:
-      - "8085:8080"
+      - "8888:8080"
       - "50000:50000"
     volumes:
       - jenkins_home:/var/jenkins_home
