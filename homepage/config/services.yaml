@@ -2,138 +2,110 @@
 # For configuration options and examples, please see:
 # https://gethomepage.dev/latest/configs/services
 
+- Services:
+    - N8N:  
+        icon: n8n.png
+        href: http://n8n.jeerasakananta.dev
+        description: Workflow automation tools
+        server: my-docker 
+        container: gitlab
+
+    - Open WebUI:
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/open-webui-light.webp
+        href: https://openwebui.jeerasakananta.dev
+        description: My self-hosted AI assistant 
+        server: my-docker 
+        container: gitlab
+
+    - OpenClaw:
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/openclaw.webp
+        href: https://claw.jeerasakananta.dev
+        description: My self-hosted AI assistant (OpenClaw)
+        server: my-docker 
+        container: gitlab
+
 - Infrastructure:
     - Cockpit:
         icon: si-cockpit
         href: https://cockpit.jeerasakananta.dev
         description: Server administration interface
-    
-    - Coolify:
-        icon: coolify.png
-        href: https://coolify.jeerasakananta.dev
-        description: Self-hosted PaaS platform
-        server: my-docker
-        container: coolify
 
-    - Portainer:
-        icon: portainer.png
-        href: https://portainer.jeerasakananta.dev
-        description: Container management platform
-        server: my-docker
-        container: portainer
+    - Dockhand: 
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/dockhand.webp  
+        href: https://dockhand.jeerasakananta.dev
+        description: Docker container management
     
     - Proxmox VE:
         icon: proxmox.png
         href: https://proxmox.jeerasakananta.dev
         description: Virtualization management platform
 
-- Monitoring:
+- CI/CD & DevOps:
+    - GitLab:
+        icon: gitlab.png
+        href: https://gitlab.jeerasakananta.dev
+        description: My DevOps Platform (Source Control & CI/CD)
+        server: my-docker 
+        container: gitlab
+
+    - Jenkins:
+        icon: jenkins.png
+        href: https://ci.jeerasakananta.dev
+        description: Automation and CI/CD Pipeline
+        server: my-docker
+        container: jenkins
+
+    - SonarQube:
+        icon: sonarqube.png
+        href: https://sonar.jeerasakananta.dev
+        description: Code quality and security scanning
+        server: my-docker
+        container: sonarqube
+
+    - Harbor:
+        icon: harbor.png
+        href: https://harbor.jeerasakananta.dev
+        description: My container registry
+
+- Development :
+    - VSCode-Server:
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/visual-studio-code.webp
+        href: https://ide.jeerasakananta.dev
+        description: VS Code in the browser
+        server: my-docker
+        container: code-server
+
+    - DBeaver: 
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/cloudbeaver.webp
+        href: https://dbeaver.jeerasakananta.dev
+        description: Universal Database Management Tool
+
+    - pgAdmin:
+        icon: pgadmin.png
+        href: https://pgadmin.jeerasakananta.dev
+        description: PostgreSQL database management
+        server: my-docker
+        container: pgadmin4
+    
+- Monitoring & Logs:
     - Uptime Kuma:
         icon: uptime-kuma.png
         href: https://kuma.jeerasakananta.dev
         description: Service uptime monitoring
         server: my-docker
         container: uptime-kuma
-        
-    # - Grafana:
-    #     icon: grafana.png
-    #     href: https://grafana.jeerasakananta.dev
-    #     description: Analytics and visualization
-    #     server: my-docker
-    #     container: grafana
 
-    # - Prometheus:
-    #     icon: prometheus.png
-    #     href: https://prometheus.jeerasakananta.dev
-    #     description: Monitoring and alerting toolkit
-    #     server: my-docker
-    #     container: prometheus
-
-    # - Loki:
-    #     icon: loki.png
-    #     href: https://loki.jeerasakananta.dev
-    #     description: Log aggregation system
-    #     server: my-docker
-    #     container: loki
-        
-    - Netdata:
-        icon: netdata.png
-        href: https://netdata.jeerasakananta.dev
-        description: Real-time performance monitoring
+    - Grafana:
+        icon: grafana.png
+        href: https://grafana.jeerasakananta.dev
+        description: Analytics and visualization
         server: my-docker
-        container: netdata
+        container: grafana
 
-    - Dozzle:
-        icon: dozzle.png
-        href: https://dozzle.jeerasakananta.dev/logs
-        description: Docker logs viewer
-
-- Services:  
-    - N8N:
-        icon: n8n.png
-        href: http://n8n.jeerasakananta.dev
-        description: Workflow automation tools
-
-    - Glance:
-        icon: si-glance
-        href: https://rss.jeerasakananta.dev
-        description: rss feed reader
-    
-    - pgadmin:
-        icon: pgadmin.png
-        href: https://pgadmin.jeerasakananta.dev
-        description: PostgreSQL database management
+- Storage & Docs:
+    - MinIO:
+        icon: minio.png
+        href: https://minio.jeerasakananta.dev
+        description: Object storage server
         server: my-docker
-        container: pgadmin4
-     
-
-
-- Storage & Backup:
-    - Nextcloud:
-        icon: nextcloud.png
-        href: https://cloud.jeerasakananta.dev
-        description: File sync and sharing platform
-        server: my-docker
-        container: nextcloud
-
-    - Duplicati:
-        icon: duplicati.png
-        href: https://backup.jeerasakananta.dev
-        description: Backup solution
-        server: my-docker
-        container: duplicati
-
-- Dev / Data:
-    - jupyterlab:
-        icon: si-jupyter
-        href: http://jupyterlab.jeerasakananta.dev
-        description: Data science and machine learning environment
-        server: my-docker
-        container: jupyterlab
-    - dbber
-
-- Docs & Wiki:
-    - BookStack:
-        icon: bookstack.png
-        href: https://wiki.jeerasakananta.dev
-        description: Documentation and wiki platform
-        server: my-docker
-        container: bookstack
-
-
-
-- Auth & Security:
-    - Keycloak:
-        icon: keycloak.png
-        href: https://keycloak.jeerasakananta.dev
-        description: Identity and access management
-        server: my-docker
-        container: keycloak
-
-    - Authelia:
-        icon: authelia.png
-        href: https://auth.jeerasakananta.dev
-        description: Authentication and authorization server
-        server: my-docker
-        container: authelia
-    
+        container: minio
