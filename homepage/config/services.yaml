@@ -56,7 +56,7 @@
 
     - Jenkins:
         icon: jenkins.png
-        href: https://ci.jeerasakananta.dev
+        href: https://jenkins.jeerasakananta.dev
         description: Automation and CI/CD Pipeline
         server: my-docker
         container: jenkins
