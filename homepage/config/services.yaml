@@ -6,7 +6,7 @@
     - N8N:  
         icon: n8n.png
         href: http://n8n.jeerasakananta.dev
-        description: Workflow automation tools
+        description: Workflow automation tools  update 2024-06-17
         server: my-docker 
         container: gitlab
 
