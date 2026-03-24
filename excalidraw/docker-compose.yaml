@@ -1,9 +1,12 @@
 services:
   excalidraw:
-    image: excalidraw/excalidraw
+    image: excalidraw/excalidraw:latest
     container_name: excalidraw
     ports:
       - "3000:80"
     restart: unless-stopped
-    environment:
-      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
