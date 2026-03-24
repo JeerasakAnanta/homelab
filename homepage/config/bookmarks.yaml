@@ -1,4 +1,3 @@
----
 # For configuration options and examples, please see:
 # https://gethomepage.dev/latest/configs/bookmarks
 
@@ -13,19 +12,29 @@
         href: https://www.linkedin.com/in/jeerasakananta
         description: LinkedIn profile
         
-- Developer:
+- Repository:
     - GitHub:
         - icon: github-light.png
           href: https://github.com/jeerasakananta
           description: Code hosting platform
-    
-- Documentation:
-    - Homepage Docs:
-        - icon: homepage.png
-          href: https://gethomepage.dev/
-          description: Homepage documentation
-          
+
+    - GitLab:
+        - icon: gitlab.png
+          href: https://gitlab.com/jeerasakananta
+          description: DevOps platform  
+
     - Docker Hub:
         - icon: docker.png
           href: https://hub.docker.com/
           description: Container images
+
+- Tools:
+    - Cloudflare:
+        - icon: cloudflare.png
+          href: https://dash.cloudflare.com
+          description: Cloudflare dashboard
+
+   
+
+
+    

@@ -6,53 +6,54 @@
     - N8N:  
         icon: n8n.png
         href: http://n8n.jeerasakananta.dev
-        description: Workflow automation tools remove
+        description: Workflow automation 
         server: my-docker 
         container: gitlab
 
     - Open WebUI:
         icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/open-webui-light.webp
         href: https://openwebui.jeerasakananta.dev
-        description: My self-hosted AI assistant 
+        description: web-based AI models 
         server: my-docker 
         container: gitlab
 
     - OpenClaw:
         icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/openclaw.webp
         href: https://claw.jeerasakananta.dev
-        description: My self-hosted AI assistant (OpenClaw)
+        description: My AI assistant
         server: my-docker 
         container: gitlab
+
+    - Excalidraw:
+        icon: excalidraw.png
+        href: https://excalidraw.jeerasakananta.dev
+        description:  whiteboard 
+        server: my-docker 
+        container: excalidraw
 
 - Infrastructure:
     - DockHand:
         icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/dockhand.webp
         href: https://dockhand.jeerasakananta.dev/
-        description: Dockhand - Modern Docker Management
-
+        description: Docker Management
 
     - Cockpit:
         icon: si-cockpit
         href: https://cockpit.jeerasakananta.dev
-        description: Server administration interface
+        description: server management
 
-    - Dockhand: 
-        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/dockhand.webp  
-        href: https://dockhand.jeerasakananta.dev
-        description: Docker container management
-    
     - Proxmox VE:
         icon: proxmox.png
         href: https://proxmox.jeerasakananta.dev
-        description: Virtualization management platform
+        description: core infrastructure 
 
-- CI/CD & DevOps:
-    - GitLab:
-        icon: gitlab.png
-        href: https://gitlab.jeerasakananta.dev
-        description: My DevOps Platform (Source Control & CI/CD)
-        server: my-docker 
-        container: gitlab
+- CI/CD:
+    # - GitLab:
+    #     icon: gitlab.png
+    #     href: https://gitlab.jeerasakananta.dev
+    #     description: My DevOps Platform (Source Control & CI/CD)
+    #     server: my-docker 
+    #     container: gitlab
 
     - Jenkins:
         icon: jenkins.png
@@ -86,7 +87,7 @@
         href: https://dbeaver.jeerasakananta.dev
         description: Universal Database Management Tool
 
-    - pgAdmin:
+    - PGAdmin:
         icon: pgadmin.png
         href: https://pgadmin.jeerasakananta.dev
         description: PostgreSQL database management
@@ -108,10 +109,22 @@
         server: my-docker
         container: grafana
 
-- Storage & Docs:
+    - Loki:
+        icon: loki.png
+        href: https://loki.jeerasakananta.dev
+        description: Log aggregation and analysis
+        server: my-docker
+        container: loki
+
+- Storage:
     - MinIO:
         icon: minio.png
         href: https://minio.jeerasakananta.dev
         description: Object storage server
         server: my-docker
         container: minio
+        
+    - Superbase:
+        icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/supabase.webp
+        href: https://supabase.com/
+        description: Firebase alternative
