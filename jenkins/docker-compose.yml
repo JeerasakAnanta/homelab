@@ -1,6 +1,6 @@
 services:
   jenkins:
-    image: jenkins/jenkins
+    image: jenkins/jenkins:lts 
     container_name: jenkins-server
     restart: unless-stopped
     privileged: true
@@ -17,7 +17,8 @@ services:
     networks:
       - jenkins_network
     healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:8085/login || exit 1" ]
+      # Changed port from 8085 to 8080 to match Jenkins' internal port
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/login || exit 1" ] 
       interval: 30s
       timeout: 10s
       retries: 3
