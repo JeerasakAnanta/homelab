@@ -1,11 +1,12 @@
 services:
   db:
     image: postgres:15-alpine
-    container_name: postgres_db
+    container_name: postgres_homlabdb
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - postgres_data:/var/lib/postgresql/data
