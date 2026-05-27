@@ -3,10 +3,8 @@ services:
     container_name: homepage
     image: ghcr.io/gethomepage/homepage:latest
     restart: unless-stopped
-
     ports:
       - "3030:3000"
-
     environment:
       - TZ=Asia/Bangkok
       - PUID=1000
