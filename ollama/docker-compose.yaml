@@ -1,0 +1,50 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    # อย่า bind 0.0.0.0:11434 ออก public ตรงๆ — ผูกกับ internal network แทน
+    expose:
+      - "11434"
+    # ถ้าจำเป็นต้อง access จาก host เท่านั้น ใช้ 127.0.0.1
+    # ports:
+    #   - "127.0.0.1:11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0:11434
+      - OLLAMA_KEEP_ALIVE=24h          # กันโหลด model ใหม่ทุก request
+      - OLLAMA_NUM_PARALLEL=4           # จำนวน request พร้อมกันต่อ model
+      - OLLAMA_MAX_LOADED_MODELS=2      # กี่ model ค้างใน VRAM/RAM ได้
+      - OLLAMA_FLASH_ATTENTION=1
+    healthcheck:
+      test: ["CMD-SHELL", "ollama list >/dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - llm_net
+    deploy:
+      resources:
+        limits:
+          memory: 16G
+        reservations:
+          memory: 8G
+    # --- GPU (NVIDIA) เปิดถ้ามีการ์ด ---
+    # gpus: all
+    # หรือแบบ explicit:
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+volumes:
+  ollama_models:
+
+networks:
+  llm_net:
+    driver: bridge
