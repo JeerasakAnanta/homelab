@@ -1,6 +1,7 @@
 services:
   dockge:
     image: louislam/dockge:nightly
+    container_name: dockge
     restart: unless-stopped
     ports:
       - 5001:5001
@@ -9,6 +10,5 @@ services:
       - ./data:/app/data
       - /opt/stacks:/opt/stacks
     environment:
-      # Tell Dockge where to find your stacks
       - DOCKGE_STACKS_DIR=/opt/stacks
 networks: {}
