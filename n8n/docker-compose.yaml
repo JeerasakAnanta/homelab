@@ -1,6 +1,7 @@
 services:
   n8n:
     image: n8nio/n8n:latest
+    container_name: n8n_container
     restart: always
     ports:
       - 5678:5678
@@ -10,13 +11,10 @@ services:
       - N8N_PROTOCOL=https
       - NODE_ENV=production
       - WEBHOOK_URL=https://n8n.jeerasakananta.dev
-      # Sets n8n internal logic (Schedules, Cron, etc.) to Thailand time
       - GENERIC_TIMEZONE=Asia/Bangkok
-      # Sets the container system time
       - TZ=Asia/Bangkok
     volumes:
       - n8n_data:/home/node/.n8n
-      # Optional: Syncs container time with your host machine
       - /etc/localtime:/etc/localtime:ro
 volumes:
   n8n_data:
