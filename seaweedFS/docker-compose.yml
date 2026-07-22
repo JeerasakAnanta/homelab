@@ -1,4 +1,3 @@
-version: "3.8"
 
 services:
   master:
@@ -48,18 +47,11 @@ services:
   s3:
     image: chrislusf/seaweedfs:${SEAWEEDFS_VERSION}
     container_name: seaweedfs-s3
-    entrypoint: ["/bin/sh", "-c"]
-    command:
-      - |
-        envsubst < /etc/seaweedfs/s3.json.template > /etc/seaweedfs/s3.json &&
-        weed s3 -filer=filer:8888 -config=/etc/seaweedfs/s3.json
-    environment:
-      - S3_ACCESS_KEY=${S3_ACCESS_KEY}
-      - S3_SECRET_KEY=${S3_SECRET_KEY}
+    command: "s3 -filer=filer:8888 -config=/etc/seaweedfs/s3.json"
     ports:
       - "${S3_PORT}:8333"
     volumes:
-      - ./s3.json.template:/etc/seaweedfs/s3.json.template:ro
+      - ./s3.json:/etc/seaweedfs/s3.json:ro
     depends_on:
       - filer
     restart: unless-stopped
