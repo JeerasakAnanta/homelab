@@ -1,0 +1,69 @@
+version: "3.8"
+
+services:
+  master:
+    image: chrislusf/seaweedfs:${SEAWEEDFS_VERSION}
+    container_name: seaweedfs-master
+    command: "master -ip=master -mdir=/data -volumeSizeLimitMB=${VOLUME_SIZE_LIMIT_MB}"
+    ports:
+      - "${MASTER_PORT}:9333"
+      - "${MASTER_GRPC_PORT}:19333"
+    volumes:
+      - master_data:/data
+    restart: unless-stopped
+    networks:
+      - seaweed_net
+
+  volume:
+    image: chrislusf/seaweedfs:${SEAWEEDFS_VERSION}
+    container_name: seaweedfs-volume
+    command: "volume -mserver=master:9333 -ip=volume -dir=/data -max=${VOLUME_MAX}"
+    ports:
+      - "${VOLUME_PORT}:8080"
+      - "${VOLUME_GRPC_PORT}:18080"
+    volumes:
+      - volume_data:/data
+    depends_on:
+      - master
+    restart: unless-stopped
+    networks:
+      - seaweed_net
+
+  filer:
+    image: chrislusf/seaweedfs:${SEAWEEDFS_VERSION}
+    container_name: seaweedfs-filer
+    command: "filer -master=master:9333 -ip=filer"
+    ports:
+      - "${FILER_PORT}:8888"
+      - "${FILER_GRPC_PORT}:18888"
+    volumes:
+      - filer_data:/data
+    depends_on:
+      - master
+      - volume
+    restart: unless-stopped
+    networks:
+      - seaweed_net
+
+  s3:
+    image: chrislusf/seaweedfs:${SEAWEEDFS_VERSION}
+    container_name: seaweedfs-s3
+    command: "s3 -filer=filer:8888 -config=/etc/seaweedfs/s3.json"
+    ports:
+      - "${S3_PORT}:8333"
+    volumes:
+      - ./s3.json:/etc/seaweedfs/s3.json:ro
+    depends_on:
+      - filer
+    restart: unless-stopped
+    networks:
+      - seaweed_net
+
+volumes:
+  master_data:
+  volume_data:
+  filer_data:
+
+networks:
+  seaweed_net:
+    driver: bridge
