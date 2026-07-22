@@ -86,3 +86,7 @@ vaultwarden/vw-data
 homeassistant/config
 sonarr
 jellyfin
+
+
+
+sonarqube/data/*
