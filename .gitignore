@@ -90,3 +90,4 @@ jellyfin
 
 
 sonarqube/data/*
+.claude/settings.json
