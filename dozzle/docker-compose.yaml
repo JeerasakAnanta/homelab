@@ -2,10 +2,58 @@ version: '3.8'
 
 services:
   dozzle:
-    image: amir20/dozzle:latest
+    # 1. Version Pinning: Never use ':latest' in production. 
+    # Use a specific version tag to ensure predictable deployments.
+    image: amir20/dozzle:v10.6.14
     container_name: dozzle
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    ports:
-      - "8080:8080"
     restart: unless-stopped
+    
+    ports:
+      # 2. Network Security: By default, expose only to localhost 
+      # (assuming you are putting this behind a reverse proxy like Nginx/Traefik).
+      # If you access this directly via IP, change back to "8080:8080".
+      - "127.0.0.1:8080:8080"
+      
+    volumes:
+      # 3. Read-Only Socket: Ensures Dozzle can only read logs, not control the Docker daemon.
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # 4. Data Persistence: Added in Dozzle v8+, persists UI settings and auth data.
+      - dozzle_data:/data
+      
+    environment:
+      - DOZZLE_LEVEL=info
+      # 5. Authentication: Enable simple auth so logs aren't public.
+      # You can create users through the Dozzle web UI on first launch.
+      - DOZZLE_AUTH_PROVIDER=simple
+      
+    # 6. Security Context: Prevents the container from gaining additional privileges.
+    security_opt:
+      - no-new-privileges:true
+      
+    # 7. Resource Limits: Prevents Dozzle from consuming all host CPU/Memory if a container logs excessively.
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+        reservations:
+          cpus: '0.10'
+          memory: 64M
+          
+    # 8. Container Logging Limits: Stops Dozzle's own logs from filling up your host's disk.
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        
+    # 9. Healthcheck: Built-in health check to restart the container if it locks up.
+    healthcheck:
+      test: ["CMD", "/dozzle", "healthcheck"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  dozzle_data:
