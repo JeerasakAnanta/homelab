@@ -18,6 +18,6 @@ services:
     # จำกัดขนาดไฟล์ Log ไม่ให้กินพื้นที่เซิร์ฟเวอร์
     logging:
       driver: "json-file"
-      options:  
+      options:
         max-size: "5m"
         max-file: "2"
