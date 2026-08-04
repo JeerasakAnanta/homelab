@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  log-generator:
+    image: alpine:3.19
+    container_name: log-generator
+    restart: unless-stopped
+    command: >
+      sh -c '
+      while true; do
+        LEVEL=$$(echo "INFO WARN ERROR DEBUG" | tr " " "\n" | shuf -n 1)
+        MSG=$$(echo "User login successful|Database query completed|Failed to parse JSON payload|Cache revalidated|Payment gateway timeout" | tr "|" "\n" | shuf -n 1)
+        echo "$$(date -u +"%Y-%m-%dT%H:%M:%SZ") [$$LEVEL] $$MSG"
+        # สุ่มดีเลย์ 1-3 วินาที
+        sleep $$(( (RANDOM % 3) + 1 ))
+      done
+      '
+    # จำกัดขนาดไฟล์ Log ไม่ให้กินพื้นที่เซิร์ฟเวอร์
+    logging:
+      driver: "json-file"
+      options:  
+        max-size: "5m"
+        max-file: "2"
