@@ -25,5 +25,5 @@ networks:
     external: true
 
 volumes:
-  driver: local
   postgres_data:
+    driver: local
