@@ -2,21 +2,28 @@ services:
   db:
     image: postgres:18
     container_name: postgres_homlabdb
-    restart: always
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
     ports:
       - "${DB_PORT}:5432"
+    networks:
+      - homelab_net
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
 
+networks:
+  homelab_net:
+    external: true
+
 volumes:
+  driver: local
   postgres_data:
-    driver: local
