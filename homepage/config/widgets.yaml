@@ -2,17 +2,31 @@
 # For configuration options and examples, please see:
 # http://gethomepage.dev/widgets/
 
+- greeting:
+      text_size: xl
+      text: Welcome back, Jeerasak
+
+- search:
+      provider: google
+      target: _blank
+
+- openmeteo:
+      label: Bangkok
+      latitude: 13.7563
+      longitude: 100.5018
+      timezone: Asia/Bangkok
+      units: metric
+      cache: 5
 
 - datetime:
-    text_size: small
-    format:
-      timeStyle: short
-      dateStyle: short
-      hourCycle: h23
+      text_size: small
+      format:
+          timeStyle: short
+          dateStyle: short
+          hourCycle: h23
 
 - resources:
-    cpu: true
-    memory: true
-    disk: /
-    uptime: true
-
+      cpu: true
+      memory: true
+      disk: /
+      uptime: true
