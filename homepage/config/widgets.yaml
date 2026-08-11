@@ -2,14 +2,6 @@
 # For configuration options and examples, please see:
 # http://gethomepage.dev/widgets/
 
-- greeting:
-      text_size: xl
-      text: Welcome back, Jeerasak
-
-- search:
-      provider: google
-      target: _blank
-
 - openmeteo:
       label: Bangkok
       latitude: 13.7563
