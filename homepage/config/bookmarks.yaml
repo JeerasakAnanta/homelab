@@ -2,16 +2,16 @@
 # https://gethomepage.dev/latest/configs/bookmarks
 
 - Profile:
-  - website:
-      - icon: si-aboutdotme
-        href: https://jeerasakananta.dev
-        description: Jeerasak Ananta personal website
+    - website:
+        - icon: si-aboutdotme
+          href: https://jeerasakananta.dev
+          description: Jeerasak Ananta personal website
 
-  - LinkedIn:
-      - icon: si-linkedin
-        href: https://www.linkedin.com/in/jeerasakananta
-        description: LinkedIn profile
-        
+    - LinkedIn:
+        - icon: si-linkedin
+          href: https://www.linkedin.com/in/jeerasakananta
+          description: LinkedIn profile
+
 - Repository:
     - GitHub:
         - icon: github-light.png
@@ -21,7 +21,7 @@
     - GitLab:
         - icon: gitlab.png
           href: https://gitlab.com/jeerasakananta
-          description: DevOps platform  
+          description: DevOps platform
 
     - Docker Hub:
         - icon: docker.png
@@ -33,8 +33,3 @@
         - icon: cloudflare.png
           href: https://dash.cloudflare.com
           description: Cloudflare dashboard
-
-   
-
-
-    
