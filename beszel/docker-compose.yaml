@@ -1,0 +1,28 @@
+services:
+  beszel:
+    image: henrygd/beszel:latest
+    container_name: beszel
+    restart: unless-stopped
+    environment:
+      APP_URL: http://localhost:8090   
+      # เปลี่ยนเป็นโดเมนที่จะ proxy ผ่าน Cloudflare Tunnel
+    ports:
+      - 8090:8090
+    volumes:
+      - ./beszel_data:/beszel_data
+      - ./beszel_socket:/beszel_socket
+
+  beszel-agent:
+    image: henrygd/beszel-agent:latest
+    container_name: beszel-agent
+    restart: unless-stopped
+    network_mode: host        # ต้อง host ถึงจะเห็น network stats จริงของเครื่อง
+    volumes:
+      - ./beszel_socket:/beszel_socket
+      - ./beszel_agent_data:/var/lib/beszel-agent
+      - /var/run/docker.sock:/var/run/docker.sock:ro   # ให้เห็น stats ของ container อื่นๆ
+    environment:
+      LISTEN: /beszel_socket/beszel.sock
+      HUB_URL: http://localhost:8090
+      TOKEN: <token>   # เอาจากหน้า Add System ใน hub UI
+      KEY: "<key>"     # เอาจากหน้า Add System ใน hub UI เช่นกัน
