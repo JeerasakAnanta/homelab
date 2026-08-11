@@ -9,32 +9,33 @@ theme: dark
 color: slate
 
 layout:
-
   Services:
+    tab: Home
     style: row
     columns: 4
-  
+
   Infrastructure:
+    tab: Home
     style: row
     columns: 4
 
-  Monitoring:
+  CI/CD:
+    tab: DevOps
     style: row
     columns: 4
 
-  Storage & Backup:   
+  Development:
+    tab: DevOps
     style: row
     columns: 4
 
-  Dev / Data:         
+  Monitoring & Logs:
+    tab: Monitoring
     style: row
     columns: 4
 
-  Docs & Wiki:        
-    style: row
-    columns: 4
-
-  Auth & Security:    
+  Storage:
+    tab: Monitoring
     style: row
     columns: 4
 
