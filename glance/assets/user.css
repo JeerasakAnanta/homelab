@@ -1,0 +1,43 @@
+/* ============================================================
+   Glance dashboard — "Server Glass" accent
+   Matches the teal/dark theme already used on the Homepage
+   dashboard (homepage/config/custom.css). Overrides Glance's
+   documented theme variables (--bgh/--bgs/--bgl feed the
+   computed --color-background/--color-widget-background/etc.
+   via hsl() in main.css) rather than guessing at internal
+   class names, so it keeps working across upgrades.
+   ============================================================ */
+
+:root {
+  --bgh: 222;
+  --bgs: 47%;
+  --bgl: 8%;
+
+  --color-primary: hsl(172, 66%, 50%);
+  --color-positive: hsl(158, 64%, 52%);
+  --color-negative: hsl(0, 84%, 60%);
+
+  --border-radius: 10px;
+}
+
+body {
+  font-family: "Sora", ui-sans-serif, system-ui, sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(215, 20%, 40%, 0.5);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(172, 66%, 50%, 0.6);
+  background-clip: content-box;
+}

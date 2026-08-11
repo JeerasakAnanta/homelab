@@ -10,6 +10,71 @@
           units: metric
           hour-format: 24h
 
+        - type: bookmarks
+          groups:
+            - title: Apps
+              links:
+                - title: n8n
+                  url: http://n8n.jeerasakananta.dev
+                - title: Excalidraw
+                  url: https://excalidraw.jeerasakananta.dev
+
+            - title: AI
+              links:
+                - title: Open WebUI
+                  icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/open-webui-light.webp
+                  url: https://openwebui.jeerasakananta.dev
+                - title: OpenClaw
+                  icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/openclaw.webp
+                  url: https://claw.jeerasakananta.dev
+
+            - title: Homelab
+              links:
+                - title: DockHand
+                  icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/dockhand.webp
+                  url: https://dockhand.jeerasakananta.dev/
+                - title: Cockpit
+                  url: https://cockpit.jeerasakananta.dev
+                - title: Proxmox VE
+                  url: https://proxmox.jeerasakananta.dev
+
+            - title: CI/CD
+              links:
+                - title: Jenkins
+                  url: https://jenkins.jeerasakananta.dev
+                - title: SonarQube
+                  url: https://sonar.jeerasakananta.dev
+                - title: Harbor
+                  url: https://harbor.jeerasakananta.dev
+
+            - title: Dev Tools
+              links:
+                - title: VS Code Server
+                  icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/visual-studio-code.webp
+                  url: https://ide.jeerasakananta.dev
+                - title: DBeaver
+                  icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/cloudbeaver.webp
+                  url: https://dbeaver.jeerasakananta.dev
+                - title: PGAdmin
+                  url: https://pgadmin.jeerasakananta.dev
+
+            - title: Monitoring
+              links:
+                - title: Uptime Kuma
+                  url: https://kuma.jeerasakananta.dev
+                - title: Grafana
+                  url: https://grafana.jeerasakananta.dev
+                - title: Loki
+                  url: https://loki.jeerasakananta.dev
+                - title: Beszel
+                  icon: https://cdn.jsdelivr.net/gh/selfhst/icons@main/webp/beszel.webp
+                  url: https://beszel.jeerasakananta.dev
+
+            - title: Storage
+              links:
+                - title: MinIO
+                  url: https://minio.jeerasakananta.dev
+
     - size: full
       widgets:
         - type: markets
@@ -37,7 +102,7 @@
           feeds:
             - url: https://feeds.feedburner.com/TheHackersNews
               title: The Hacker News
-        
+
         - type: rss
           title: Homelab & Self-Hosted
           limit: 10
@@ -45,7 +110,7 @@
           feeds:
             - url: https://selfh.st/rss/
               title: Self Hosted
-            
+
             - url: https://www.reddit.com/r/homelab/.rss
               title: Reddit r/homelab
 
@@ -58,10 +123,10 @@
           feeds:
             - url: https://www.freecodecamp.org/news/rss
               title: freeCodeCamp.org
-            
+
             - url: https://dev.to/feed/tag/automation
               title: Dev.to Automation
-        
+
         - type: rss
           title: Tech News
           limit: 10
@@ -69,9 +134,3 @@
           feeds:
             - url: https://techcrunch.com/feed/
               title: TechCrunch
-
-                    
-
-
-
-            
