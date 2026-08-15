@@ -24,6 +24,7 @@ graph TD
             Netdata[Netdata<br/>Port 19999]
             Prometheus[Prometheus<br/>Port 9090]
             Homepage[Homepage<br/>Port 3030]
+            Beszel[Beszel<br/>Port 8090]
             Dockge[Dockge<br/>Port 5001]
             Jenkins[Jenkins<br/>Port 8888]
             SonarQube[SonarQube<br/>Port 9000]
@@ -38,6 +39,10 @@ graph TD
             HomeAssistant[Home Assistant<br/>host network]
             Postgres[(Postgres)]
         end
+
+        subgraph Proxy [Reverse Proxies]
+            Nginx[Nginx<br/>80/443]
+        end
     end
 
     User -->|80/443| Traefik
@@ -46,9 +51,11 @@ graph TD
     User -->|3080| Grafana
     User -->|19999| Netdata
     User -->|9090| Prometheus
+    User -->|8090| Beszel
 
     Traefik -->|/logs| Dozzle
     Traefik -->|/coolify| Coolify
+    User -->|80/443| Nginx
 ```
 
 ## 📦 Services
@@ -109,30 +116,40 @@ A modern, self-hosted dashboard/start page for all services.
 - **Port**: 3030
 - **Location**: [homepage/](homepage/)
 
+#### 8. Beszel
+
+Lightweight server resource monitoring hub with a per-host agent (alternative to Netdata).
+
+- **Port**: 8090 (Hub UI)
+- **URL**: `https://beszel.jeerasakananta.dev`
+- **Network**: Hub uses bridge network; agent runs in `host` network mode to capture real network stats
+- **Setup**: Copy `beszel/.env.example` to `beszel/.env` and fill `BESZEL_TOKEN`/`BESZEL_KEY` from the Hub's "Add System" dialog
+- **Location**: [beszel/](beszel/)
+
 ### Platform & CI/CD
 
-#### 8. Coolify
+#### 9. Coolify
 
 An open-source & self-hostable Heroku / Netlify / Vercel alternative.
 
 - **URL**: `https://api-homelab.jeerasakananta.dev/coolify`
 - **Location**: [coolify/](coolify/)
 
-#### 9. Dockge
+#### 10. Dockge
 
 A fancy, easy-to-use Docker Compose stack manager.
 
 - **Port**: 5001
 - **Location**: [dockge/](dockge/)
 
-#### 10. Jenkins
+#### 11. Jenkins
 
 Automation server for CI/CD pipelines.
 
 - **Port**: 8888 (UI), 50000 (agent connections)
 - **Location**: [jenkins/](jenkins/)
 
-#### 11. SonarQube
+#### 12. SonarQube
 
 Static code analysis platform for code quality and security scanning.
 
@@ -141,7 +158,7 @@ Static code analysis platform for code quality and security scanning.
 
 ### Automation & AI
 
-#### 12. n8n
+#### 13. n8n
 
 Workflow automation tool.
 
@@ -149,28 +166,28 @@ Workflow automation tool.
 - **Port**: 5678
 - **Location**: [n8n/](n8n/)
 
-#### 13. Ollama
+#### 14. Ollama
 
 Local LLM runtime.
 
 - **Port**: Internal only (127.0.0.1:11434, disabled by default in compose)
 - **Location**: [ollama/](ollama/)
 
-#### 14. Open WebUI
+#### 15. Open WebUI
 
 Web UI for interacting with local LLMs (e.g. via Ollama).
 
 - **Port**: 8080
 - **Location**: [openwebui/](openwebui/)
 
-#### 15. EMQX
+#### 16. EMQX
 
 MQTT broker for IoT and messaging.
 
 - **Ports**: 1883 (MQTT), 8883 (MQTT SSL), 8083 (MQTT WS), 8084 (MQTT WSS), 18083 (Dashboard UI)
 - **Location**: [emqx/](emqx/)
 
-#### 16. Home Assistant
+#### 17. Home Assistant
 
 Home automation platform.
 
@@ -179,7 +196,7 @@ Home automation platform.
 
 ### Storage & Data
 
-#### 17. SeaweedFS
+#### 18. SeaweedFS
 
 Distributed object/file storage system with S3-compatible API.
 
@@ -189,7 +206,7 @@ Distributed object/file storage system with S3-compatible API.
 - **S3 API**: `${S3_PORT}` (default 8333) — S3-compatible clients (aws-cli, rclone, SDKs)
 - **Location**: [seaweedFS/](seaweedFS/) (see [seaweedFS/readme.md](seaweedFS/readme.md) for usage examples)
 
-#### 18. Postgres
+#### 19. Postgres
 
 Shared PostgreSQL database instance.
 
@@ -198,14 +215,14 @@ Shared PostgreSQL database instance.
 
 ### Developer Tools
 
-#### 19. code-server (VS Code Server)
+#### 20. code-server (VS Code Server)
 
 Browser-based VS Code development environment.
 
 - **Port**: 8443
 - **Location**: [vscodeserver/](vscodeserver/)
 
-#### 20. Excalidraw
+#### 21. Excalidraw
 
 Self-hosted virtual whiteboard for sketching diagrams.
 
@@ -214,12 +231,32 @@ Self-hosted virtual whiteboard for sketching diagrams.
 
 ### Security
 
-#### 21. Vaultwarden
+#### 22. Vaultwarden
 
 Lightweight, self-hosted Bitwarden-compatible password manager server.
 
 - **Ports**: `${APP_PORT}` (web), `${WEBSOCKET_PORT}` (live sync)
 - **Location**: [vaultwarden/](vaultwarden/)
+
+### Networking & Reverse Proxy
+
+#### 23. Traefik
+
+Modern HTTP reverse proxy and load balancer for Docker containers.
+
+- **Port**: 8080 (API/dashboard), forwards 80/443
+- **Config**: `traefik/traefik.yml` (static), `traefik/config/dynamic.yml` (middlewares & TLS)
+- **Note**: `traefik/acme.json` (Let's Encrypt certs) is gitignored — create with `chmod 600`
+- **Location**: [traefik/](traefik/)
+
+#### 24. Nginx
+
+Reverse proxy / web server terminating TLS on ports 80/443.
+
+- **Port**: 80/443
+- **Config**: `nginx/conf.d/` and `nginx/certs/` (bind-mounted)
+- **Network**: External `homelab_net`
+- **Location**: [nginx/](nginx/)
 
 ## 🔌 Ports Overview
 
@@ -232,6 +269,7 @@ Lightweight, self-hosted Bitwarden-compatible password manager server.
 | Uptime Kuma        | -                           | `/kuma`       |
 | Dozzle             | 127.0.0.1:8080              | `/logs`       |
 | Homepage           | 3030                        | -             |
+| Beszel             | 8090                        | -             |
 | Coolify            | -                           | `/coolify`    |
 | Dockge             | 5001                        | -             |
 | Jenkins            | 8888 / 50000                | -             |
@@ -249,6 +287,8 @@ Lightweight, self-hosted Bitwarden-compatible password manager server.
 | code-server        | 8443                        | -             |
 | Excalidraw         | 3000                        | -             |
 | Vaultwarden        | via `.env`                  | -             |
+| Traefik            | 8080 (API) / 80 / 443       | -             |
+| Nginx              | 80 / 443                    | -             |
 
 > Note: Some services (n8n, Open WebUI, Jenkins internal) use overlapping default ports (e.g. 8080). Check each `docker-compose.yaml` before running services simultaneously on the same host network.
 
@@ -306,7 +346,10 @@ Each service has its own configuration directory:
 - **Grafana**: Environment variables in docker-compose.yml
 - **Netdata**: `netdata/netdataconfig/`
 - **Prometheus**: `prometheus/prometheus.yml`
+- **Beszel**: `beszel/.env` (copy from `.env.example`, fill `BESZEL_TOKEN`/`BESZEL_KEY`)
 - **SeaweedFS**: `seaweedFS/.env` (copy from `.env.example`) and `seaweedFS/s3.json` for S3 credentials
+- **Traefik**: `traefik/traefik.yml` (static), `traefik/config/dynamic.yml` (dynamic), `traefik/acme.json` (certs)
+- **Nginx**: `nginx/conf.d/` (server blocks), `nginx/certs/` (TLS certs)
 - **Postgres**: `postgres/.env`
 - **n8n**: `n8n/.env` (copy from `.env.example`)
 - **SonarQube**: `sonarqube/.env` (copy from `.env.example`)
