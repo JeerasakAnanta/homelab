@@ -29,6 +29,7 @@ graph TD
             Jenkins[Jenkins<br/>Port 8888]
             SonarQube[SonarQube<br/>Port 9000]
             n8n[n8n<br/>Port 5678]
+            Dagster[Dagster<br/>Port 3070]
             OpenWebUI[Open WebUI<br/>Port 8080]
             Ollama[Ollama<br/>Internal only]
             EMQX[EMQX<br/>1883/8083/18083]
@@ -194,6 +195,16 @@ Home automation platform.
 - **Network**: Host network mode
 - **Location**: [homeassistant/](homeassistant/)
 
+#### 25. Dagster
+
+Data orchestrator (asset-based pipelines): webserver + daemon + a gRPC code location, with Postgres for run/event/schedule storage.
+
+- **Port**: 3070 (web UI; 3000 is taken by Excalidraw)
+- **Network**: `dagster_net` (own bridge)
+- **Config**: `dagster/dagster.yaml` (instance), `dagster/workspace.yaml` (code location), `dagster/code/` (bind-mounted user code)
+- **First run**: `cp .env.example .env` → `docker compose build` → `docker compose up -d`
+- **Location**: [dagster/](dagster/)
+
 ### Storage & Data
 
 #### 18. SeaweedFS
@@ -275,6 +286,7 @@ Reverse proxy / web server terminating TLS on ports 80/443.
 | Jenkins            | 8888 / 50000                | -             |
 | SonarQube          | 127.0.0.1:9000              | -             |
 | n8n                | 5678                        | -             |
+| Dagster            | 3070                        | -             |
 | Ollama             | internal (disabled)         | -             |
 | Open WebUI         | 8080                        | -             |
 | EMQX               | 1883 / 8083 / 8883 / 8084 / 18083 | -       |

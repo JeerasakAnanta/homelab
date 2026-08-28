@@ -32,6 +32,9 @@ airflow/logs/
 airflow/plugins/
 airflow/config/
 
+# Dagster
+dagster/.env
+
 # n8n
 n8n/.env
 .n8n/

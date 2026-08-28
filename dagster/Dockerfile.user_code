@@ -1,0 +1,18 @@
+# Image for the gRPC code-location server. Holds the user code (assets/jobs/schedules).
+# Runs also execute in a container from this image (DefaultRunLauncher).
+FROM python:3.11-slim
+
+RUN pip install --no-cache-dir \
+    dagster==1.9.11 \
+    dagster-postgres==0.25.11
+
+ENV DAGSTER_HOME=/opt/dagster/dagster_home
+RUN mkdir -p $DAGSTER_HOME
+COPY dagster.yaml $DAGSTER_HOME/
+
+WORKDIR /opt/dagster/app
+# code/ is also bind-mounted in compose so edits don't need a rebuild.
+COPY code/ /opt/dagster/app/
+
+EXPOSE 4000
+CMD ["dagster", "api", "grpc", "-h", "0.0.0.0", "-p", "4000", "-f", "repo.py"]

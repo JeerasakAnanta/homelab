@@ -1,0 +1,114 @@
+# Dagster — webserver + daemon + a gRPC code location, with Postgres for run/event/schedule storage.
+# Modelled on the upstream "deploy_docker" example, trimmed for a single-host home lab:
+# runs execute inside the code-location container (DefaultRunLauncher) instead of
+# spawning one container per run, so there is no Docker socket mount to worry about.
+#
+# First run:
+#   cp .env.example .env      # then edit the Postgres password
+#   docker compose build
+#   docker compose up -d
+# Web UI: http://<host>:3070   (3000 is already taken by Excalidraw in this home lab)
+
+x-dagster-env: &dagster-env
+  DAGSTER_POSTGRES_USER: ${DAGSTER_POSTGRES_USER:-dagster}
+  DAGSTER_POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD:-dagster}
+  DAGSTER_POSTGRES_DB: ${DAGSTER_POSTGRES_DB:-dagster}
+  DAGSTER_POSTGRES_HOSTNAME: dagster-postgres
+
+services:
+  dagster-postgres:
+    image: postgres:16
+    container_name: dagster-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DAGSTER_POSTGRES_USER:-dagster}
+      POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD:-dagster}
+      POSTGRES_DB: ${DAGSTER_POSTGRES_DB:-dagster}
+    volumes:
+      - dagster-postgres-data:/var/lib/postgresql/data
+    networks:
+      - dagster_net
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${DAGSTER_POSTGRES_USER:-dagster}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  # gRPC server that serves the user code (assets, jobs, schedules). Runs also execute here.
+  dagster-code:
+    build:
+      context: .
+      dockerfile: Dockerfile.user_code
+    image: homelab-dagster-code:1.9.11
+    container_name: dagster-code
+    restart: unless-stopped
+    environment:
+      <<: *dagster-env
+    volumes:
+      - ./code:/opt/dagster/app
+    networks:
+      - dagster_net
+    depends_on:
+      dagster-postgres:
+        condition: service_healthy
+
+  dagster-webserver:
+    build:
+      context: .
+      dockerfile: Dockerfile.dagster
+    image: homelab-dagster:1.9.11
+    container_name: dagster-webserver
+    restart: unless-stopped
+    entrypoint:
+      - dagster-webserver
+      - -h
+      - "0.0.0.0"
+      - -p
+      - "3000"
+      - -w
+      - workspace.yaml
+    environment:
+      <<: *dagster-env
+    ports:
+      - "${DAGSTER_WEB_PORT:-3070}:3000"
+    networks:
+      - dagster_net
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:3000/server_info"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    depends_on:
+      dagster-postgres:
+        condition: service_healthy
+      dagster-code:
+        condition: service_started
+
+  dagster-daemon:
+    build:
+      context: .
+      dockerfile: Dockerfile.dagster
+    image: homelab-dagster:1.9.11
+    container_name: dagster-daemon
+    restart: unless-stopped
+    entrypoint:
+      - dagster-daemon
+      - run
+    environment:
+      <<: *dagster-env
+    networks:
+      - dagster_net
+    depends_on:
+      dagster-postgres:
+        condition: service_healthy
+      dagster-code:
+        condition: service_started
+
+networks:
+  dagster_net:
+    driver: bridge
+
+volumes:
+  dagster-postgres-data:

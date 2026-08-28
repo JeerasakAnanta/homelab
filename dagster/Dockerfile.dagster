@@ -1,0 +1,18 @@
+# Image for the Dagster webserver and daemon. No user code here — they reach the
+# code location over gRPC (see workspace.yaml).
+FROM python:3.11-slim
+
+RUN pip install --no-cache-dir \
+    dagster==1.9.11 \
+    dagster-webserver==1.9.11 \
+    dagster-postgres==0.25.11
+
+# curl is only needed for the webserver healthcheck.
+RUN apt-get update && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV DAGSTER_HOME=/opt/dagster/dagster_home
+RUN mkdir -p $DAGSTER_HOME
+
+COPY dagster.yaml workspace.yaml $DAGSTER_HOME/
+WORKDIR $DAGSTER_HOME
