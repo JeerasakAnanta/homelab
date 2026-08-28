@@ -50,3 +50,17 @@ Most other services are reached directly on their own port instead (see the Port
 - Commit messages follow Conventional Commits (`feat:`, `fix:`, `build(scope):`), matching `git log`.
 - Compose files pin image versions explicitly rather than using `:latest` (see `dozzle/docker-compose.yaml` comments for the rationale) — follow this when adding or bumping a service image.
 - When adding a new service, update both `README.md` (service list, mermaid diagram, ports table) and `.gitignore` (data dirs / secrets for that service) as part of the change — this repo's history shows both are expected to move together with a new stack.
+
+## Agent skills
+
+### Issue tracker
+
+Issues and specs live as GitHub issues in `JeerasakAnanta/homelab`, managed via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default five canonical triage roles, each label string equal to its name. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: one `CONTEXT.md` + `docs/adr/` at the repo root (created lazily). See `docs/agents/domain.md`.
