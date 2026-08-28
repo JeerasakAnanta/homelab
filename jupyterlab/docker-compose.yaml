@@ -1,0 +1,33 @@
+services:
+  jupyterlab:
+    # or jupyter/tensorflow-notebook, jupyter/pytorch-notebook
+    image: jupyter/scipy-notebook:latest
+    container_name: jupyterlab
+    restart: unless-stopped
+    ports:
+      - "8888:8888"
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=${JUPYTER_TOKEN:-changeme}
+      - GRANT_SUDO=yes
+    user: root
+    volumes:
+      - /var/notebooks:/home/jovyan/work
+      - /var/data:/home/jovyan/data
+      - jupyter-config:/home/jovyan/.jupyter
+    deploy:
+      resources:
+        limits:
+          cpus: "4"
+          memory: 8G
+    # Uncomment for GPU support (needs nvidia-container-toolkit)
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+volumes:
+  jupyter-config:
