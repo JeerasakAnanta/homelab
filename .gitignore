@@ -111,3 +111,4 @@ beszel/beszel_data/id_ed25519
 # --- SeaweedFS ---
 seaweedFS/s3.json
 seaweedFS/data/
+seaweedFS/s3.json
