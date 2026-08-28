@@ -31,6 +31,8 @@ graph TD
             n8n[n8n<br/>Port 5678]
             Dagster[Dagster<br/>Port 3070]
             Prefect[Prefect<br/>Port 4200]
+            Kafka[Kafka Broker<br/>Port 9092]
+            RedpandaConsole[Redpanda Console<br/>Port 8085]
             OpenWebUI[Open WebUI<br/>Port 8080]
             Ollama[Ollama<br/>Internal only]
             EMQX[EMQX<br/>1883/8083/18083]
@@ -54,6 +56,9 @@ graph TD
     User -->|19999| Netdata
     User -->|9090| Prometheus
     User -->|8090| Beszel
+    User -->|9092| Kafka
+    User -->|8085| RedpandaConsole
+    RedpandaConsole --> Kafka
 
     Traefik -->|/logs| Dozzle
     Traefik -->|/coolify| Coolify
@@ -216,6 +221,16 @@ Workflow orchestrator (Python-native flows): Prefect 3 server (UI + API) with Po
 - **First run**: `cp .env.example .env` → `docker compose up -d`
 - **Location**: [prefect/](prefect/)
 
+#### 27. Kafka
+
+Single-broker Kafka (KRaft mode — no Zookeeper) plus Redpanda Console as the web UI, for learning / experimenting with topics and messages.
+
+- **Port**: 9092 (broker / bootstrap), 8085 (Redpanda Console web UI)
+- **Network**: `kafka_net` (own bridge)
+- **Config**: `.env` — `KAFKA_ADVERTISED_HOST` (set to the host LAN IP for off-host clients), `KAFKA_CONSOLE_PORT`, `KAFKA_CLUSTER_ID`
+- **First run**: `cp .env.example .env` → `docker compose up -d`
+- **Location**: [kafka/](kafka/)
+
 ### Storage & Data
 
 #### 18. SeaweedFS
@@ -299,6 +314,8 @@ Reverse proxy / web server terminating TLS on ports 80/443.
 | n8n                | 5678                        | -             |
 | Dagster            | 3070                        | -             |
 | Prefect            | 4200                        | -             |
+| Kafka Broker       | 9092 (advertised host via `.env`) | -       |
+| Redpanda Console   | 8085                        | -             |
 | Ollama             | internal (disabled)         | -             |
 | Open WebUI         | 8080                        | -             |
 | EMQX               | 1883 / 8083 / 8883 / 8084 / 18083 | -       |
@@ -360,7 +377,7 @@ Reverse proxy / web server terminating TLS on ports 80/443.
    cd seaweedFS && docker-compose up -d
    ```
 
-   Most other services (dockge, emqx, excalidraw, homeassistant, homepage, jenkins, n8n, ollama, openwebui, postgres, sonarqube, vaultwarden, vscodeserver) follow the same pattern — `cd <service> && docker-compose up -d` (or `docker compose -f compose.yaml up -d` where the file is named `compose.yaml`).
+   Most other services (dockge, emqx, excalidraw, homeassistant, homepage, jenkins, kafka, n8n, ollama, openwebui, postgres, sonarqube, vaultwarden, vscodeserver) follow the same pattern — `cd <service> && docker-compose up -d` (or `docker compose -f compose.yaml up -d` where the file is named `compose.yaml`).
 
 ## ⚙️ Configuration
 

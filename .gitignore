@@ -38,6 +38,9 @@ dagster/.env
 # Prefect
 prefect/.env
 
+# Kafka
+kafka/.env
+
 # n8n
 n8n/.env
 .n8n/
