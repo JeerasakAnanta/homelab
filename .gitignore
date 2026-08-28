@@ -35,6 +35,9 @@ airflow/config/
 # Dagster
 dagster/.env
 
+# Prefect
+prefect/.env
+
 # n8n
 n8n/.env
 .n8n/

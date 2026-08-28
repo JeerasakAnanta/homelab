@@ -30,6 +30,7 @@ graph TD
             SonarQube[SonarQube<br/>Port 9000]
             n8n[n8n<br/>Port 5678]
             Dagster[Dagster<br/>Port 3070]
+            Prefect[Prefect<br/>Port 4200]
             OpenWebUI[Open WebUI<br/>Port 8080]
             Ollama[Ollama<br/>Internal only]
             EMQX[EMQX<br/>1883/8083/18083]
@@ -205,6 +206,16 @@ Data orchestrator (asset-based pipelines): webserver + daemon + a gRPC code loca
 - **First run**: `cp .env.example .env` → `docker compose build` → `docker compose up -d`
 - **Location**: [dagster/](dagster/)
 
+#### 26. Prefect
+
+Workflow orchestrator (Python-native flows): Prefect 3 server (UI + API) with Postgres backing, plus a container that serves an example flow via `.serve()`.
+
+- **Port**: 4200 (web UI / API)
+- **Network**: `prefect_net` (own bridge)
+- **Config**: `prefect/flows/` (bind-mounted flow code)
+- **First run**: `cp .env.example .env` → `docker compose up -d`
+- **Location**: [prefect/](prefect/)
+
 ### Storage & Data
 
 #### 18. SeaweedFS
@@ -287,6 +298,7 @@ Reverse proxy / web server terminating TLS on ports 80/443.
 | SonarQube          | 127.0.0.1:9000              | -             |
 | n8n                | 5678                        | -             |
 | Dagster            | 3070                        | -             |
+| Prefect            | 4200                        | -             |
 | Ollama             | internal (disabled)         | -             |
 | Open WebUI         | 8080                        | -             |
 | EMQX               | 1883 / 8083 / 8883 / 8084 / 18083 | -       |

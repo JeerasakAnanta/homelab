@@ -1,0 +1,85 @@
+# Prefect 3 — server (UI + API) with Postgres backing, plus a container that
+# serves an example flow. Trimmed for a single-host home lab: flows register
+# themselves via `.serve()` so there is no separate work pool / worker to manage.
+#
+# First run:
+#   cp .env.example .env      # then edit the Postgres password
+#   docker compose up -d
+# Web UI: http://<host>:4200
+
+x-prefect-env: &prefect-env
+  PREFECT_API_URL: http://prefect-server:4200/api
+
+services:
+  prefect-postgres:
+    image: postgres:16
+    container_name: prefect-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${PREFECT_POSTGRES_USER:-prefect}
+      POSTGRES_PASSWORD: ${PREFECT_POSTGRES_PASSWORD:-prefect}
+      POSTGRES_DB: ${PREFECT_POSTGRES_DB:-prefect}
+    volumes:
+      - prefect-postgres-data:/var/lib/postgresql/data
+    networks:
+      - prefect_net
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${PREFECT_POSTGRES_USER:-prefect}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  prefect-server:
+    image: prefecthq/prefect:3.1.15-python3.11
+    container_name: prefect-server
+    restart: unless-stopped
+    command: prefect server start --host 0.0.0.0
+    environment:
+      PREFECT_SERVER_API_HOST: 0.0.0.0
+      PREFECT_API_DATABASE_CONNECTION_URL: postgresql+asyncpg://${PREFECT_POSTGRES_USER:-prefect}:${PREFECT_POSTGRES_PASSWORD:-prefect}@prefect-postgres:5432/${PREFECT_POSTGRES_DB:-prefect}
+      PREFECT_API_URL: http://localhost:4200/api
+    ports:
+      - "${PREFECT_WEB_PORT:-4200}:4200"
+    networks:
+      - prefect_net
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:4200/api/health')",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    depends_on:
+      prefect-postgres:
+        condition: service_healthy
+
+  # Serves the example flow(s). Edit files under ./flows and restart this service
+  # to pick up changes — the directory is bind-mounted, no rebuild needed.
+  prefect-flows:
+    image: prefecthq/prefect:3.1.15-python3.11
+    container_name: prefect-flows
+    restart: unless-stopped
+    working_dir: /opt/prefect/flows
+    command: python example_flow.py
+    environment:
+      <<: *prefect-env
+    volumes:
+      - ./flows:/opt/prefect/flows
+    networks:
+      - prefect_net
+    depends_on:
+      prefect-server:
+        condition: service_healthy
+
+networks:
+  prefect_net:
+    driver: bridge
+
+volumes:
+  prefect-postgres-data:
