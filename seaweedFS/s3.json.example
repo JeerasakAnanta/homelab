@@ -4,8 +4,8 @@
       "name": "admin",
       "credentials": [
         {
-          "accessKey": "admin",
-          "secretKey": "changeme123"
+          "accessKey": "changeme_access_key",
+          "secretKey": "changeme_secret_key"
         }
       ],
       "actions": [

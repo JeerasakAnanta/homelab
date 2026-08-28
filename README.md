@@ -373,7 +373,7 @@ Reverse proxy / web server terminating TLS on ports 80/443.
    # Prometheus
    cd prometheus && docker-compose -f docker-compose.yaml up -d
 
-   # SeaweedFS (copy .env.example to .env first)
+   # SeaweedFS (copy .env.example to .env and s3.json.example to s3.json first)
    cd seaweedFS && docker-compose up -d
    ```
 
@@ -388,7 +388,7 @@ Each service has its own configuration directory:
 - **Netdata**: `netdata/netdataconfig/`
 - **Prometheus**: `prometheus/prometheus.yml`
 - **Beszel**: `beszel/.env` (copy from `.env.example`, fill `BESZEL_TOKEN`/`BESZEL_KEY`)
-- **SeaweedFS**: `seaweedFS/.env` (copy from `.env.example`) and `seaweedFS/s3.json` for S3 credentials
+- **SeaweedFS**: `seaweedFS/.env` (copy from `.env.example`) and `seaweedFS/s3.json` (copy from `s3.json.example`) for S3 credentials — `s3.json` is gitignored
 - **Traefik**: `traefik/traefik.yml` (static), `traefik/config/dynamic.yml` (dynamic), `traefik/acme.json` (certs)
 - **Nginx**: `nginx/conf.d/` (server blocks), `nginx/certs/` (TLS certs)
 - **Postgres**: `postgres/.env`

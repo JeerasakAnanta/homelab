@@ -107,3 +107,7 @@ jellyfin
 sonarqube/data/*
 .claude/settings.json
 beszel/beszel_data/id_ed25519
+
+# --- SeaweedFS ---
+seaweedFS/s3.json
+seaweedFS/data/

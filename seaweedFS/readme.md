@@ -1,3 +1,17 @@
+## เริ่มใช้งานครั้งแรก
+
+```bash
+cp .env.example .env          # ปรับ port / limit ตามต้องการ
+cp s3.json.example s3.json    # ใส่ accessKey / secretKey จริง (ไฟล์นี้ถูก gitignore)
+docker compose up -d
+docker compose ps             # รอจน service ทั้งหมดขึ้นสถานะ healthy
+```
+
+service มี healthcheck และ `depends_on: condition: service_healthy` แล้ว
+ดังนั้น `volume` / `filer` / `s3` จะรอ dependency พร้อมก่อนค่อยสตาร์ท
+
+---
+
 หลังจากรัน `docker compose up -d` แล้ว เข้าใช้งานแต่ละ service ได้ที่:
 
 | Service | URL | ใช้ทำอะไร |

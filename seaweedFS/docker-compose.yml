@@ -1,3 +1,9 @@
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
 services:
   master:
     image: chrislusf/seaweedfs:${SEAWEEDFS_VERSION}
@@ -9,6 +15,13 @@ services:
     volumes:
       - master_data:/data
     restart: unless-stopped
+    logging: *default-logging
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9333/cluster/healthz"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     networks:
       - seaweed_net
 
@@ -22,8 +35,16 @@ services:
     volumes:
       - volume_data:/data
     depends_on:
-      - master
+      master:
+        condition: service_healthy
     restart: unless-stopped
+    logging: *default-logging
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/healthz"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     networks:
       - seaweed_net
 
@@ -37,9 +58,18 @@ services:
     volumes:
       - filer_data:/data
     depends_on:
-      - master
-      - volume
+      master:
+        condition: service_healthy
+      volume:
+        condition: service_healthy
     restart: unless-stopped
+    logging: *default-logging
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8888/"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
     networks:
       - seaweed_net
 
@@ -52,8 +82,10 @@ services:
     volumes:
       - ./s3.json:/etc/seaweedfs/s3.json:ro
     depends_on:
-      - filer
+      filer:
+        condition: service_healthy
     restart: unless-stopped
+    logging: *default-logging
     networks:
       - seaweed_net
 
