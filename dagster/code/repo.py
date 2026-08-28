@@ -21,6 +21,7 @@ def hello_world() -> str:
 
 @asset
 def greeting(hello_world: str) -> str:
+    get_dagster_logger().info("greeing")
     return f"{hello_world}!"
 
 
