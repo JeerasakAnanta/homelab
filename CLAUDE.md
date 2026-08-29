@@ -23,11 +23,11 @@ Validate a compose file without starting it:
 cd <service> && docker compose config -q
 ```
 
-For services with a `.env.example` (`n8n/`, `seaweedFS/`, `sonarqube/`), copy it to `.env` before starting: `cp .env.example .env`.
+For services with a `.env.example` (`airflow/`, `beszel/`, `dagster/`, `homepage/`, `kafka/`, `n8n/`, `prefect/`, `seaweedfs/`, `sonarqube/`), copy it to `.env` before starting: `cp .env.example .env`.
 
 ## Architecture notes
 
-**No shared network convention — check before editing.** Despite `traefik/README.md` documenting a single `proxy` network that all Traefik-routed services should join, in practice each stack defines its *own* bridge network with a different name (`traefik` → `proxy`, `kuma`/`glance`/`homepage` → `homelab`, `ollama` → `llm_net`, `seaweedFS` → `seaweed_net`, `sonarqube` → `sonarnet`, `jenkins` → `jenkins_network`, `nginx` → external `homelab_net`). Several stacks (`coolify`, `n8n`, `dockge`, `dozzle`, `vaultwarden`) declare no network at all. When wiring a new service to Traefik or another stack, check the actual `networks:` block in that service's compose file rather than assuming a shared network exists — don't silently "fix" this inconsistency as part of an unrelated change.
+**No shared network convention — check before editing.** Despite `traefik/README.md` documenting a single `proxy` network that all Traefik-routed services should join, in practice each stack defines its *own* bridge network with a different name (`traefik` → `proxy`, `kuma`/`glance`/`homepage` → `homelab`, `ollama` → `llm_net`, `seaweedfs` → `seaweed_net`, `sonarqube` → `sonarnet`, `jenkins` → `jenkins_network`, `nginx` → external `homelab_net`). Several stacks (`coolify`, `n8n`, `dockge`, `dozzle`, `vaultwarden`) declare no network at all. When wiring a new service to Traefik or another stack, check the actual `networks:` block in that service's compose file rather than assuming a shared network exists — don't silently "fix" this inconsistency as part of an unrelated change.
 
 **Traefik routing pattern**: Services proxied through Traefik (see `coolify/docker-compose.yaml` for the reference example) use path-prefix routing off a single hostname (`api-homelab.jeerasakananta.dev`) via labels:
 

@@ -43,7 +43,7 @@ services:
 
   redpanda-console:
     image: redpandadata/console:v2.8.4
-    container_name: kafka-console
+    container_name: redpanda-console
     restart: unless-stopped
     ports:
       - "${KAFKA_CONSOLE_PORT:-8085}:8080"

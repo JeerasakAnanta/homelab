@@ -49,13 +49,14 @@ n8n/.env
 # Homepage
 homepage/config/logs/
 
-# Mapped volume data
+# Mapped volume data (legacy bind-mounts — keep ignored even though compose now uses named volumes)
 n8n-data/
 postgres-data/
 mongo-data/
-minio-data/
-redis-data/
 workspace/
+minio/data/.minio.sys
+sonarr
+jellyfin
 
 # --- Node.js ---
 node_modules/
@@ -96,11 +97,8 @@ homepage/config/logs/homepage.log
 
 vscodeserver/config/*
 vscodeserver/config
-minio/data/.minio.sys
 vaultwarden/vw-data
 homeassistant/config
-sonarr
-jellyfin
 
 
 
@@ -109,6 +107,5 @@ sonarqube/data/*
 beszel/beszel_data/id_ed25519
 
 # --- SeaweedFS ---
-seaweedFS/s3.json
-seaweedFS/data/
-seaweedFS/s3.json
+seaweedfs/s3.json
+seaweedfs/data/

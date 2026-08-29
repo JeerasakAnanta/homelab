@@ -1,7 +1,7 @@
 services:
-  db:
+  postgres:
     image: postgres:18
-    container_name: postgres_homlabdb
+    container_name: postgres-homelab
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER}

@@ -5,10 +5,10 @@ x-logging: &default-logging
     max-file: "3"
 
 services:
-  master:
+  seaweedfs-master:
     image: chrislusf/seaweedfs:${SEAWEEDFS_VERSION}
     container_name: seaweedfs-master
-    command: "master -ip=master -mdir=/data -volumeSizeLimitMB=${VOLUME_SIZE_LIMIT_MB}"
+    command: "master -ip=seaweedfs-master -mdir=/data -volumeSizeLimitMB=${VOLUME_SIZE_LIMIT_MB}"
     ports:
       - "${MASTER_PORT}:9333"
       - "${MASTER_GRPC_PORT}:19333"
@@ -25,17 +25,17 @@ services:
     networks:
       - seaweed_net
 
-  volume:
+  seaweedfs-volume:
     image: chrislusf/seaweedfs:${SEAWEEDFS_VERSION}
     container_name: seaweedfs-volume
-    command: "volume -mserver=master:9333 -ip=volume -dir=/data -max=${VOLUME_MAX}"
+    command: "volume -mserver=seaweedfs-master:9333 -ip=seaweedfs-volume -dir=/data -max=${VOLUME_MAX}"
     ports:
       - "${VOLUME_PORT}:8080"
       - "${VOLUME_GRPC_PORT}:18080"
     volumes:
       - volume_data:/data
     depends_on:
-      master:
+      seaweedfs-master:
         condition: service_healthy
     restart: unless-stopped
     logging: *default-logging
@@ -48,19 +48,19 @@ services:
     networks:
       - seaweed_net
 
-  filer:
+  seaweedfs-filer:
     image: chrislusf/seaweedfs:${SEAWEEDFS_VERSION}
     container_name: seaweedfs-filer
-    command: "filer -master=master:9333 -ip=filer"
+    command: "filer -master=seaweedfs-master:9333 -ip=seaweedfs-filer"
     ports:
       - "${FILER_PORT}:8888"
       - "${FILER_GRPC_PORT}:18888"
     volumes:
       - filer_data:/data
     depends_on:
-      master:
+      seaweedfs-master:
         condition: service_healthy
-      volume:
+      seaweedfs-volume:
         condition: service_healthy
     restart: unless-stopped
     logging: *default-logging
@@ -73,16 +73,16 @@ services:
     networks:
       - seaweed_net
 
-  s3:
+  seaweedfs-s3:
     image: chrislusf/seaweedfs:${SEAWEEDFS_VERSION}
     container_name: seaweedfs-s3
-    command: "s3 -filer=filer:8888 -config=/etc/seaweedfs/s3.json"
+    command: "s3 -filer=seaweedfs-filer:8888 -config=/etc/seaweedfs/s3.json"
     ports:
       - "${S3_PORT}:8333"
     volumes:
       - ./s3.json:/etc/seaweedfs/s3.json:ro
     depends_on:
-      filer:
+      seaweedfs-filer:
         condition: service_healthy
     restart: unless-stopped
     logging: *default-logging

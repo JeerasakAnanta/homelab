@@ -1,14 +1,14 @@
 services:
   sonarqube:
     image: sonarqube:community
-    container_name: sonarqube_community
+    container_name: sonarqube
     depends_on:
-      db:
+      sonarqube-db:
         condition: service_healthy
     ports:
       - "127.0.0.1:9000:9000"
     environment:
-      - SONAR_JDBC_URL=jdbc:postgresql://db:5432/sonarqube
+      - SONAR_JDBC_URL=jdbc:postgresql://sonarqube-db:5432/sonarqube
       - SONAR_JDBC_USERNAME=${SONAR_USER}
       - SONAR_JDBC_PASSWORD=${SONAR_PASSWORD}
     volumes:
@@ -25,9 +25,9 @@ services:
     mem_limit: 4g
     restart: unless-stopped
 
-  db:
+  sonarqube-db:
     image: postgres:15.13
-    container_name: sonarqube_db
+    container_name: sonarqube-db
     environment:
       - POSTGRES_USER=${SONAR_USER}
       - POSTGRES_PASSWORD=${SONAR_PASSWORD}

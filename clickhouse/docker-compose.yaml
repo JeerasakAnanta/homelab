@@ -1,7 +1,7 @@
 services:
   clickhouse:
     image: clickhouse/clickhouse-server:latest
-    container_name: clickhouse-server
+    container_name: clickhouse
     restart: unless-stopped
     ports:
       - "8123:8123"   # HTTP interface

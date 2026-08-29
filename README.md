@@ -241,7 +241,7 @@ Distributed object/file storage system with S3-compatible API.
 - **Volume**: `${VOLUME_PORT}` (default 8080) — internal, rarely accessed directly
 - **Filer**: `${FILER_PORT}` (default 8888) — web file browser
 - **S3 API**: `${S3_PORT}` (default 8333) — S3-compatible clients (aws-cli, rclone, SDKs)
-- **Location**: [seaweedFS/](seaweedFS/) (see [seaweedFS/readme.md](seaweedFS/readme.md) for usage examples)
+- **Location**: [seaweedfs/](seaweedfs/) (see [seaweedfs/README.md](seaweedfs/README.md) for usage examples)
 
 #### 19. Postgres
 
@@ -374,7 +374,7 @@ Reverse proxy / web server terminating TLS on ports 80/443.
    cd prometheus && docker-compose -f docker-compose.yaml up -d
 
    # SeaweedFS (copy .env.example to .env and s3.json.example to s3.json first)
-   cd seaweedFS && docker-compose up -d
+   cd seaweedfs && docker compose up -d
    ```
 
    Most other services (dockge, emqx, excalidraw, homeassistant, homepage, jenkins, kafka, n8n, ollama, openwebui, postgres, sonarqube, vaultwarden, vscodeserver) follow the same pattern — `cd <service> && docker-compose up -d` (or `docker compose -f compose.yaml up -d` where the file is named `compose.yaml`).
@@ -388,7 +388,7 @@ Each service has its own configuration directory:
 - **Netdata**: `netdata/netdataconfig/`
 - **Prometheus**: `prometheus/prometheus.yml`
 - **Beszel**: `beszel/.env` (copy from `.env.example`, fill `BESZEL_TOKEN`/`BESZEL_KEY`)
-- **SeaweedFS**: `seaweedFS/.env` (copy from `.env.example`) and `seaweedFS/s3.json` (copy from `s3.json.example`) for S3 credentials — `s3.json` is gitignored
+- **SeaweedFS**: `seaweedfs/.env` (copy from `.env.example`) and `seaweedfs/s3.json` (copy from `s3.json.example`) for S3 credentials — `s3.json` is gitignored
 - **Traefik**: `traefik/traefik.yml` (static), `traefik/config/dynamic.yml` (dynamic), `traefik/acme.json` (certs)
 - **Nginx**: `nginx/conf.d/` (server blocks), `nginx/certs/` (TLS certs)
 - **Postgres**: `postgres/.env`
