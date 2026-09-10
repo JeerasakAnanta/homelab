@@ -109,3 +109,8 @@ beszel/beszel_data/id_ed25519
 # --- SeaweedFS ---
 seaweedfs/s3.json
 seaweedfs/data/
+
+# Syncthing
+syncthing/.env
+syncthing/config/
+syncthing/data/

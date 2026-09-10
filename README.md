@@ -40,6 +40,7 @@ graph TD
             VSCodeServer[code-server<br/>Port 8443]
             Excalidraw[Excalidraw<br/>Port 3000]
             SeaweedFS[SeaweedFS<br/>Master/Volume/Filer/S3]
+            Syncthing[Syncthing<br/>Port 8384]
             HomeAssistant[Home Assistant<br/>host network]
             Postgres[(Postgres)]
         end
@@ -250,6 +251,14 @@ Shared PostgreSQL database instance.
 - **Port**: `${DB_PORT}` (configured via `.env`)
 - **Location**: [postgres/](postgres/)
 
+#### 28. Syncthing
+
+Continuous peer-to-peer file synchronization between devices.
+
+- **Port**: 127.0.0.1:8384 (Web UI, localhost only — put behind a reverse proxy)
+- **Sync**: 22000/tcp+udp (peer sync), 21027/udp (local discovery)
+- **Location**: [syncthing/](syncthing/)
+
 ### Developer Tools
 
 #### 20. code-server (VS Code Server)
@@ -325,6 +334,7 @@ Reverse proxy / web server terminating TLS on ports 80/443.
 | SeaweedFS Filer    | 8888 (via `.env`)           | -             |
 | SeaweedFS S3       | 8333 (via `.env`)           | -             |
 | Postgres           | via `.env` (`DB_PORT`)      | -             |
+| Syncthing          | 127.0.0.1:8384 / 22000 / 21027 | -          |
 | code-server        | 8443                        | -             |
 | Excalidraw         | 3000                        | -             |
 | Vaultwarden        | via `.env`                  | -             |

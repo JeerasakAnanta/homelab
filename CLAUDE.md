@@ -23,7 +23,7 @@ Validate a compose file without starting it:
 cd <service> && docker compose config -q
 ```
 
-For services with a `.env.example` (`airflow/`, `beszel/`, `dagster/`, `homepage/`, `kafka/`, `n8n/`, `prefect/`, `seaweedfs/`, `sonarqube/`), copy it to `.env` before starting: `cp .env.example .env`.
+For services with a `.env.example` (`airflow/`, `beszel/`, `dagster/`, `homepage/`, `kafka/`, `n8n/`, `prefect/`, `seaweedfs/`, `sonarqube/`, `syncthing/`), copy it to `.env` before starting: `cp .env.example .env`.
 
 ## Architecture notes
 
