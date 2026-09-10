@@ -6,10 +6,14 @@ services:
     hostname: homelab-syncthing
     restart: unless-stopped
 
+    # The image runs as a fixed UID:GID 1000:1000 and cannot chown its own
+    # data dir, so the bind-mounted ./config and ./data must be owned by 1000
+    # on the host BEFORE first start:
+    #   mkdir -p config data
+    # (if Docker already created them as root: sudo chown -R 1000:1000 config data)
+    user: "1000:1000"
+
     environment:
-      # Match host user so synced files keep sane ownership on bind mounts.
-      - PUID=${PUID:-1000}
-      - PGID=${PGID:-1000}
       - TZ=${TZ:-Asia/Bangkok}
 
     ports:
