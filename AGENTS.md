@@ -2,6 +2,8 @@
 
 Personal home lab: ~25 independent Docker Compose stacks, one per top-level directory. No application code to build or test — all work is compose/config edits. `README.md` has the service catalog, ports, and architecture diagram. `CLAUDE.md` (repo root) is the Claude Code counterpart and agrees with this file.
 
+Skill: `homelab-ops` (`.agents/skills/homelab-ops/`, symlinked to `.claude/skills/`) holds the SSH operations workflow — load it for any live-server task.
+
 ## Commands
 
 - Start a service: `cd <service> && docker compose -f <actual-filename> up -d`
@@ -11,6 +13,16 @@ Personal home lab: ~25 independent Docker Compose stacks, one per top-level dire
   - Trap: `dozzle/` has BOTH `compose.yaml` (`:latest`, exposes 8080 publicly) and `docker-compose.yaml` (pinned `v10.6.14`, localhost-only, hardened). They diverge — confirm which one the user means before editing.
 - `.env.example` exists for `airflow/`, `beszel/`, `dagster/`, `homepage/`, `kafka/`, `n8n/`, `prefect/`, `seaweedfs/`, `sonarqube/` — copy to `.env` first. Other stacks use inline env vars in the compose file.
 - Postgres mounts `init-db.sh` into `/docker-entrypoint-initdb.d`; edits only take effect on first volume init, not restart.
+
+## Live operations (ssh homelab)
+
+- Hosts: `homelab` (`root@178.105.115.150`), fallback `homelab-ts` (Tailscale `deploy@100.92.222.34`). No compose work happens locally — everything runs on `ubuntu-lab`.
+- Inspect before restarting: `docker ps -a` + `docker inspect` (mounts, `.State.Error`). A bare `docker start` on `Exited (127)` just replays the same mount failure.
+- `mongodb` and `postgres-homelab` are Dockhand-managed orphans (compose projects `mongodb` / `postgres-lab-db`, stacks under `dockhand_data/.../ubuntulab/`). Editing them outside Dockhand causes drift — pick one manager per stack. `postgres/` here needs `-p postgres-lab-db` to match the live volume.
+- DB ports 27017/5432 are blocked from the internet via the `DOCKER-USER` iptables chain (localhost, tailscale0, inter-container allowed; persisted with `iptables-persistent`). `docker-proxy` bypasses UFW, so removing `ports:` alone does not hide a DB — re-save rules after changes (`netfilter-persistent save`).
+- Missing `_data` under `/var/lib/docker/volumes/` means data is gone; recreating it starts a fresh empty DB. Warn before doing it.
+- `(unhealthy)` after long uptime is often the `runc` exec bug (`fork/exec /proc/self/fd/6`), not app failure — host reboot clears it.
+- If a file bind-mount source is missing, Docker auto-creates a **directory** (seen with `postgres-lab-db/init-db.sh`) — replace with a file.
 
 ## Architecture gotchas
 
