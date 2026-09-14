@@ -17,7 +17,7 @@ x-dagster-env: &dagster-env
 
 services:
   dagster-postgres:
-    image: postgres:16
+    image: postgres:16.15
     container_name: dagster-postgres
     restart: unless-stopped
     environment:
@@ -40,7 +40,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.user_code
-    image: homelab-dagster-code:1.9.11
+    image: homelab-dagster-code:1.13.22
     container_name: dagster-code
     restart: unless-stopped
     environment:
@@ -57,7 +57,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dagster
-    image: homelab-dagster:1.9.11
+    image: homelab-dagster:1.13.22
     container_name: dagster-webserver
     restart: unless-stopped
     entrypoint:
@@ -90,7 +90,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dagster
-    image: homelab-dagster:1.9.11
+    image: homelab-dagster:1.13.22
     container_name: dagster-daemon
     restart: unless-stopped
     entrypoint:

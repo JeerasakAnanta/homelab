@@ -4,7 +4,7 @@ services:
   dozzle:
     # 1. Version Pinning: Never use ':latest' in production. 
     # Use a specific version tag to ensure predictable deployments.
-    image: amir20/dozzle:v10.6.14
+    image: amir20/dozzle:v11.0.1
     container_name: dozzle
     restart: unless-stopped
     

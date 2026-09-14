@@ -3,8 +3,8 @@
 FROM python:3.11-slim
 
 RUN pip install --no-cache-dir \
-    dagster==1.9.11 \
-    dagster-postgres==0.25.11
+    dagster==1.13.22 \
+    dagster-postgres==0.29.9
 
 ENV DAGSTER_HOME=/opt/dagster/dagster_home
 RUN mkdir -p $DAGSTER_HOME

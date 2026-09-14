@@ -1,6 +1,6 @@
 services:
   coolify:
-    image: coollabsio/coolify:latest
+    image: coollabsio/coolify:4.3.19
     container_name: coolify
     restart: unless-stopped
     volumes:

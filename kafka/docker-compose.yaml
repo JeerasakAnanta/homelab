@@ -10,7 +10,7 @@
 
 services:
   kafka:
-    image: apache/kafka:3.9.1
+    image: apache/kafka:4.3.1
     container_name: kafka
     restart: unless-stopped
     ports:
@@ -42,7 +42,7 @@ services:
       start_period: 30s
 
   redpanda-console:
-    image: redpandadata/console:v2.8.4
+    image: redpandadata/console:v3.11.0
     container_name: redpanda-console
     restart: unless-stopped
     ports:

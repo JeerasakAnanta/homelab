@@ -12,7 +12,7 @@ x-prefect-env: &prefect-env
 
 services:
   prefect-postgres:
-    image: postgres:16
+    image: postgres:16.15
     container_name: prefect-postgres
     restart: unless-stopped
     environment:
@@ -31,7 +31,7 @@ services:
       start_period: 5s
 
   prefect-server:
-    image: prefecthq/prefect:3.1.15-python3.11
+    image: prefecthq/prefect:3.8.6-python3.11
     container_name: prefect-server
     restart: unless-stopped
     command: prefect server start --host 0.0.0.0
@@ -62,7 +62,7 @@ services:
   # Serves the example flow(s). Edit files under ./flows and restart this service
   # to pick up changes — the directory is bind-mounted, no rebuild needed.
   prefect-flows:
-    image: prefecthq/prefect:3.1.15-python3.11
+    image: prefecthq/prefect:3.8.6-python3.11
     container_name: prefect-flows
     restart: unless-stopped
     working_dir: /opt/prefect/flows

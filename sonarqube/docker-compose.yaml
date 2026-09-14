@@ -1,6 +1,6 @@
 services:
   sonarqube:
-    image: sonarqube:community
+    image: sonarqube:26.9.0.129388-community
     container_name: sonarqube
     depends_on:
       sonarqube-db:
@@ -26,7 +26,7 @@ services:
     restart: unless-stopped
 
   sonarqube-db:
-    image: postgres:15.13
+    image: postgres:15.19
     container_name: sonarqube-db
     environment:
       - POSTGRES_USER=${SONAR_USER}
