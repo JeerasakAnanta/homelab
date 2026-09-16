@@ -1,0 +1,78 @@
+# Pilot playbook: manage the `homepage` stack with Ansible instead of Dockhand.
+#
+# Source of truth is the repo: ../../homepage/docker-compose.yaml + ../../homepage/config/
+# The server-side .env is NEVER overwritten (created only by one-time migration below).
+#
+# Usage (from repo root):
+#   ansible-playbook ansible/playbooks/homepage.yml --check --diff   # dry run first
+#   ansible-playbook ansible/playbooks/homepage.yml                   # apply
+#   ansible-playbook ansible/playbooks/homepage.yml -e target=homelab-ts  # Tailscale fallback
+#
+# Migration order (homepage is currently Dockhand-managed):
+#   1. Round 1 (BEFORE deleting Dockhand): sync + seed only, skip compose up:
+#        ansible-playbook playbooks/homepage.yml -e deploy=false
+#   2. Delete the `homepage` stack in the Dockhand UI (frees port 3030 + name).
+#   3. Round 2: full run -> compose up -d recreates it under Ansible:
+#        ansible-playbook playbooks/homepage.yml
+- name: Manage homepage stack
+  hosts: "{{ target | default('homelab') }}"
+  gather_facts: false
+  vars:
+    stack_name: homepage
+    stack_dir: /opt/homelab/homepage
+    repo_stack_dir: "{{ playbook_dir }}/../../homepage"
+
+  tasks:
+    - name: Ensure stack directory exists
+      ansible.builtin.file:
+        path: "{{ stack_dir }}"
+        state: directory
+        mode: "0755"
+
+    - name: "Sync docker-compose.yaml (source of truth: repo)"
+      ansible.builtin.copy:
+        src: "{{ repo_stack_dir }}/docker-compose.yaml"
+        dest: "{{ stack_dir }}/docker-compose.yaml"
+        mode: "0644"
+      register: compose_sync
+
+    - name: "Sync config directory (source of truth: repo)"
+      ansible.builtin.copy:
+        src: "{{ repo_stack_dir }}/config/"
+        dest: "{{ stack_dir }}/config/"
+        mode: preserve
+
+    - name: Check for existing .env
+      ansible.builtin.stat:
+        path: "{{ stack_dir }}/.env"
+      register: env_file
+
+    - name: Seed .env from live Dockhand container (one-time migration only)
+      ansible.builtin.shell: |
+        docker inspect {{ stack_name }} --format '{% raw %}{{range .Config.Env}}{{println .}}{{end}}{% endraw %}' \
+          | grep -E '^(PUID|PGID|TZ|HOME_LAB_IP|HOMEPAGE_|PROXMOX_|GRAFANA_)' \
+          > {{ stack_dir }}/.env
+        chmod 600 {{ stack_dir }}/.env
+      args:
+        creates: "{{ stack_dir }}/.env"
+      when: not env_file.stat.exists
+      register: env_seed
+      failed_when: env_seed.rc != 0
+
+    - name: Bring stack up with docker compose
+      community.docker.docker_compose_v2:
+        project_src: "{{ stack_dir }}"
+        state: present
+        pull: always
+      register: compose_up
+      when: deploy | default(true) | bool
+
+    - name: Wait for homepage to respond
+      ansible.builtin.uri:
+        url: http://localhost:3030
+        status_code: 200
+      register: health
+      retries: 12
+      delay: 5
+      until: health.status == 200
+      when: deploy | default(true) | bool
