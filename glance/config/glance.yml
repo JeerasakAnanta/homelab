@@ -2,6 +2,12 @@ server:
   assets-path: /app/assets
 
 theme:
+  background-color: 222 25 12
+  primary-color: 172 55 62
+  positive-color: 150 55 62
+  negative-color: 2 85 68
+  contrast-multiplier: 1.35
+  text-saturation-multiplier: 0.4
   # Note: assets are cached by the browser, changes to the CSS file
   # will not be reflected until the browser cache is cleared (Ctrl+F5)
   custom-css-file: /assets/user.css
