@@ -2,14 +2,16 @@
   columns:
     - size: small
       widgets:
-        - type: calendar
-          first-day-of-week: monday
         - type: clock
         - type: weather
           location: Bangkok, Thailand
           units: metric
           hour-format: 24h
+        - type: calendar
+          first-day-of-week: monday
 
+    - size: full
+      widgets:
         - type: bookmarks
           groups:
             - title: Apps
@@ -75,7 +77,7 @@
                 - title: MinIO
                   url: https://minio.jeerasakananta.dev
 
-    - size: full
+    - size: small
       widgets:
         - type: markets
           title: "Crypto & Tech"
@@ -96,41 +98,66 @@
     - size: small
       widgets:
         - type: rss
+          title: AI & LLM
+          limit: 10
+          collapse-after: 5
+          cache: 1h
+          feeds:
+            - url: https://huggingface.co/blog/feed.xml
+              title: Hugging Face
+            - url: https://simonwillison.net/atom/everything/
+              title: Simon Willison
+            - url: https://openai.com/news/rss.xml
+              title: OpenAI
+            - url: https://deepmind.google/blog/rss.xml
+              title: Google DeepMind
+            - url: https://www.reddit.com/r/LocalLLaMA/.rss
+              title: Reddit r/LocalLLaMA
+
+        - type: rss
           title: Security & Hacking
           limit: 10
+          collapse-after: 5
           cache: 1h
           feeds:
             - url: https://feeds.feedburner.com/TheHackersNews
               title: The Hacker News
-
-        - type: rss
-          title: Homelab & Self-Hosted
-          limit: 10
-          cache: 1h
-          feeds:
-            - url: https://selfh.st/rss/
-              title: Self Hosted
-
-            - url: https://www.reddit.com/r/homelab/.rss
-              title: Reddit r/homelab
 
     - size: full
       widgets:
         - type: rss
           title: Development & Learning
           limit: 10
+          collapse-after: 5
           cache: 1h
           feeds:
             - url: https://www.freecodecamp.org/news/rss
               title: freeCodeCamp.org
-
             - url: https://dev.to/feed/tag/automation
               title: Dev.to Automation
 
         - type: rss
           title: Tech News
           limit: 10
+          collapse-after: 5
           cache: 1h
           feeds:
             - url: https://techcrunch.com/feed/
               title: TechCrunch
+
+    - size: small
+      widgets:
+        - type: rss
+          title: Homelab & Self-Hosted
+          limit: 10
+          collapse-after: 5
+          cache: 1h
+          feeds:
+            - url: https://selfh.st/rss/
+              title: Self Hosted
+            - url: https://www.reddit.com/r/homelab/.rss
+              title: Reddit r/homelab
+            - url: https://www.reddit.com/r/selfhosted/.rss
+              title: Reddit r/selfhosted
+            - url: https://noted.lol/rss/
+              title: Noted
