@@ -161,3 +161,45 @@
               title: Reddit r/selfhosted
             - url: https://noted.lol/rss/
               title: Noted
+
+- name: YouTube
+  columns:
+    - size: full
+      widgets:
+        - type: videos
+          title: Homelab & Self-Hosted
+          style: grid-cards
+          limit: 12
+          collapse-after-rows: 2
+          channels:
+            - UCOk-gHyjcWZNj3Br4oxwh0A # Techno Tim
+            - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
+            - UC9x0AN7BWHpCDHSm9NiJFJQ # NetworkChuck
+            - UCsnGwSIHyoYN0kiINAGUKxg # Wolfgang's Channel
+            - UCZNhwA1B5YqiY1nLzmM0ZRg # Christian Lempa
+            - UCVy16RS5eEDh8anP8j94G2A # DB Tech
+            - UCgdTVe88YVSrOZ9qKumhULQ # Hardware Haven
+
+        - type: videos
+          title: AI & LLM
+          style: grid-cards
+          limit: 12
+          collapse-after-rows: 2
+          channels:
+            - UCsBjURrPoezykLs9EqgamOA # Fireship
+            - UCXUPKJO5MZQN11PqgIvyuvQ # Andrej Karpathy
+            - UCbfYPyITQ-7l4upoX8nvctg # Two Minute Papers
+            - UCzi5kcwU8aT4aLR7LcYhfWQ # Matthew Berman
+            - UCNJ1Ymd5yFuUPtn21xtRbbw # AI Explained
+            - UCajiMK_CY9icRhLepS8_3ug # Alex Ziskind
+            - UCYO_jab_esuFRV4b17AJtAw # 3Blue1Brown
+
+        - type: videos
+          title: DevOps & Dev
+          style: grid-cards
+          limit: 12
+          collapse-after-rows: 2
+          channels:
+            - UCdngmbVKX1Tgre699-XLlUA # TechWorld with Nana
+            - UCZgt6AzoyjslHTC9dz0UoTw # ByteByteGo
+            - UCbRP3c757lWg9M-U7TyEkXA # Theo - t3.gg
