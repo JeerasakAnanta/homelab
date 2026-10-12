@@ -166,40 +166,57 @@
   columns:
     - size: full
       widgets:
-        - type: videos
+        - type: rss
           title: Homelab & Self-Hosted
-          style: grid-cards
+          style: horizontal-cards
           limit: 12
-          collapse-after-rows: 2
-          channels:
-            - UCOk-gHyjcWZNj3Br4oxwh0A # Techno Tim
-            - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
-            - UC9x0AN7BWHpCDHSm9NiJFJQ # NetworkChuck
-            - UCsnGwSIHyoYN0kiINAGUKxg # Wolfgang's Channel
-            - UCZNhwA1B5YqiY1nLzmM0ZRg # Christian Lempa
-            - UCVy16RS5eEDh8anP8j94G2A # DB Tech
-            - UCgdTVe88YVSrOZ9qKumhULQ # Hardware Haven
+          cache: 1h
+          feeds:
+            - url: https://www.youtube.com/feeds/videos.xml?playlist_id=${YT_TECHNO_TIM}
+              title: Techno Tim
+            - url: https://www.youtube.com/feeds/videos.xml?playlist_id=${YT_JEFF_GEERLING}
+              title: Jeff Geerling
+            - url: https://www.youtube.com/feeds/videos.xml?playlist_id=${YT_NETWORKCHUCK}
+              title: NetworkChuck
+            - url: https://www.youtube.com/feeds/videos.xml?playlist_id=${YT_WOLFGANG_S_CHANNEL}
+              title: Wolfgang's Channel
+            - url: https://www.youtube.com/feeds/videos.xml?playlist_id=${YT_CHRISTIAN_LEMPA}
+              title: Christian Lempa
+            - url: https://www.youtube.com/feeds/videos.xml?playlist_id=${YT_DB_TECH}
+              title: DB Tech
+            - url: https://www.youtube.com/feeds/videos.xml?playlist_id=${YT_HARDWARE_HAVEN}
+              title: Hardware Haven
 
-        - type: videos
+        - type: rss
           title: AI & LLM
-          style: grid-cards
+          style: horizontal-cards
           limit: 12
-          collapse-after-rows: 2
-          channels:
-            - UCsBjURrPoezykLs9EqgamOA # Fireship
-            - UCXUPKJO5MZQN11PqgIvyuvQ # Andrej Karpathy
-            - UCbfYPyITQ-7l4upoX8nvctg # Two Minute Papers
-            - UCzi5kcwU8aT4aLR7LcYhfWQ # Matthew Berman
-            - UCNJ1Ymd5yFuUPtn21xtRbbw # AI Explained
-            - UCajiMK_CY9icRhLepS8_3ug # Alex Ziskind
-            - UCYO_jab_esuFRV4b17AJtAw # 3Blue1Brown
+          cache: 1h
+          feeds:
+            - url: https://www.youtube.com/feeds/videos.xml?playlist_id=${YT_FIRESHIP}
+              title: Fireship
+            - url: https://www.youtube.com/feeds/videos.xml?playlist_id=${YT_ANDREJ_KARPATHY}
+              title: Andrej Karpathy
+            - url: https://www.youtube.com/feeds/videos.xml?playlist_id=${YT_TWO_MINUTE_PAPERS}
+              title: Two Minute Papers
+            - url: https://www.youtube.com/feeds/videos.xml?playlist_id=${YT_MATTHEW_BERMAN}
+              title: Matthew Berman
+            - url: https://www.youtube.com/feeds/videos.xml?playlist_id=${YT_AI_EXPLAINED}
+              title: AI Explained
+            - url: https://www.youtube.com/feeds/videos.xml?playlist_id=${YT_ALEX_ZISKIND}
+              title: Alex Ziskind
+            - url: https://www.youtube.com/feeds/videos.xml?playlist_id=${YT_3BLUE1BROWN}
+              title: 3Blue1Brown
 
-        - type: videos
+        - type: rss
           title: DevOps & Dev
-          style: grid-cards
+          style: horizontal-cards
           limit: 12
-          collapse-after-rows: 2
-          channels:
-            - UCdngmbVKX1Tgre699-XLlUA # TechWorld with Nana
-            - UCZgt6AzoyjslHTC9dz0UoTw # ByteByteGo
-            - UCbRP3c757lWg9M-U7TyEkXA # Theo - t3.gg
+          cache: 1h
+          feeds:
+            - url: https://www.youtube.com/feeds/videos.xml?playlist_id=${YT_TECHWORLD_WITH_NANA}
+              title: TechWorld with Nana
+            - url: https://www.youtube.com/feeds/videos.xml?playlist_id=${YT_BYTEBYTEGO}
+              title: ByteByteGo
+            - url: https://www.youtube.com/feeds/videos.xml?playlist_id=${YT_THEO_T3_GG}
+              title: Theo - t3.gg

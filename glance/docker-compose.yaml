@@ -5,6 +5,7 @@ services:
     restart: unless-stopped
     ports:
       - ${GLANCE_PORT:-8080}:8080
+    env_file: .env
     environment:
       - TZ=${TZ:-Asia/Bangkok}
     volumes:
