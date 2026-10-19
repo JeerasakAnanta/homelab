@@ -6,6 +6,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A personal home lab: a collection of ~25 independent Docker Compose stacks (monitoring, CI/CD, automation/AI, storage, dev tools, security), each living in its own top-level directory. There is no application code to build or test — changes here are Docker Compose / config edits. See `README.md` for the full service catalog, ports, and mermaid architecture diagram.
 
+This repo is the source of truth for the home server's stacks, but editing a compose file here doesn't deploy it by itself — see **Deployment** below for how changes actually reach the running host.
+
+## Deployment
+
+The home server runs these stacks two different ways, and a config change only takes effect through whichever path is actually in use for that service:
+
+- **DockHand (git-sync, primary path)**: DockHand pulls this repo directly from GitHub and redeploys a stack from a given compose file path (e.g. `beszel/docker-compose.yaml`). For stacks managed this way, **environment variables are entered in DockHand's per-stack UI, not read from a committed `.env` file** — the repo's `.env.example` only documents which variables exist and their shape; it is not consulted at deploy time unless DockHand's "Additional env file" field points at one. When changing a variable for a stack deployed this way, say so explicitly — the fix needs to go into DockHand's UI, not just the repo.
+- **Manual `docker compose up -d`**: for stacks not wired into DockHand, or for local testing, run compose directly from the service directory per the Commands section below. This path *does* read `.env` next to the compose file.
+
+If unsure which path a given service uses, ask rather than assuming — editing `.env` and declaring a fix done is wrong for anything DockHand manages.
+
+**Reaching the host**: the server is reachable over Tailscale and over its public IP; SSH aliases for both are already configured (`~/.ssh/config` — check there rather than asking for IPs). Public-facing services go through Traefik + Cloudflare on `*.jeerasakananta.dev` hostnames (see the Traefik routing pattern below); admin/internal tools (Beszel, Dozzle, Syncthing GUI, SonarQube, etc.) are reached directly over Tailscale instead, so their compose files intentionally bind `0.0.0.0` rather than `127.0.0.1` — don't "harden" that back to localhost-only without checking whether it's the service's only access path first.
+
 ## Commands
 
 Each service is started independently from its own directory:
@@ -42,6 +55,8 @@ labels:
 ```
 
 Most other services are reached directly on their own port instead (see the Ports table in `README.md`); several ports overlap by default (n8n, Open WebUI, Jenkins internal all default near 8080) so check the target compose file before running two of them together.
+
+**Beszel hub/agent use a Unix socket, not TCP**: `beszel/docker-compose.yaml` runs `beszel` (hub) and `beszel-agent` sharing a `beszel_socket` volume; the agent's `LISTEN` env points at that socket path, not a TCP port. When registering this host as a system in the Beszel hub UI, the **Host / IP field must be the socket path** (`/beszel_socket/beszel.sock`, absolute, as mounted inside the hub container), not an IP or `localhost` — the Port field and Tailscale IP are irrelevant for a same-host agent.
 
 **Per-service config directories**: config lives alongside each compose file, not in a shared location — e.g. `glance/config/`, `traefik/config/dynamic.yml` + `traefik.yml`, `prometheus/prometheus.yml`, `netdata/netdataconfig/`. Bind-mounted data directories (`*-data/`, `vaultwarden/vw-data`, `homeassistant/config`, `sonarqube/data/`, etc.) and all secrets (`.env`, `*.pem`, `*.key`, `traefik/acme.json`) are gitignored — check `.gitignore` before adding new persistent paths for a service.
 
