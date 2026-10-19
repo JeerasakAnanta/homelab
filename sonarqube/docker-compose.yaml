@@ -6,7 +6,9 @@ services:
       sonarqube-db:
         condition: service_healthy
     ports:
-      - "127.0.0.1:9000:9000"
+      # Bound to all interfaces so it's reachable over Tailscale directly;
+      # SonarQube's own login still gates access.
+      - "0.0.0.0:${SONAR_PORT:-9000}:9000"
     environment:
       - SONAR_JDBC_URL=jdbc:postgresql://sonarqube-db:5432/sonarqube
       - SONAR_JDBC_USERNAME=${SONAR_USER}
