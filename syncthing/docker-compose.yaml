@@ -17,8 +17,10 @@ services:
       - TZ=${TZ:-Asia/Bangkok}
 
     ports:
-      # Web UI — bind to localhost only; reach it through a reverse proxy.
-      - "${GUI_BIND:-127.0.0.1}:${GUI_PORT:-8384}:8384"
+      # Web UI — bind to all interfaces by default so it's reachable over
+      # Tailscale directly. Make sure the GUI has its own auth set, since
+      # no reverse proxy sits in front by default.
+      - "${GUI_BIND:-0.0.0.0}:${GUI_PORT:-8384}:8384"
       # Sync protocol (TCP + QUIC/UDP) — must be reachable by peers.
       - "${SYNC_PORT:-22000}:22000/tcp"
       - "${SYNC_PORT:-22000}:22000/udp"
