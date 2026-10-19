@@ -1,13 +1,47 @@
 services:
   dozzle:
     container_name: dozzle
+    # Version Pinning: never use ':latest' — pin an explicit tag for predictable deployments.
     image: amir20/dozzle:v11.0.1
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    ports:
-      - 8080:8080
     restart: unless-stopped
+    ports:
+      # Bound to all interfaces so it's reachable over Tailscale directly.
+      # DOZZLE_AUTH_PROVIDER=simple below gates access.
+      - "0.0.0.0:${DOZZLE_PORT:-8080}:8080"
+    volumes:
+      # Read-only: Dozzle only needs to read container logs, not control the daemon.
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - dozzle_data:/data
+    environment:
+      - DOZZLE_LEVEL=info
+      # Simple auth so logs aren't public; create users via the web UI on first launch.
+      - DOZZLE_AUTH_PROVIDER=simple
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+        reservations:
+          cpus: '0.10'
+          memory: 64M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "/dozzle", "healthcheck"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 networks: {}
+
+volumes:
+  dozzle_data:
+
 x-dockge:
   urls:
     - https://dozzle.jeerasakananta.dev/
