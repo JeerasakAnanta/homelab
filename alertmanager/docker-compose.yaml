@@ -1,0 +1,42 @@
+# Alertmanager — Alert routing, deduplication, and notification
+# Receives alerts from Prometheus/Grafana, routes to receivers (Telegram, Email, Slack, Webhook)
+
+services:
+  alertmanager:
+    image: prom/alertmanager:v0.28.1
+    container_name: alertmanager
+    restart: unless-stopped
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./config/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      - ./templates:/etc/alertmanager/templates:ro
+      - alertmanager_data:/alertmanager
+    command:
+      - "--config.file=/etc/alertmanager/alertmanager.yml"
+      - "--storage.path=/alertmanager"
+      - "--web.external-url=https://alertmanager.jeerasakananta.dev"
+    networks:
+      - alertmanager_net
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9093/-/healthy"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+        reservations:
+          cpus: '0.10'
+          memory: 64M
+
+networks:
+  alertmanager_net:
+    driver: bridge
+
+volumes:
+  alertmanager_data:
+    driver: local

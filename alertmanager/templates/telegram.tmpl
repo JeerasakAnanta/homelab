@@ -1,0 +1,18 @@
+{{ define "telegram.default.message" }}
+{{ range .Alerts }}
+<b>{{ .Labels.alertname }}</b> [{{ .Labels.severity | upper }}]
+<code>Job:</code> {{ .Labels.job }}
+<code>Instance:</code> {{ .Labels.instance }}
+<code>Summary:</code> {{ .Annotations.summary }}
+<code>Description:</code> {{ .Annotations.description }}
+{{ if gt (len .Annotations.runbook_url) 0 }}
+<code>Runbook:</code> <a href="{{ .Annotations.runbook_url }}">{{ .Annotations.runbook_url }}</a>
+{{ end }}
+{{ if eq .Status "firing" }}
+🔥 <b>FIRING</b> since {{ .StartsAt.Format "2006-01-02 15:04:05" }}
+{{ else }}
+✅ <b>RESOLVED</b> at {{ .EndsAt.Format "2006-01-02 15:04:05" }}
+{{ end }}
+---
+{{ end }}
+{{ end }}
