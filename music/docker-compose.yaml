@@ -1,0 +1,29 @@
+services:
+  navidrome:
+    image: deluan/navidrome:latest
+    container_name: navidrome
+    restart: unless-stopped
+    user: "${ND_UID}:${ND_GID}"
+    ports:
+      - "${ND_PORT}:4533"
+    environment:
+      ND_SCANSCHEDULE: ${ND_SCANSCHEDULE}
+      ND_LOGLEVEL: ${ND_LOGLEVEL}
+      ND_SESSIONTIMEOUT: ${ND_SESSIONTIMEOUT}
+      ND_BASEURL: ${ND_BASEURL}
+    volumes:
+      - ./data:/data
+      - ${MUSIC_PATH}:/music:ro
+
+  metube:
+    image: ghcr.io/alexta69/metube:latest
+    container_name: metube
+    restart: unless-stopped
+    user: "${ND_UID}:${ND_GID}"
+    ports:
+      - "8081:8081"
+    environment:
+      DOWNLOAD_DIR: /downloads
+      YTDL_OPTIONS: '{"format":"bestaudio","embedmetadata":true,"writethumbnail":true,"postprocessors":[{"key":"FFmpegExtractAudio","preferredcodec":"mp3","preferredquality":"0"},{"key":"FFmpegMetadata"},{"key":"EmbedThumbnail"}]}'
+    volumes:
+      - ${MUSIC_PATH}:/downloads
