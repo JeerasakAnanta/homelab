@@ -1,0 +1,63 @@
+# Loki — Log Aggregation Stack
+# Single-node mode (boltdb-shipper) for home lab simplicity
+# For larger scale, migrate to microservices mode with separate components
+
+services:
+  loki:
+    image: grafana/loki:3.3.2
+    container_name: loki
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./config/loki-local-config.yaml:/etc/loki/local-config.yaml:ro
+      - loki_data:/loki
+    networks:
+      - loki_net
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3100/ready"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    deploy:
+      resources:
+        limits:
+          cpus: '1.00'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  promtail:
+    image: grafana/promtail:3.3.2
+    container_name: promtail
+    restart: unless-stopped
+    volumes:
+      - ./config/promtail-config.yaml:/etc/promtail/config.yaml:ro
+      - /var/log:/var/log:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /run/systemd/journal:/run/systemd/journal:ro
+    networks:
+      - loki_net
+    depends_on:
+      loki:
+        condition: service_healthy
+    command: -config.file=/etc/promtail/config.yaml
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+        reservations:
+          cpus: '0.10'
+          memory: 64M
+
+networks:
+  loki_net:
+    driver: bridge
+
+volumes:
+  loki_data:
+    driver: local
