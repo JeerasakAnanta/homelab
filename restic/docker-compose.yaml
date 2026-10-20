@@ -1,0 +1,89 @@
+# Restic — Backup to S3-compatible storage (SeaweedFS, MinIO, AWS S3, etc.)
+# Runs as cron job via container. For system-level backups, run on host.
+
+services:
+  restic:
+    image: restic/restic:0.18.0
+    container_name: restic
+    # No restart - runs via cron schedule
+    environment:
+      - RESTIC_REPOSITORY=s3:${S3_ENDPOINT}/${S3_BUCKET}
+      - RESTIC_PASSWORD=${RESTIC_PASSWORD}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - RESTIC_CACHE_DIR=/cache
+    volumes:
+      - ./config:/config:ro
+      - ./scripts:/scripts:ro
+      - restic_cache:/cache
+      # Bind mount directories to backup
+      - /home/game:/data/home-game:ro
+      - /home/game/2_Areas/1_homelab:/data/homelab:ro
+      - /etc:/data/etc:ro
+      - /var/lib/docker/volumes:/data/docker-volumes:ro
+    networks:
+      - restic_net
+    # Run backup on start (for testing), then rely on cron
+    command: >
+      sh -c "
+        echo 'Testing repository connection...' &&
+        restic -r \"$${RESTIC_REPOSITORY\"} cat config &&
+        echo 'Repository OK. Starting backup...' &&
+        /scripts/backup.sh
+      "
+    deploy:
+      resources:
+        limits:
+          cpus: '1.00'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+  # Cron scheduler for automated backups
+  restic-cron:
+    image: alpine:3.20
+    container_name: restic-cron
+    restart: unless-stopped
+    environment:
+      - RESTIC_REPOSITORY=s3:${S3_ENDPOINT}/${S3_BUCKET}
+      - RESTIC_PASSWORD=${RESTIC_PASSWORD}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - BACKUP_SCHEDULE=${BACKUP_SCHEDULE:-0 2 * * *}  # Daily at 2 AM
+      - PRUNE_SCHEDULE=${PRUNE_SCHEDULE:-0 4 * * 0}     # Weekly Sunday 4 AM
+      - CHECK_SCHEDULE=${CHECK_SCHEDULE:-0 6 * * 0}     # Weekly Sunday 6 AM
+    volumes:
+      - ./scripts:/scripts:ro
+      - restic_cache:/cache
+      - /home/game:/data/home-game:ro
+      - /home/game/2_Areas/1_homelab:/data/homelab:ro
+      - /etc:/data/etc:ro
+      - /var/lib/docker/volumes:/data/docker-volumes:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - restic_net
+    command: >
+      sh -c "
+        apk add --no-cache restic dcron &&
+        echo '$${BACKUP_SCHEDULE} /scripts/backup.sh >> /var/log/backup.log 2>&1' > /etc/crontabs/root &&
+        echo '$${PRUNE_SCHEDULE} /scripts/prune.sh >> /var/log/prune.log 2>&1' >> /etc/crontabs/root &&
+        echo '$${CHECK_SCHEDULE} /scripts/check.sh >> /var/log/check.log 2>&1' >> /etc/crontabs/root &&
+        crond -f -l 8
+      "
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+        reservations:
+          cpus: '0.05'
+          memory: 32M
+
+networks:
+  restic_net:
+    driver: bridge
+
+volumes:
+  restic_cache:
+    driver: local

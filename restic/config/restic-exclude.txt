@@ -1,0 +1,43 @@
+# Restic exclude patterns
+# One pattern per line, supports glob patterns
+
+# Cache directories
+**/node_modules
+**/.cache
+**/cache
+**/tmp
+**/temp
+
+# Build artifacts
+**/dist
+**/build
+**/*.pyc
+**/__pycache__
+
+# Logs
+**/*.log
+**/logs/
+
+# Docker
+/var/lib/docker/overlay2
+/var/lib/docker/containers/*/*.log
+
+# System
+/proc
+/sys
+/dev
+/run
+/var/run
+/var/lock
+
+# Media (large files, backup separately if needed)
+**/*.mp4
+**/*.mkv
+**/*.avi
+**/*.mov
+**/*.iso
+
+# Virtual machines
+**/*.vmdk
+**/*.qcow2
+**/*.vdi
