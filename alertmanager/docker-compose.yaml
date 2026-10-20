@@ -1,5 +1,9 @@
-# Alertmanager — Alert routing, deduplication, and notification
-# Receives alerts from Prometheus/Grafana, routes to receivers (Telegram, Email, Slack, Webhook)
+# ============================================================================
+# Alertmanager
+# Alert routing, deduplication, and notification
+# Receives alerts from Prometheus/Grafana, routes to receivers 
+# on (Telegram, Email, Slack, Webhook)
+# ============================================================================
 
 services:
   alertmanager:
