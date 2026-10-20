@@ -49,6 +49,25 @@ n8n/.env
 # Homepage
 homepage/config/logs/
 
+# Loki
+loki/data/
+
+# Alertmanager
+alertmanager/data/
+
+# Jaeger
+jaeger/data/
+
+# Vault
+vault/data/
+vault/logs/
+vault/.env
+
+# Restic
+restic/cache/
+restic/.env
+restic/data/
+
 # Mapped volume data (legacy bind-mounts — keep ignored even though compose now uses named volumes)
 n8n-data/
 postgres-data/
