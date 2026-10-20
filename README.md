@@ -41,6 +41,7 @@ graph TD
             Excalidraw[Excalidraw<br/>3000]
             SeaweedFS[SeaweedFS<br/>9333/8080/8888/8333]
             Syncthing[Syncthing<br/>8384/22000/21027]
+            OpenGym[openGym<br/>8090]
             HomeAssistant[Home Assistant<br/>host net]
             Postgres[Postgres<br/>configurable]
             ClickHouse[ClickHouse<br/>8123/9000]
@@ -102,6 +103,7 @@ graph TD
     User -->|8443| VSCodeServer
     User -->|3000| Excalidraw
     User -->|8384| Syncthing
+    User -->|8090| OpenGym
     User -->|8088| Airflow
     User -->|8888| JupyterLab
     User -->|81| NginxProxyMgr
@@ -356,6 +358,13 @@ Continuous peer-to-peer file synchronization between devices.
 - **Healthcheck**: `curl -fkLsS -m 5 http://127.0.0.1:8384/rest/noauth/health`
 - **Location**: [syncthing/](syncthing/)
 
+#### 30. openGym
+Self-hosted workout tracker with passkey profiles, cross-device sync and an installable PWA. Two containers (`opengym-web` nginx + `opengym-api` Node), data stored as plain JSON in `./data` (no database).
+- **Ports**: `${WEB_PORT:-8090}` → 80 (web UI)
+- **HTTPS**: passkeys require HTTPS on the exact `RP_ID` hostname — put Traefik/Cloudflare in front and set `RP_ID` / `ORIGIN` in the DockHand stack env
+- **Backup**: `tar czf opengym-backup-$(date +%F).tar.gz data/`
+- **Location**: [opengym/](opengym/)
+
 ### Developer Tools
 
 #### 30. code-server (VS Code Server)
@@ -463,6 +472,7 @@ Container registry (Harbor).
 | Airflow | 8088 | 8080 | — | `${AIRFLOW_WEB_PORT:-8088}` |
 | JupyterLab | 8888 | 8888 | — | Token auth |
 | Syncthing | 8384, 22000, 21027 | 8384, 22000, 21027 | — | `0.0.0.0` GUI bind |
+| openGym | 8090 | 80 | — | `${WEB_PORT:-8090}` |
 | code-server | 8443 | 8443 | — | |
 | Excalidraw | 3000 | 80 | — | |
 | Vaultwarden | `${APP_PORT}`, `${WEBSOCKET_PORT}` | 80, 3012 | — | Via `.env` |
@@ -689,6 +699,7 @@ Each service has its own configuration directory:
 | Uptime Kuma | `kuma/.env` | KUMA_VERSION, KUMA_PORT |
 | Dozzle | `dozzle/.env` | DOZZLE_PORT |
 | Syncthing | `syncthing/.env` | GUI_BIND, GUI_PORT, SYNC_PORT, DISCOVERY_PORT, TZ |
+| openGym | `opengym/.env` | WEB_PORT, RP_ID, ORIGIN, FIRST_USER_ADMIN, INVITE_ONLY |
 | ClickHouse | Inline in compose | Default admin/admin, change for production |
 | Loki | `loki/config/` | `loki-local-config.yaml`, `promtail-config.yaml` |
 | Alertmanager | `alertmanager/config/`, `alertmanager/templates/` | `alertmanager.yml`, telegram template |

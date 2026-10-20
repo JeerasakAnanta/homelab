@@ -133,3 +133,7 @@ seaweedfs/data/
 syncthing/.env
 syncthing/config/
 syncthing/data/
+
+# openGym
+opengym/.env
+opengym/data/
