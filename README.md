@@ -169,7 +169,7 @@ Every service links to its directory. Hostnames use the `jeerasakananta.dev` dom
 | Service | Purpose | Port | Notes |
 |---------|---------|------|-------|
 | [SeaweedFS](seaweedfs/) | Object storage with S3 API | `9333`, `8080`, `8888`, `8333` | Usage examples in [seaweedfs/README.md](seaweedfs/README.md) |
-| [Postgres](postgres/) | Shared PostgreSQL 18 | `${DB_PORT}` | Network `homelab_net`; init script runs on first init only |
+| [Postgres](postgres/) | Shared PostgreSQL 18 + pgAdmin | `${DB_PORT}`, `${PGADMIN_PORT:-5050}` | Network `homelab_net`; init script runs on first init only |
 | [ClickHouse](clickhouse/) | Columnar OLAP database | `8123`, `9000`, `9004`, `9005` | Default `admin`/`admin` — change before exposing |
 | [MongoDB](mongodb/) | Document DB + Mongo Express | `27017`, `8081` | Separate DB and UI credentials |
 | [Syncthing](syncthing/) | P2P file synchronization | `8384`, `22000`, `21027` | Runs as UID 1000 — see [Setup notes](#per-stack-setup-notes) |
@@ -250,6 +250,7 @@ labels:
 | Home Assistant | host | — | host |
 | SeaweedFS Master / S3 | 9333 / 8333 | 9333 / 8333 | `seaweed_net` |
 | Postgres | `${DB_PORT}` | 5432 | `homelab_net` |
+| pgAdmin | `${PGADMIN_PORT:-5050}` | 80 | `homelab_net` |
 | ClickHouse | 8123, 9000, 9004, 9005 | same | — |
 | MongoDB / Mongo Express | 27017 / 8081 | 27017 / 8081 | — |
 | MeTube (`music/`) | 8081 | 8081 | — |
@@ -344,7 +345,7 @@ Config lives next to each compose file. Bind-mounted data directories and all se
 | Dagster | `dagster/.env`, `dagster.yaml`, `workspace.yaml` | Postgres credentials, web port |
 | Prefect | `prefect/.env`, `prefect/flows/` | Postgres credentials, web port |
 | Kafka | `kafka/.env` | `KAFKA_ADVERTISED_HOST`, console port, cluster ID |
-| SeaweedFS | `seaweedfs/.env`, `seaweedfs/s3.json` | Copy from the examples |
+| Postgres | `postgres/.env` | DB name, user, password, port, pgAdmin login + port |
 | Postgres | `postgres/.env` | DB name, user, password, port |
 | MongoDB | `mongodb/.env` | Root and Mongo Express credentials, init DB |
 | ClickHouse | compose | Default `admin`/`admin` — change |
