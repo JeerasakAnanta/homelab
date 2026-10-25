@@ -41,7 +41,7 @@ This repository is the source of truth for the stacks running on a single Docker
 | Principle | What it means here |
 |-----------|--------------------|
 | Independent stacks | Start, stop and update any service without touching the others |
-| Pinned versions | Images use explicit tags, never `:latest` (known exceptions are listed in [Operational Notes](#operational-notes)) |
+| Pinned versions | Images use explicit tags, never `:latest` |
 | Secrets stay out of git | `.env`, keys, certificates and data directories are gitignored; only `.env.example` is committed |
 | Private by default | Admin tools are reached over Tailscale; only selected services are public through Traefik + Cloudflare |
 
@@ -417,7 +417,7 @@ homelab/
 
 ## Operational Notes
 
-- **Pin image versions.** Never use `:latest` (rationale in `dozzle/compose.yaml`). Known exceptions, where upstream publishes no stable tags: `jupyterlab`, `vscodeserver`, `excalidraw`, `harbor` (Homarr), `navidrome`, `music`, `beszel` (default), `homeassistant` (`stable`). Pin them when you can.
+- **Pin image versions.** Never use `:latest` (rationale in `dozzle/compose.yaml`). Every image now has an explicit tag; stacks that expose a `*_VERSION` variable in `.env.example` (e.g. `NAVIDROME_VERSION`, `BESZEL_VERSION`) can override it per deploy. `excalidraw` is pinned to a `sha-` tag because upstream publishes no release tags.
 - **Databases are not public.** Ports `27017` and `5432` are blocked from the internet through the `DOCKER-USER` iptables chain (localhost, `tailscale0` and inter-container traffic allowed; persisted with `netfilter-persistent`). `docker-proxy` bypasses UFW, so removing `ports:` alone does not hide a database — re-save the rules after changes with `netfilter-persistent save`.
 - **Postgres init scripts** (`init-db.sh` in `/docker-entrypoint-initdb.d`) run only on first volume initialization, never on restart.
 - **A missing `_data` directory under `/var/lib/docker/volumes/` means the data is gone** — recreating it starts an empty database. Warn before doing it.

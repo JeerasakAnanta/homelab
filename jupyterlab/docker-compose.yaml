@@ -1,7 +1,7 @@
 services:
   jupyterlab:
     # or jupyter/tensorflow-notebook, jupyter/pytorch-notebook
-    image: jupyter/scipy-notebook:latest
+    image: quay.io/jupyter/scipy-notebook:${JUPYTER_VERSION:-lab-4.6.4}
     container_name: jupyterlab
     restart: unless-stopped
     ports:

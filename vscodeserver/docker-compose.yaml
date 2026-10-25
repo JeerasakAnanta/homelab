@@ -1,6 +1,6 @@
 services:
   vscode-server:
-    image: lscr.io/linuxserver/code-server:latest
+    image: lscr.io/linuxserver/code-server:${CODE_SERVER_VERSION:-4.143.1}
     container_name: vscode-server
     environment:
       - PUID=${PUID}

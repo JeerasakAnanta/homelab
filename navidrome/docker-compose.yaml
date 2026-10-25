@@ -1,6 +1,6 @@
 services:
   navidrome:
-    image: deluan/navidrome:latest
+    image: deluan/navidrome:${NAVIDROME_VERSION:-0.64.2}
     container_name: navidrome
     restart: unless-stopped
     user: ${ND_UID:-1000}:${ND_GID:-1000}

@@ -1,7 +1,7 @@
 services:
   homarr:
     container_name: homarr
-    image: ghcr.io/homarr-labs/homarr:latest
+    image: ghcr.io/homarr-labs/homarr:${HOMARR_VERSION:-v2.9.0}
     restart: unless-stopped
     ports:
       - "7575:7575"
