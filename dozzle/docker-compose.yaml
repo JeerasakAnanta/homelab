@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     ports:
       # Bound to all interfaces so it's reachable over Tailscale directly.
-      # DOZZLE_AUTH_PROVIDER=simple below gates access.
+      # No login: host firewall keeps this port off the public IP, so it is Tailscale-only.
       - "0.0.0.0:${DOZZLE_PORT:-8080}:8080"
     volumes:
       # Read-only: Dozzle only needs to read container logs, not control the daemon.
@@ -14,8 +14,8 @@ services:
       - /var/data/dozzle:/data
     environment:
       - DOZZLE_LEVEL=info
-      # Simple auth so logs aren't public; create users via the web UI on first launch.
-      - DOZZLE_AUTH_PROVIDER=simple
+      # Auth disabled on purpose. To re-enable, use "simple" and put users.yml in /var/data/dozzle.
+      - DOZZLE_AUTH_PROVIDER=none
     security_opt:
       - no-new-privileges:true
     deploy:
