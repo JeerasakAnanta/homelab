@@ -125,7 +125,7 @@ Every service links to its directory. Hostnames use the `jeerasakananta.dev` dom
 | [Netdata](netdata/) | Real-time host metrics | `19999` | Host network mode |
 | [Beszel](beszel/) | Lightweight host monitoring (hub + agent) | `${BESZEL_PORT:-8090}` | Agent talks to the hub over a Unix socket — see below |
 | [Uptime Kuma](kuma/) | Uptime and status monitoring | `${KUMA_PORT:-3001}` | `https://kuma.jeerasakananta.dev` |
-| [Dozzle](dozzle/) | Live Docker log viewer | `${DOZZLE_PORT:-8080}` | Simple auth; users created in the web UI |
+| [Dozzle](dozzle/) | Live Docker log viewer | `${DOZZLE_PORT:-8080}` | Auth disabled (`DOZZLE_AUTH_PROVIDER=none`); keep port `8080` off the public IP |
 | [Loki](loki/) + Promtail | Log aggregation | `3100` / `9080` | 7-day retention; add `http://loki:3100` as a Grafana datasource |
 | [Alertmanager](alertmanager/) | Alert routing | `9093` | Telegram receiver; template in `alertmanager/templates/` |
 | [Jaeger](jaeger/) | Distributed tracing | `16686`, `4317/4318` | Badger storage; OTLP endpoint `http://jaeger:4318/v1/traces` |
@@ -148,7 +148,7 @@ Every service links to its directory. Hostnames use the `jeerasakananta.dev` dom
 
 | Service | Purpose | Port | Notes |
 |---------|---------|------|-------|
-| [n8n](n8n/) | Workflow automation | `5678` | `https://n8n.jeerasakananta.dev` |
+| [n8n](n8n/) | Workflow automation | `5678` | `https://n8n.jeerasakananta.dev`; also runs `sandbox-api` and a privileged DinD `sandbox-runner-1` (needs `N8N_SANDBOX_*` / `SANDBOX_*` variables) |
 | [Ollama](ollama/) | Local LLM runtime | internal `11434` | No host port; optional NVIDIA GPU |
 | [Open WebUI](openwebui/) | Chat UI for Ollama | `8080` | |
 | [EMQX](emqx/) | MQTT broker | `1883`, `8883`, `8083`, `8084`, `18083` | Dashboard on `18083` |
@@ -188,7 +188,7 @@ Every service links to its directory. Hostnames use the `jeerasakananta.dev` dom
 
 | Service | Purpose | Port | Notes |
 |---------|---------|------|-------|
-| [Vaultwarden](vaultwarden/) | Bitwarden-compatible password manager | `${APP_PORT}`, `${WEBSOCKET_PORT}` | Data in `./vw-data`; set `ADMIN_TOKEN` |
+| [Vaultwarden](vaultwarden/) | Bitwarden-compatible password manager | `${APP_PORT}`, `${WEBSOCKET_PORT}` | Data in `/var/data/vaultwarden`; set `ADMIN_TOKEN` |
 | [HashiCorp Vault](vault/) | Secrets management | `8200` | **Dev mode** (in-memory) — use raft + auto-unseal for production |
 | [Restic](restic/) | Scheduled backups to S3 | — | Daily 02:00 · prune Sun 04:00 · check Sun 06:00; keeps 7d/4w/6m/1y |
 
@@ -291,7 +291,7 @@ docker compose up -d
 
 Every stack uses `docker-compose.yaml`, so `docker compose up -d` from the service directory is enough.
 
-**Suggested start order:** `traefik` → `postgres` → monitoring (`prometheus`, `grafana`, `loki`, `alertmanager`, `kuma`, `beszel`) → everything else. Stacks that ship an `.env.example` to copy: `airflow`, `alertmanager`, `beszel`, `dagster`, `dozzle`, `glance`, `homepage`, `kafka`, `kuma`, `mongodb`, `n8n`, `navidrome`, `opengym`, `prefect`, `restic`, `seaweedfs`, `sonarqube`, `syncthing`, `vault`. Others (`grafana`, `postgres`, `vaultwarden`, `vscodeserver`, `jupyterlab`, `harbor`) read variables from inline compose env or a hand-written `.env` — see their compose file.
+**Suggested start order:** `traefik` → `postgres` → monitoring (`prometheus`, `grafana`, `loki`, `alertmanager`, `kuma`, `beszel`) → everything else. Stacks that ship an `.env.example` to copy: `airflow`, `alertmanager`, `beszel`, `dagster`, `dozzle`, `glance`, `homepage`, `kafka`, `kuma`, `mongodb`, `n8n`, `navidrome`, `opengym`, `postgres`, `prefect`, `restic`, `seaweedfs`, `sonarqube`, `syncthing`, `vault`. Others (`grafana`, `vaultwarden`, `vscodeserver`, `jupyterlab`, `harbor`) read variables from inline compose env or a hand-written `.env` — see their compose file.
 
 ### Per-stack setup notes
 
@@ -420,17 +420,18 @@ homelab/
 - **Pin image versions.** Never use `:latest` (rationale in `dozzle/docker-compose.yaml`). Every image now has an explicit tag; stacks that expose a `*_VERSION` variable in `.env.example` (e.g. `NAVIDROME_VERSION`, `BESZEL_VERSION`) can override it per deploy. `excalidraw` is pinned to a `sha-` tag because upstream publishes no release tags.
 - **Databases are not public.** Ports `27017` and `5432` are blocked from the internet through the `DOCKER-USER` iptables chain (localhost, `tailscale0` and inter-container traffic allowed; persisted with `netfilter-persistent`). `docker-proxy` bypasses UFW, so removing `ports:` alone does not hide a database — re-save the rules after changes with `netfilter-persistent save`.
 - **Postgres init scripts** (`init-db.sh` in `/docker-entrypoint-initdb.d`) run only on first volume initialization, never on restart.
+- **Persistent data lives in `/var/data/<service>` bind mounts**, not named volumes. Existing named-volume data is copied over with `migrate-volumes-to-var-data.sh` (copy-only; stop the stack first and run `--dry-run` before the real run). Redeploying a stack before migrating starts it on empty data.
 - **A missing `_data` directory under `/var/lib/docker/volumes/` means the data is gone** — recreating it starts an empty database. Warn before doing it.
 - **Missing bind-mount source files** are auto-created by Docker as **directories** (seen with `postgres-lab-db/init-db.sh`). Replace them with real files.
 - **`(unhealthy)` after long uptime** is often the `runc` exec bug (`fork/exec /proc/self/fd/6`), not an application failure — a host reboot clears it.
 - **Bind-mount ownership under DockHand.** Docker creates missing bind-mount directories as `root`; for containers that run as another UID (Syncthing → 1000), `chown` them on the host inside DockHand's working copy.
-- **Backups.** Restic covers `/home/game`, this repo, `/etc` and `/var/lib/docker/volumes`, excluding paths in `restic/config/restic-exclude.txt`. Test a restore periodically — an untested backup is only a hope.
+- **Backups.** Restic covers `/home/game`, this repo, `/etc` and `/var/lib/docker/volumes`, but **not yet `/var/data`**, so migrated stacks are not backed up. Paths in `restic/config/restic-exclude.txt` are excluded paths in `restic/config/restic-exclude.txt`. Test a restore periodically — an untested backup is only a hope.
 
 ## Roadmap
 
 Gaps identified in the last review, roughly in priority order:
 
-- [ ] Verify Restic schedule end to end and test a restore; add an off-site copy (3-2-1)
+- [ ] Back up `/var/data` with Restic (mount it, add it to `BACKUP_PATHS`, add `AWS_DEFAULT_REGION=auto`), fix the `Bad substitution` in the one-shot `restic` command, dump Postgres/MongoDB before backing up, use R2 as the off-site copy, and test a restore
 - [ ] Confirm Alertmanager and Uptime Kuma notifications reach a phone
 - [ ] Add CrowdSec for the public Traefik entrypoints
 - [ ] Add SSO (Authentik / Authelia) in front of internal tools via forward-auth
