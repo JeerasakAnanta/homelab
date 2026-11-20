@@ -289,7 +289,7 @@ docker compose config -q      # validate without starting
 docker compose up -d
 ```
 
-Most stacks use `docker-compose.yaml`. `dozzle`, `nginx` and `vaultwarden` use `compose.yaml`: `docker compose -f compose.yaml up -d`.
+Every stack uses `docker-compose.yaml`, so `docker compose up -d` from the service directory is enough.
 
 **Suggested start order:** `traefik` → `postgres` → monitoring (`prometheus`, `grafana`, `loki`, `alertmanager`, `kuma`, `beszel`) → everything else. Stacks that ship an `.env.example` to copy: `airflow`, `alertmanager`, `beszel`, `dagster`, `dozzle`, `glance`, `homepage`, `kafka`, `kuma`, `mongodb`, `n8n`, `navidrome`, `opengym`, `prefect`, `restic`, `seaweedfs`, `sonarqube`, `syncthing`, `vault`. Others (`grafana`, `postgres`, `vaultwarden`, `vscodeserver`, `jupyterlab`, `harbor`) read variables from inline compose env or a hand-written `.env` — see their compose file.
 
@@ -404,7 +404,7 @@ Config lives next to each compose file. Bind-mounted data directories and all se
 ```text
 homelab/
 ├── <service>/            # one directory per stack
-│   ├── docker-compose.yaml   # (or compose.yaml)
+│   ├── docker-compose.yaml
 │   ├── .env.example          # documents variables; real .env is gitignored
 │   └── config/ ...           # per-service configuration
 ├── ansible/              # inventory and playbooks for host setup
@@ -417,7 +417,7 @@ homelab/
 
 ## Operational Notes
 
-- **Pin image versions.** Never use `:latest` (rationale in `dozzle/compose.yaml`). Every image now has an explicit tag; stacks that expose a `*_VERSION` variable in `.env.example` (e.g. `NAVIDROME_VERSION`, `BESZEL_VERSION`) can override it per deploy. `excalidraw` is pinned to a `sha-` tag because upstream publishes no release tags.
+- **Pin image versions.** Never use `:latest` (rationale in `dozzle/docker-compose.yaml`). Every image now has an explicit tag; stacks that expose a `*_VERSION` variable in `.env.example` (e.g. `NAVIDROME_VERSION`, `BESZEL_VERSION`) can override it per deploy. `excalidraw` is pinned to a `sha-` tag because upstream publishes no release tags.
 - **Databases are not public.** Ports `27017` and `5432` are blocked from the internet through the `DOCKER-USER` iptables chain (localhost, `tailscale0` and inter-container traffic allowed; persisted with `netfilter-persistent`). `docker-proxy` bypasses UFW, so removing `ports:` alone does not hide a database — re-save the rules after changes with `netfilter-persistent save`.
 - **Postgres init scripts** (`init-db.sh` in `/docker-entrypoint-initdb.d`) run only on first volume initialization, never on restart.
 - **A missing `_data` directory under `/var/lib/docker/volumes/` means the data is gone** — recreating it starts an empty database. Warn before doing it.

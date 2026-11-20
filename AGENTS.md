@@ -6,11 +6,9 @@ Skill: `homelab-ops` (`.agents/skills/homelab-ops/`, symlinked to `.claude/skill
 
 ## Commands
 
-- Start a service: `cd <service> && docker compose -f <actual-filename> up -d`
+- Start a service: `cd <service> && docker compose up -d`
 - Validate without starting: `cd <service> && docker compose config -q`
-- Compose filename: canonical is `docker-compose.yaml` (all stacks now use `.yaml`; `.yml` unified in 2026-08). Exceptions:
-  - `compose.yaml`: nginx, vaultwarden, vscodeserver (legacy short name — prefer `docker-compose.yaml` for new stacks)
-  - Trap: `dozzle/` has BOTH `compose.yaml` (`:latest`, exposes 8080 publicly) and `docker-compose.yaml` (pinned `v10.6.14`, localhost-only, hardened). They diverge — confirm which one the user means before editing.
+- Compose filename: always `docker-compose.yaml` (`.yml` unified in 2026-08; the last `compose.yaml` files in dozzle, nginx and vaultwarden were renamed in 2026-11).
 - `.env.example` exists for `airflow/`, `beszel/`, `dagster/`, `homepage/`, `kafka/`, `n8n/`, `prefect/`, `seaweedfs/`, `sonarqube/` — copy to `.env` first. Other stacks use inline env vars in the compose file.
 - Postgres mounts `init-db.sh` into `/docker-entrypoint-initdb.d`; edits only take effect on first volume init, not restart.
 

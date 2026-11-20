@@ -24,8 +24,7 @@ If unsure which path a given service uses, ask rather than assuming — editing 
 Each service is started independently from its own directory:
 
 ```bash
-cd <service> && docker-compose up -d      # most services use docker-compose.yaml/.yml
-cd <service> && docker compose -f compose.yaml up -d   # dozzle, nginx, vaultwarden, vscodeserver use compose.yaml
+cd <service> && docker compose up -d      # every stack uses docker-compose.yaml
 ```
 
 There is no root-level `docker-compose.homelab.yml` or unified stack file currently in the repo, despite the README describing one — treat each service directory as standalone unless the user is actively adding that unification.
