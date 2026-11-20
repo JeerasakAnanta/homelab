@@ -12,7 +12,7 @@ services:
       - "8888:8080"
       - "50000:50000"
     volumes:
-      - jenkins_home:/var/jenkins_home
+      - /var/data/jenkins:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - jenkins_network
@@ -27,7 +27,3 @@ services:
 networks:
   jenkins_network:
     driver: bridge
-
-volumes:
-  jenkins_home:
-    driver: local

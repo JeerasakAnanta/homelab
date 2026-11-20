@@ -25,7 +25,7 @@ services:
       POSTGRES_PASSWORD: ${DAGSTER_POSTGRES_PASSWORD:-dagster}
       POSTGRES_DB: ${DAGSTER_POSTGRES_DB:-dagster}
     volumes:
-      - dagster-postgres-data:/var/lib/postgresql/data
+      - /var/data/dagster:/var/lib/postgresql/data
     networks:
       - dagster_net
     healthcheck:
@@ -110,5 +110,3 @@ networks:
   dagster_net:
     driver: bridge
 
-volumes:
-  dagster-postgres-data:

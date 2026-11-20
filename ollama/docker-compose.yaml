@@ -10,7 +10,7 @@ services:
     # ports:
     #   - "127.0.0.1:11434:11434"
     volumes:
-      - ollama_models:/root/.ollama
+      - /var/data/ollama:/root/.ollama
     environment:
       - OLLAMA_HOST=0.0.0.0:11434
       - OLLAMA_KEEP_ALIVE=24h          # กันโหลด model ใหม่ทุก request
@@ -42,8 +42,6 @@ services:
     #           count: all
     #           capabilities: [gpu]
 
-volumes:
-  ollama_models:
 
 networks:
   llm_net:

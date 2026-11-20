@@ -15,7 +15,7 @@ services:
       # overwrites X-Forwarded-For / X-Real-IP with the real peer.
       - TRUST_PROXY=1
     volumes:
-      - ./data:/data   # users, passkeys, session secret, uploads — BACK THIS UP
+      - /var/data/opengym:/data   # users, passkeys, session secret, uploads — BACK THIS UP
 
   web:
     image: ghcr.io/duartesantos8/opengym-web:1.4.1

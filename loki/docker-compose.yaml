@@ -12,7 +12,7 @@ services:
     command: -config.file=/etc/loki/local-config.yaml
     volumes:
       - ./config/loki-local-config.yaml:/etc/loki/local-config.yaml:ro
-      - loki_data:/loki
+      - /var/data/loki:/loki
     networks:
       - loki_net
     healthcheck:
@@ -57,7 +57,3 @@ services:
 networks:
   loki_net:
     driver: bridge
-
-volumes:
-  loki_data:
-    driver: local

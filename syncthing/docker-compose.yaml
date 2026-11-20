@@ -29,9 +29,9 @@ services:
 
     volumes:
       # Syncthing config, keys and database.
-      - ./config:/var/syncthing/config
+      - /var/data/syncthing/config:/var/syncthing/config
       # Synced data lives here — add per-folder subdirectories as needed.
-      - ./data:/var/syncthing/data
+      - /var/data/syncthing/data:/var/syncthing/data
 
     # Prevents the container from gaining additional privileges.
     security_opt:

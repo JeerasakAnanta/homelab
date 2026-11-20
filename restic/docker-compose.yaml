@@ -15,7 +15,7 @@ services:
     volumes:
       - ./config:/config:ro
       - ./scripts:/scripts:ro
-      - restic_cache:/cache
+      - /var/data/restic:/cache
       # Bind mount directories to backup
       - /home/game:/data/home-game:ro
       - /home/game/2_Areas/1_homelab:/data/homelab:ro
@@ -55,7 +55,7 @@ services:
       - CHECK_SCHEDULE=${CHECK_SCHEDULE:-0 6 * * 0}     # Weekly Sunday 6 AM
     volumes:
       - ./scripts:/scripts:ro
-      - restic_cache:/cache
+      - /var/data/restic:/cache
       - /home/game:/data/home-game:ro
       - /home/game/2_Areas/1_homelab:/data/homelab:ro
       - /etc:/data/etc:ro
@@ -83,7 +83,3 @@ services:
 networks:
   restic_net:
     driver: bridge
-
-volumes:
-  restic_cache:
-    driver: local

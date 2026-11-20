@@ -13,7 +13,7 @@ services:
       - "${MASTER_PORT}:9333"
       - "${MASTER_GRPC_PORT}:19333"
     volumes:
-      - master_data:/data
+      - /var/data/seaweedfs/master:/data
     restart: unless-stopped
     logging: *default-logging
     healthcheck:
@@ -33,7 +33,7 @@ services:
       - "${VOLUME_PORT}:8080"
       - "${VOLUME_GRPC_PORT}:18080"
     volumes:
-      - volume_data:/data
+      - /var/data/seaweedfs/volume:/data
     depends_on:
       seaweedfs-master:
         condition: service_healthy
@@ -56,7 +56,7 @@ services:
       - "${FILER_PORT}:8888"
       - "${FILER_GRPC_PORT}:18888"
     volumes:
-      - filer_data:/data
+      - /var/data/seaweedfs/filer:/data
     depends_on:
       seaweedfs-master:
         condition: service_healthy
@@ -89,10 +89,6 @@ services:
     networks:
       - seaweed_net
 
-volumes:
-  master_data:
-  volume_data:
-  filer_data:
 
 networks:
   seaweed_net:

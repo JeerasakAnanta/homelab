@@ -20,7 +20,7 @@ services:
       POSTGRES_PASSWORD: ${PREFECT_POSTGRES_PASSWORD:-prefect}
       POSTGRES_DB: ${PREFECT_POSTGRES_DB:-prefect}
     volumes:
-      - prefect-postgres-data:/var/lib/postgresql/data
+      - /var/data/prefect:/var/lib/postgresql/data
     networks:
       - prefect_net
     healthcheck:
@@ -81,5 +81,3 @@ networks:
   prefect_net:
     driver: bridge
 
-volumes:
-  prefect-postgres-data:

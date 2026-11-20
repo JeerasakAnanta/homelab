@@ -13,4 +13,4 @@ services:
       # Optional: lets Homarr show/control Docker containers
       - /var/run/docker.sock:/var/run/docker.sock:ro
       # Config, database, icons
-      - ./homarr/appdata:/appdata
+      - /var/data/homarr:/appdata

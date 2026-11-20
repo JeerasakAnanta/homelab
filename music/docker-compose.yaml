@@ -12,7 +12,7 @@ services:
       ND_SESSIONTIMEOUT: ${ND_SESSIONTIMEOUT}
       ND_BASEURL: ${ND_BASEURL}
     volumes:
-      - ./data:/data
+      - /var/data/music:/data
       - ${MUSIC_PATH}:/music:ro
 
   metube:

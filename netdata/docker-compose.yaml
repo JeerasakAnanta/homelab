@@ -13,8 +13,8 @@ services:
       - apparmor:unconfined
     volumes:
       - ./netdataconfig/netdata:/etc/netdata
-      - netdatalib:/var/lib/netdata
-      - netdatacache:/var/cache/netdata
+      - /var/data/netdata/lib:/var/lib/netdata
+      - /var/data/netdata/cache:/var/cache/netdata
       - /:/host/root:ro,rslave
       - /etc/passwd:/host/etc/passwd:ro
       - /etc/group:/host/etc/group:ro
@@ -24,7 +24,3 @@ services:
       - /etc/os-release:/host/etc/os-release:ro
       - /var/log:/host/var/log:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-
-volumes:
-  netdatalib:
-  netdatacache:

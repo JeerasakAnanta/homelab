@@ -10,8 +10,8 @@ services:
       - DEFAULT_WORKSPACE=/config/workspace
       - SUDO_PASSWORD=${CODE_SERVER_PASSWORD} # Allows 'sudo' in the web terminal
     volumes:
-      - ./config:/config
-      - ./project-files:/config/workspace
+      - /var/data/vscodeserver/config:/config
+      - /var/data/vscodeserver/project-files:/config/workspace
     ports:
       - 8443:8443
     restart: unless-stopped

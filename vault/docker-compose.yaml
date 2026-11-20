@@ -15,8 +15,8 @@ services:
     volumes:
       - ./config/vault.hcl:/vault/config/vault.hcl:ro
       - ./init:/vault/init:ro
-      - vault_data:/vault/data
-      - vault_logs:/vault/logs
+      - /var/data/vault/data:/vault/data
+      - /var/data/vault/logs:/vault/logs
     networks:
       - vault_net
     cap_add:
@@ -39,9 +39,3 @@ services:
 networks:
   vault_net:
     driver: bridge
-
-volumes:
-  vault_data:
-    driver: local
-  vault_logs:
-    driver: local

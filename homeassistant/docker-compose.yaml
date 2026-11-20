@@ -3,7 +3,7 @@ services:
     container_name: homeassistant
     image: ghcr.io/home-assistant/home-assistant:${HOMEASSISTANT_VERSION:-2026.10.4}
     volumes:
-      - ./config:/config
+      - /var/data/homeassistant:/config
       - /etc/localtime:/etc/localtime:ro
       - /run/dbus:/run/dbus:ro
     environment:

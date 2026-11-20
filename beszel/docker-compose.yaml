@@ -6,7 +6,7 @@ services:
     ports:
       - "0.0.0.0:${BESZEL_PORT:-8090}:8090"
     volumes:
-      - beszel_data:/beszel_data
+      - /var/data/beszel:/beszel_data
       - beszel_socket:/beszel_socket
     security_opt:
       - no-new-privileges:true
@@ -52,5 +52,4 @@ services:
         max-file: "3"
 
 volumes:
-  beszel_data:
   beszel_socket:

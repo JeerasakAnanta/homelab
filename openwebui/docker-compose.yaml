@@ -5,8 +5,6 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - open-webui:/app/backend/data
+      - /var/data/openwebui:/app/backend/data
     restart: always
 
-volumes:
-  open-webui:

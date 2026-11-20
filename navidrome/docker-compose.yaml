@@ -12,6 +12,6 @@ services:
       ND_SESSIONTIMEOUT: ${ND_SESSIONTIMEOUT:-24h}
       ND_BASEURL: ${ND_BASEURL:-}
     volumes:
-      - ./data:/data
+      - /var/data/navidrome:/data
       - ${MUSIC_PATH:-/path/to/music}:/music:ro
 

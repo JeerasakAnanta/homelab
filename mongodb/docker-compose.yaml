@@ -12,8 +12,8 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
       - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE:-app}
     volumes:
-      - mongo-data:/data/db
-      - mongo-config:/data/configdb
+      - /var/data/mongodb/data:/data/db
+      - /var/data/mongodb/config:/data/configdb
       - ./init-scripts:/docker-entrypoint-initdb.d:ro
     command: ["mongod", "--auth"]
     healthcheck:
@@ -37,7 +37,3 @@ services:
     depends_on:
       mongodb:
         condition: service_healthy
-
-volumes:
-  mongo-data:
-  mongo-config:

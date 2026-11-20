@@ -22,7 +22,7 @@ services:
       - BADGER_DIRECTORY_VALUE=/var/lib/jaeger/badger/data
       - BADGER_DIRECTORY_KEY=/var/lib/jaeger/badger/key
     volumes:
-      - jaeger_data:/var/lib/jaeger
+      - /var/data/jaeger:/var/lib/jaeger
     networks:
       - jaeger_net
     healthcheck:
@@ -43,7 +43,3 @@ services:
 networks:
   jaeger_net:
     driver: bridge
-
-volumes:
-  jaeger_data:
-    driver: local

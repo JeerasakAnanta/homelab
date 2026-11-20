@@ -12,9 +12,9 @@ services:
       - GRANT_SUDO=yes
     user: root
     volumes:
-      - /var/notebooks:/home/jovyan/work
-      - /var/data:/home/jovyan/data
-      - jupyter-config:/home/jovyan/.jupyter
+      - /var/data/jupyterlab/notebooks:/home/jovyan/work
+      - /var/data/jupyterlab/data:/home/jovyan/data
+      - /var/data/jupyterlab/config:/home/jovyan/.jupyter
     deploy:
       resources:
         limits:
@@ -29,5 +29,3 @@ services:
     #           count: 1
     #           capabilities: [gpu]
 
-volumes:
-  jupyter-config:

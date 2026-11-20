@@ -12,7 +12,7 @@ services:
       # เปิดใช้งาน WebSocket เพื่อให้การ Sync ข้อมูลเร็วขึ้น (Real-time)
       - WEBSOCKET_ENABLED=true
     volumes:
-      - ./vw-data:/data
+      - /var/data/vaultwarden:/data
     ports:
       - ${APP_PORT}:80
       - ${WEBSOCKET_PORT}:3012

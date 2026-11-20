@@ -6,7 +6,7 @@ services:
     ports:
       - ${KUMA_PORT:-3001}:3001
     volumes:
-      - ./:/app/data
+      - /var/data/kuma:/app/data
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - homelab

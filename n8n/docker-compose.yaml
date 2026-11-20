@@ -87,12 +87,10 @@ services:
       - N8N_SANDBOX_SERVICE_API_KEY=${N8N_SANDBOX_SERVICE_API_KEY}
       # - N8N_INSTANCE_AI_MODEL_API_KEY=${N8N_INSTANCE_AI_MODEL_API_KEY}
     volumes:
-      - n8n_data:/home/node/.n8n
+      - /var/data/n8n:/home/node/.n8n
       - /etc/localtime:/etc/localtime:ro
 
 volumes:
-  n8n_data:
-    external: false
   sandbox-tls:
 
 networks: {}

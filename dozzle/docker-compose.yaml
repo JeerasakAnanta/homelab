@@ -11,7 +11,7 @@ services:
     volumes:
       # Read-only: Dozzle only needs to read container logs, not control the daemon.
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - dozzle_data:/data
+      - /var/data/dozzle:/data
     environment:
       - DOZZLE_LEVEL=info
       # Simple auth so logs aren't public; create users via the web UI on first launch.
@@ -39,8 +39,6 @@ services:
       start_period: 10s
 networks: {}
 
-volumes:
-  dozzle_data:
 
 x-dockge:
   urls:
