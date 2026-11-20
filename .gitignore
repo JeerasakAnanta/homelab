@@ -138,3 +138,6 @@ music/data/
 # openGym
 opengym/.env
 opengym/data/
+
+# Backrest (data lives in /var/data/backrest, outside the repo)
+backrest/.env

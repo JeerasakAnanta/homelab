@@ -1,0 +1,47 @@
+# Backrest — web UI for restic (plans, schedules, browse/restore snapshots).
+# First visit asks you to create a user: do it right away, anyone who reaches the port first owns the UI.
+# Repos (e.g. Cloudflare R2) are added in the UI; credentials live in /var/data/backrest/config/config.json.
+
+services:
+  backrest:
+    image: garethgeorge/backrest:${BACKREST_VERSION:-v1.14.1}
+    container_name: backrest
+    hostname: backrest
+    restart: unless-stopped
+    ports:
+      # Admin tool: reached over Tailscale. Set BACKREST_BIND to the Tailscale IP to keep it off other interfaces.
+      - "${BACKREST_BIND:-0.0.0.0}:${BACKREST_PORT:-9898}:9898"
+    environment:
+      - BACKREST_PORT=0.0.0.0:9898
+      - BACKREST_DATA=/data
+      - BACKREST_CONFIG=/config/config.json
+      - XDG_CACHE_HOME=/cache
+      - TZ=Asia/Bangkok
+    volumes:
+      - /var/data/backrest/data:/data
+      - /var/data/backrest/config:/config
+      - /var/data/backrest/cache:/cache
+      # Backup sources, read-only. Add these paths as plan sources in the UI.
+      - /var/data:/userdata/var-data:ro
+      - /home/game/2_Areas/1_homelab:/userdata/homelab:ro
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          cpus: '1.00'
+          memory: 1G
+        reservations:
+          cpus: '0.10'
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:9898/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
