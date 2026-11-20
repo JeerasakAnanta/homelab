@@ -2,7 +2,7 @@ services:
   dozzle:
     container_name: dozzle
     # Version Pinning: never use ':latest' — pin an explicit tag for predictable deployments.
-    image: amir20/dozzle:v11.0.1
+    image: amir20/dozzle:latest
     restart: unless-stopped
     ports:
       # Bound to all interfaces so it's reachable over Tailscale directly.
