@@ -1,0 +1,112 @@
+# Authentik — identity provider / SSO (OIDC, SAML, proxy outpost).
+# Dedicated Postgres; no Redis needed on current releases (if the first start complains about Redis, check the release notes).
+# Public access: add a Public Hostname in Cloudflare Zero Trust -> Tunnels pointing at http://authentik-server:9000
+# (cloudflared-tunnel lives on the external network homelab_net, which authentik-server joins below).
+# Before first start: sudo mkdir -p /var/data/authentik/{postgres,media,templates,certs} && sudo chown -R 1000:1000 /var/data/authentik/{media,templates,certs}
+
+services:
+  authentik-postgres:
+    image: postgres:17.12-alpine
+    container_name: authentik-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${AUTHENTIK_PG_USER:-authentik}
+      POSTGRES_PASSWORD: ${AUTHENTIK_PG_PASSWORD}
+      POSTGRES_DB: ${AUTHENTIK_PG_DB:-authentik}
+    volumes:
+      - /var/data/authentik/postgres:/var/lib/postgresql/data
+    networks:
+      - authentik_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${AUTHENTIK_PG_USER:-authentik} -d ${AUTHENTIK_PG_DB:-authentik}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  authentik-server:
+    image: ghcr.io/goauthentik/server:${AUTHENTIK_VERSION:-2026.8.6}
+    container_name: authentik-server
+    restart: unless-stopped
+    command: server
+    depends_on:
+      authentik-postgres:
+        condition: service_healthy
+    environment:
+      AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY}
+      AUTHENTIK_POSTGRESQL__HOST: authentik-postgres
+      AUTHENTIK_POSTGRESQL__USER: ${AUTHENTIK_PG_USER:-authentik}
+      AUTHENTIK_POSTGRESQL__NAME: ${AUTHENTIK_PG_DB:-authentik}
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${AUTHENTIK_PG_PASSWORD}
+      AUTHENTIK_BOOTSTRAP_EMAIL: ${AUTHENTIK_BOOTSTRAP_EMAIL}
+      AUTHENTIK_BOOTSTRAP_PASSWORD: ${AUTHENTIK_BOOTSTRAP_PASSWORD}
+      AUTHENTIK_ERROR_REPORTING__ENABLED: "false"
+      TZ: Asia/Bangkok
+    ports:
+      # Direct access over Tailscale; set AUTHENTIK_BIND to the Tailscale IP to keep it off other interfaces.
+      - "${AUTHENTIK_BIND:-0.0.0.0}:${AUTHENTIK_PORT:-9400}:9000"
+    volumes:
+      - /var/data/authentik/media:/media
+      - /var/data/authentik/templates:/templates
+    networks:
+      - authentik_net
+      - homelab_net
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          cpus: '1.00'
+          memory: 1G
+        reservations:
+          cpus: '0.10'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  authentik-worker:
+    image: ghcr.io/goauthentik/server:${AUTHENTIK_VERSION:-2026.8.6}
+    container_name: authentik-worker
+    restart: unless-stopped
+    command: worker
+    depends_on:
+      authentik-postgres:
+        condition: service_healthy
+    environment:
+      AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY}
+      AUTHENTIK_POSTGRESQL__HOST: authentik-postgres
+      AUTHENTIK_POSTGRESQL__USER: ${AUTHENTIK_PG_USER:-authentik}
+      AUTHENTIK_POSTGRESQL__NAME: ${AUTHENTIK_PG_DB:-authentik}
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${AUTHENTIK_PG_PASSWORD}
+      AUTHENTIK_ERROR_REPORTING__ENABLED: "false"
+      TZ: Asia/Bangkok
+    volumes:
+      - /var/data/authentik/media:/media
+      - /var/data/authentik/templates:/templates
+      - /var/data/authentik/certs:/certs
+    networks:
+      - authentik_net
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          cpus: '1.00'
+          memory: 1G
+        reservations:
+          cpus: '0.10'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  authentik_net:
+    driver: bridge
+  homelab_net:
+    external: true

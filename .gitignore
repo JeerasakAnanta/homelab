@@ -141,3 +141,6 @@ opengym/data/
 
 # Backrest (data lives in /var/data/backrest, outside the repo)
 backrest/.env
+
+# Authentik (data lives in /var/data/authentik, outside the repo)
+authentik/.env

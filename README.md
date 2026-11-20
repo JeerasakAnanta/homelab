@@ -103,6 +103,7 @@ graph LR
             Vaultwarden
             Restic
             Backrest
+            Authentik
         end
 
         Restic -->|S3| SeaweedFS
@@ -192,6 +193,7 @@ Every service links to its directory. Hostnames use the `jeerasakananta.dev` dom
 | [Vaultwarden](vaultwarden/) | Bitwarden-compatible password manager | `${APP_PORT}`, `${WEBSOCKET_PORT}` | Data in `/var/data/vaultwarden`; set `ADMIN_TOKEN` |
 | [HashiCorp Vault](vault/) | Secrets management | `8200` | **Dev mode** (in-memory) — use raft + auto-unseal for production |
 | [Restic](restic/) | Scheduled backups to S3 | — | Daily 02:00 · prune Sun 04:00 · check Sun 06:00; keeps 7d/4w/6m/1y |
+| [Authentik](authentik/) | Identity provider / SSO (OIDC, SAML) | `${AUTHENTIK_PORT:-9400}` | Own Postgres (`authentik_net`); joins `homelab_net` so `cloudflared-tunnel` can reach `authentik-server:9000`; create `/var/data/authentik/*` first |
 | [Backrest](backrest/) | Web UI for restic (plans, schedules, restore) | `${BACKREST_PORT:-9898}` | Create the admin user on first visit; mounts `/var/data` and this repo read-only; if it shares a repo with `restic/`, run prune/check from only one of them |
 
 ### Networking & Reverse Proxy
@@ -262,6 +264,7 @@ labels:
 | Vault | 8200 | 8200 | `vault_net` |
 | Restic | — | — | `restic_net` |
 | Backrest | `${BACKREST_PORT:-9898}` | 9898 | — |
+| Authentik | `${AUTHENTIK_PORT:-9400}` | 9000 | `authentik_net`, `homelab_net` |
 
 > **⚠️ Port conflicts.** `8080` is the default for Glance, Dozzle, Open WebUI, Traefik and the SeaweedFS volume server; `8888` is shared by Jenkins, JupyterLab and the SeaweedFS filer; `8081` by Mongo Express and MeTube. Use the `.env` overrides before running these on the same host.
 
@@ -294,7 +297,7 @@ docker compose up -d
 
 Every stack uses `docker-compose.yaml`, so `docker compose up -d` from the service directory is enough.
 
-**Suggested start order:** `traefik` → `postgres` → monitoring (`prometheus`, `grafana`, `loki`, `alertmanager`, `kuma`, `beszel`) → everything else. Stacks that ship an `.env.example` to copy: `airflow`, `alertmanager`, `backrest`, `beszel`, `dagster`, `dozzle`, `glance`, `homepage`, `kafka`, `kuma`, `mongodb`, `n8n`, `navidrome`, `opengym`, `postgres`, `prefect`, `restic`, `seaweedfs`, `sonarqube`, `syncthing`, `vault`. Others (`grafana`, `vaultwarden`, `vscodeserver`, `jupyterlab`, `harbor`) read variables from inline compose env or a hand-written `.env` — see their compose file.
+**Suggested start order:** `traefik` → `postgres` → monitoring (`prometheus`, `grafana`, `loki`, `alertmanager`, `kuma`, `beszel`) → everything else. Stacks that ship an `.env.example` to copy: `airflow`, `alertmanager`, `authentik`, `backrest`, `beszel`, `dagster`, `dozzle`, `glance`, `homepage`, `kafka`, `kuma`, `mongodb`, `n8n`, `navidrome`, `opengym`, `postgres`, `prefect`, `restic`, `seaweedfs`, `sonarqube`, `syncthing`, `vault`. Others (`grafana`, `vaultwarden`, `vscodeserver`, `jupyterlab`, `harbor`) read variables from inline compose env or a hand-written `.env` — see their compose file.
 
 ### Per-stack setup notes
 
@@ -359,6 +362,7 @@ Config lives next to each compose file. Bind-mounted data directories and all se
 | Vaultwarden | `vaultwarden/.env` | `DOMAIN`, ports, `ADMIN_TOKEN`, `SIGNUPS_ALLOWED` |
 | Vault | `vault/config/vault.hcl`, `vault/init/vault-init.sh` | Root token via `VAULT_ROOT_TOKEN` |
 | Restic | `restic/config/restic-exclude.txt`, `restic/scripts/` | Exclude patterns, backup/prune/check scripts |
+| Authentik | `authentik/.env` | `AUTHENTIK_SECRET_KEY` (never change after first start), Postgres password, bootstrap admin email/password |
 | Backrest | `backrest/.env`, `/var/data/backrest/config/config.json` | Version, port, bind address; repos and plans are set in the UI |
 | Traefik | `traefik/traefik.yml`, `traefik/config/dynamic.yml`, `traefik/acme.json` | Static/dynamic config, certificates |
 | Nginx | `nginx/conf.d/`, `nginx/certs/`, `nginx/logs/` | Server blocks, TLS certificates |
@@ -438,7 +442,7 @@ Gaps identified in the last review, roughly in priority order:
 - [ ] Back up `/var/data` with Restic (mount it, add it to `BACKUP_PATHS`, add `AWS_DEFAULT_REGION=auto`), fix the `Bad substitution` in the one-shot `restic` command, dump Postgres/MongoDB before backing up, use R2 as the off-site copy, and test a restore
 - [ ] Confirm Alertmanager and Uptime Kuma notifications reach a phone
 - [ ] Add CrowdSec for the public Traefik entrypoints
-- [ ] Add SSO (Authentik / Authelia) in front of internal tools via forward-auth
+- [ ] Wire internal tools to Authentik (native OIDC where supported, otherwise an Authentik proxy outpost behind the Cloudflare Tunnel); Traefik is not running on the host, so forward-auth through it is not available
 - [ ] Put a Docker socket proxy in front of Traefik, Dozzle, Homepage and Beszel
 - [ ] Automate image update notices (Diun or Renovate)
 - [ ] Resolve overlaps: `music/` vs `navidrome/`, three dashboards (Glance, Homepage, Homarr), three proxies (Traefik, Nginx, Nginx Proxy Manager)
