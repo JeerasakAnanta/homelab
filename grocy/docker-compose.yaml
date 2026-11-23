@@ -1,0 +1,30 @@
+# Grocy — household management (groceries, chores, meal plans, stock).
+# Before first start: sudo mkdir -p /var/data/grocy && sudo chown 1000:1000 /var/data/grocy
+# Default login is admin / admin: change it right after the first sign-in.
+
+services:
+  grocy:
+    image: lscr.io/linuxserver/grocy:${GROCY_VERSION:-4.7.1}
+    container_name: grocy
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID:-1000}
+      - PGID=${PGID:-1000}
+      - TZ=Asia/Bangkok
+    ports:
+      - "${GROCY_PORT:-9283}:80"
+    volumes:
+      - /var/data/grocy:/config
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+        reservations:
+          cpus: '0.05'
+          memory: 64M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

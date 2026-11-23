@@ -96,6 +96,7 @@ graph LR
             ClickHouse[(ClickHouse)]
             MongoDB[(MongoDB)]
             SeaweedFS[(SeaweedFS S3)]
+            Grocy
         end
 
         subgraph Sec["Security & backup"]
@@ -176,6 +177,7 @@ Every service links to its directory. Hostnames use the `jeerasakananta.dev` dom
 | [MongoDB](mongodb/) | Document DB + Mongo Express | `27017`, `8081` | Separate DB and UI credentials |
 | [Syncthing](syncthing/) | P2P file synchronization | `8384`, `22000`, `21027` | Runs as UID 1000 — see [Setup notes](#per-stack-setup-notes) |
 | [openGym](opengym/) | Workout tracker (passkeys, sync, PWA) | `${WEB_PORT:-8095}` | Needs HTTPS on its `RP_ID` host for passkeys |
+| [Grocy](grocy/) | Household management (groceries, chores, stock) | `${GROCY_PORT:-9283}` | Default login `admin`/`admin` — change it on first sign-in; data in `/var/data/grocy` (owned by `PUID`/`PGID`) |
 | [Navidrome](navidrome/) | Music streaming server | `${ND_PORT:-4533}` | Library mounted read-only from `MUSIC_PATH` |
 | [Music](music/) | Navidrome **+** MeTube downloader bundle | `${ND_PORT}`, `8081` | Overlaps `navidrome/`; MeTube's `8081` collides with Mongo Express |
 
@@ -239,6 +241,7 @@ labels:
 | Beszel Hub | 8090 | 8090 | — |
 | openGym | 8095 | 80 | — |
 | Navidrome | 4533 | 4533 | — |
+| Grocy | `${GROCY_PORT:-9283}` | 80 | — |
 | Homarr (`harbor/`) | 7575 | 7575 | — |
 | Dockge | 5001 | 5001 | — |
 | Jenkins | 8888, 50000 | 8080, 50000 | `jenkins_network` |
@@ -297,7 +300,7 @@ docker compose up -d
 
 Every stack uses `docker-compose.yaml`, so `docker compose up -d` from the service directory is enough.
 
-**Suggested start order:** `traefik` → `postgres` → monitoring (`prometheus`, `grafana`, `loki`, `alertmanager`, `kuma`, `beszel`) → everything else. Stacks that ship an `.env.example` to copy: `airflow`, `alertmanager`, `authentik`, `backrest`, `beszel`, `dagster`, `dozzle`, `glance`, `homepage`, `kafka`, `kuma`, `mongodb`, `n8n`, `navidrome`, `opengym`, `postgres`, `prefect`, `restic`, `seaweedfs`, `sonarqube`, `syncthing`, `vault`. Others (`grafana`, `vaultwarden`, `vscodeserver`, `jupyterlab`, `harbor`) read variables from inline compose env or a hand-written `.env` — see their compose file.
+**Suggested start order:** `traefik` → `postgres` → monitoring (`prometheus`, `grafana`, `loki`, `alertmanager`, `kuma`, `beszel`) → everything else. Stacks that ship an `.env.example` to copy: `airflow`, `alertmanager`, `authentik`, `backrest`, `beszel`, `dagster`, `dozzle`, `glance`, `grocy`, `homepage`, `kafka`, `kuma`, `mongodb`, `n8n`, `navidrome`, `opengym`, `postgres`, `prefect`, `restic`, `seaweedfs`, `sonarqube`, `syncthing`, `vault`. Others (`grafana`, `vaultwarden`, `vscodeserver`, `jupyterlab`, `harbor`) read variables from inline compose env or a hand-written `.env` — see their compose file.
 
 ### Per-stack setup notes
 
@@ -357,6 +360,7 @@ Config lives next to each compose file. Bind-mounted data directories and all se
 | ClickHouse | compose | Default `admin`/`admin` — change |
 | Syncthing | `syncthing/.env` | `GUI_BIND`, `GUI_PORT`, `SYNC_PORT`, `DISCOVERY_PORT`, `TZ` |
 | openGym | `opengym/.env` | `WEB_PORT`, `RP_ID`, `ORIGIN`, `FIRST_USER_ADMIN`, `INVITE_ONLY` |
+| Grocy | `grocy/.env` | `GROCY_PORT`, `PUID`/`PGID` |
 | Navidrome | `navidrome/.env` | `ND_PORT`, `MUSIC_PATH`, `ND_UID`/`ND_GID` |
 | code-server | `vscodeserver/.env` | `PUID`, `PGID`, `TZ`, `CODE_SERVER_PASSWORD` |
 | Vaultwarden | `vaultwarden/.env` | `DOMAIN`, ports, `ADMIN_TOKEN`, `SIGNUPS_ALLOWED` |
@@ -402,6 +406,7 @@ Config lives next to each compose file. Bind-mounted data directories and all se
 | Mongo Express | `http://<host>:8081` |
 | Syncthing | `http://<host>:8384` |
 | Navidrome | `http://<host>:4533` |
+| Grocy | `http://<host>:9283` |
 | openGym | `http://<host>:8095` (HTTPS required for passkeys) |
 | code-server | `https://<host>:8443` |
 | Excalidraw | `http://<host>:3000` |
