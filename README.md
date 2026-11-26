@@ -2,12 +2,12 @@
 
 # 🧪 Homelab
 
-**Self-hosted infrastructure as code — 43 independent Docker Compose stacks.**
+**Self-hosted infrastructure as code — 47 independent Docker Compose stacks.**
 
 Monitoring · CI/CD · Automation & AI · Data engineering · Storage · Security · Developer tools
 
 ![Docker Compose](https://img.shields.io/badge/Docker%20Compose-v2-2496ED?logo=docker&logoColor=white)
-![Stacks](https://img.shields.io/badge/stacks-43-success)
+![Stacks](https://img.shields.io/badge/stacks-47-success)
 ![Traefik](https://img.shields.io/badge/ingress-Traefik%20%2B%20Cloudflare-24A1C1?logo=traefikproxy&logoColor=white)
 ![Tailscale](https://img.shields.io/badge/access-Tailscale-242424?logo=tailscale&logoColor=white)
 ![Conventional Commits](https://img.shields.io/badge/commits-conventional-FE5196?logo=conventionalcommits&logoColor=white)
@@ -107,8 +107,14 @@ graph LR
             Authentik
         end
 
+        subgraph Games["Games"]
+            Minecraft["Minecraft Java<br/>25565/tcp"]
+        end
+
         Restic -->|S3| SeaweedFS
     end
+
+    Tailnet --> Minecraft
 ```
 
 > **Network note.** Each stack defines its **own** bridge network (`proxy`, `homelab`, `llm_net`, `seaweed_net`, `sonarnet`, `jenkins_network`, `dagster_net`, `prefect_net`, `kafka_net`, `loki_net`, `alertmanager_net`, `jaeger_net`, `vault_net`, `restic_net`) and a few share the external network `homelab_net`. There is no shared convention — check the target compose file before wiring services together.
@@ -188,6 +194,12 @@ Every service links to its directory. Hostnames use the `jeerasakananta.dev` dom
 | [code-server](vscodeserver/) | VS Code in the browser | `8443` | `CODE_SERVER_PASSWORD`, `PUID`, `PGID` |
 | [Excalidraw](excalidraw/) | Whiteboard | `3000` | |
 
+### Games
+
+| Service | Purpose | Port | Notes |
+|---------|---------|------|-------|
+| [Minecraft](minecraft/) | Java Edition server (vanilla) | `25565` | Whitelist on by default; set `MC_EULA=TRUE` and player names in `minecraft/.env`; data in `/var/data/minecraft` |
+
 ### Security & Backup
 
 | Service | Purpose | Port | Notes |
@@ -231,6 +243,7 @@ labels:
 | Grafana | 3080 | 3000 | — |
 | Homepage | 3030 | 3000 | `homelab` |
 | Excalidraw | 3000 | 80 | — |
+| Minecraft | 25565 | 25565 | — |
 | Dagster | 3070 | 3000 | `dagster_net` |
 | Uptime Kuma | 3001 | 3001 | `homelab` |
 | Netdata | 19999 | 19999 | host |
@@ -300,7 +313,7 @@ docker compose up -d
 
 Every stack uses `docker-compose.yaml`, so `docker compose up -d` from the service directory is enough.
 
-**Suggested start order:** `traefik` → `postgres` → monitoring (`prometheus`, `grafana`, `loki`, `alertmanager`, `kuma`, `beszel`) → everything else. Stacks that ship an `.env.example` to copy: `airflow`, `alertmanager`, `authentik`, `backrest`, `beszel`, `dagster`, `dozzle`, `glance`, `grocy`, `homepage`, `kafka`, `kuma`, `mongodb`, `n8n`, `navidrome`, `opengym`, `postgres`, `prefect`, `restic`, `seaweedfs`, `sonarqube`, `syncthing`, `vault`. Others (`grafana`, `vaultwarden`, `vscodeserver`, `jupyterlab`, `harbor`) read variables from inline compose env or a hand-written `.env` — see their compose file.
+**Suggested start order:** `traefik` → `postgres` → monitoring (`prometheus`, `grafana`, `loki`, `alertmanager`, `kuma`, `beszel`) → everything else. Stacks that ship an `.env.example` to copy: `airflow`, `alertmanager`, `authentik`, `backrest`, `beszel`, `dagster`, `dozzle`, `glance`, `grocy`, `homepage`, `kafka`, `kuma`, `minecraft`, `mongodb`, `n8n`, `navidrome`, `opengym`, `postgres`, `prefect`, `restic`, `seaweedfs`, `sonarqube`, `syncthing`, `vault`. Others (`grafana`, `vaultwarden`, `vscodeserver`, `jupyterlab`, `harbor`) read variables from inline compose env or a hand-written `.env` — see their compose file.
 
 ### Per-stack setup notes
 
@@ -315,6 +328,7 @@ Every stack uses `docker-compose.yaml`, so `docker compose up -d` from the servi
 | `restic` | Set `S3_ENDPOINT`, `S3_BUCKET`, AWS credentials and `RESTIC_PASSWORD` — **keep the password safe**, snapshots cannot be decrypted without it |
 | `kafka` | Set `KAFKA_ADVERTISED_HOST` to the host address for off-host clients |
 | `opengym` | Set `RP_ID` / `ORIGIN` to the real HTTPS hostname; register your own profile first (first user becomes admin), then enable `INVITE_ONLY=1` |
+| `minecraft` | `cp .env.example .env`, read the EULA and set `MC_EULA=TRUE`; add Java Edition profile names to `MC_WHITELIST` (or set `MC_ENABLE_WHITELIST=FALSE` for an open server); create `/var/data/minecraft` owned by `1000:1000` before first start |
 | `harbor` (Homarr) | Create `.env` with `SECRET_ENCRYPTION_KEY` from `openssl rand -hex 32` |
 
 ## Deployment
@@ -362,6 +376,7 @@ Config lives next to each compose file. Bind-mounted data directories and all se
 | openGym | `opengym/.env` | `WEB_PORT`, `RP_ID`, `ORIGIN`, `FIRST_USER_ADMIN`, `INVITE_ONLY` |
 | Grocy | `grocy/.env` | `GROCY_PORT`, `PUID`/`PGID` |
 | Navidrome | `navidrome/.env` | `ND_PORT`, `MUSIC_PATH`, `ND_UID`/`ND_GID` |
+| Minecraft | `minecraft/.env` | Image tag, port/bind, `MC_EULA`, `MC_VERSION`, `MC_TYPE`, `MC_MEMORY`, whitelist |
 | code-server | `vscodeserver/.env` | `PUID`, `PGID`, `TZ`, `CODE_SERVER_PASSWORD` |
 | Vaultwarden | `vaultwarden/.env` | `DOMAIN`, ports, `ADMIN_TOKEN`, `SIGNUPS_ALLOWED` |
 | Vault | `vault/config/vault.hcl`, `vault/init/vault-init.sh` | Root token via `VAULT_ROOT_TOKEN` |
@@ -410,6 +425,7 @@ Config lives next to each compose file. Bind-mounted data directories and all se
 | openGym | `http://<host>:8095` (HTTPS required for passkeys) |
 | code-server | `https://<host>:8443` |
 | Excalidraw | `http://<host>:3000` |
+| Minecraft | `<host>:25565` (Java Edition client) |
 | Vault | `http://<host>:8200` |
 
 ## Repository Layout
@@ -437,7 +453,8 @@ homelab/
 - **A missing `_data` directory under `/var/lib/docker/volumes/` means the data is gone** — recreating it starts an empty database. Warn before doing it.
 - **Missing bind-mount source files** are auto-created by Docker as **directories** (seen with `postgres-lab-db/init-db.sh`). Replace them with real files.
 - **`(unhealthy)` after long uptime** is often the `runc` exec bug (`fork/exec /proc/self/fd/6`), not an application failure — a host reboot clears it.
-- **Bind-mount ownership under DockHand.** Docker creates missing bind-mount directories as `root`; for containers that run as another UID (Syncthing → 1000), `chown` them on the host inside DockHand's working copy.
+- **Bind-mount ownership under DockHand.** Docker creates missing bind-mount directories as `root`; for containers that run as another UID (Syncthing and Minecraft → 1000), `chown` them on the host inside DockHand's working copy.
+- **Minecraft is private by default.** Port `25565` is bound to `0.0.0.0`, but the host firewall / Tailscale decides who can reach it. The server enforces Mojang auth plus a whitelist — add player names to `MC_WHITELIST`, or explicitly set `MC_ENABLE_WHITELIST=FALSE` if you deliberately want an open server. RCON stays container-internal.
 - **Backups.** Restic covers `/home/game`, this repo, `/etc` and `/var/lib/docker/volumes`, but **not yet `/var/data`**, so migrated stacks are not backed up. Paths in `restic/config/restic-exclude.txt` are excluded paths in `restic/config/restic-exclude.txt`. Test a restore periodically — an untested backup is only a hope.
 
 ## Roadmap

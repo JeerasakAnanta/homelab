@@ -1,0 +1,56 @@
+services:
+  minecraft:
+    # Version Pinning: never use ':latest' — this is the itzg image built on Java 25,
+    # which Minecraft 26.x requires. Bump the tag deliberately in .env.
+    image: itzg/minecraft-server:${MINECRAFT_IMAGE_TAG:-2026.11.1-java25}
+    container_name: minecraft
+    restart: unless-stopped
+
+    ports:
+      # Java Edition uses TCP only. 0.0.0.0 by default, so the host firewall (or
+      # Tailscale) decides who can actually reach it — see README.
+      - "${MC_BIND:-0.0.0.0}:${MC_PORT:-25565}:25565"
+
+    environment:
+      # Required by Mojang. Keep FALSE in .env.example so nobody starts the
+      # server without reading the EULA first: https://aka.ms/MinecraftEULA
+      EULA: ${MC_EULA:-FALSE}
+      VERSION: ${MC_VERSION:-26.3}
+      TYPE: ${MC_TYPE:-VANILLA}
+      MEMORY: ${MC_MEMORY:-1G}
+      MAX_PLAYERS: ${MC_MAX_PLAYERS:-20}
+      DIFFICULTY: ${MC_DIFFICULTY:-normal}
+      MOTD: ${MC_MOTD:-Homelab Minecraft}
+      # Mojang authentication only — no cracked/offline clients.
+      ONLINE_MODE: "TRUE"
+      # Private by default: only the names in MC_WHITELIST may join.
+      ENABLE_WHITELIST: ${MC_ENABLE_WHITELIST:-TRUE}
+      WHITELIST: ${MC_WHITELIST:-}
+      # RCON stays internal on 25575 (never published to the host).
+      TZ: ${TZ:-Asia/Bangkok}
+
+    volumes:
+      # The image runs as UID/GID 1000 by default — create this directory on
+      # the host and chown it to 1000:1000 before the first start.
+      - /var/data/minecraft:/data
+
+    security_opt:
+      - no-new-privileges:true
+
+    # Give the JVM time to generate/load the world and save it on shutdown.
+    stop_grace_period: 2m
+
+    deploy:
+      resources:
+        limits:
+          cpus: '2.00'
+          memory: 2G
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

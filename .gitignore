@@ -147,3 +147,7 @@ authentik/.env
 
 # Grocy (data lives in /var/data/grocy, outside the repo)
 grocy/.env
+
+# --- Minecraft (data lives in /var/data/minecraft, outside the repo) ---
+minecraft/.env
+minecraft/data/
